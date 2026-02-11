@@ -170,8 +170,15 @@
     @apply border-border;
   }
 
+  html,
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased bg-background text-foreground overflow-x-hidden;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
   }
 }
 

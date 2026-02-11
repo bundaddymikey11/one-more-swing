@@ -68,16 +68,16 @@ function Header() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="fixed top-0 left-0 right-0 z-[999] bg-[#050505]/60 backdrop-blur-2xl backdrop-saturate-150 border-b border-white/5"
+      className="fixed top-0 left-0 right-0 z-[999] bg-[#000000] border-b border-white/5"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-4 h-16 sm:h-20">
+        <div className="flex items-center justify-between gap-4 h-14 sm:h-20">
           <button
             onClick={() => scrollTo("hero")}
-            className="flex items-center gap-2 sm:gap-3 shrink-0"
+            className="flex items-center shrink-0"
             data-testid="link-logo"
           >
-            <img src={logoImage} alt="One More Swing" className="h-10 sm:h-14 w-auto" data-testid="img-logo-header" />
+            <img src={logoImage} alt="One More Swing" className="h-9 sm:h-14 w-auto" data-testid="img-logo-header" />
           </button>
 
           <nav className="hidden md:flex items-center gap-8" data-testid="nav-desktop">
@@ -100,11 +100,11 @@ function Header() {
 
           <Button
             onClick={() => scrollTo("booking")}
-            className="bg-primary text-primary-foreground border border-primary-border shrink-0 btn-glow"
+            className="bg-primary text-primary-foreground border border-primary-border shrink-0 btn-glow h-10 sm:h-auto"
             data-testid="button-header-book"
           >
             <span className="hidden sm:inline">Book Your Event</span>
-            <span className="sm:hidden">Book</span>
+            <span className="sm:hidden text-sm">Book</span>
           </Button>
         </div>
       </div>
@@ -130,7 +130,7 @@ function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/40 to-transparent" />
       </div>
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
+      <div className="relative z-10 max-w-5xl mx-auto px-6 sm:px-6 lg:px-8 text-center pt-20">
         <motion.div
           initial="hidden"
           animate="visible"
@@ -145,7 +145,7 @@ function HeroSection() {
 
           <motion.h1
             variants={fadeUp}
-            className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight"
+            className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight"
           >
             Bring the Ultimate Golf
             <br />
@@ -165,7 +165,7 @@ function HeroSection() {
             <Button
               size="lg"
               onClick={() => scrollTo("booking")}
-              className="bg-primary text-primary-foreground border border-primary-border text-base px-8 btn-glow"
+              className="w-full sm:w-auto h-14 sm:h-auto bg-primary text-primary-foreground border border-primary-border text-base px-8 btn-glow"
               data-testid="button-hero-book"
             >
               Book Your Event
@@ -175,7 +175,7 @@ function HeroSection() {
               size="lg"
               variant="outline"
               onClick={() => scrollTo("packages")}
-              className="text-base px-8 bg-white/5 backdrop-blur-sm border-white/20 text-white"
+              className="w-full sm:w-auto h-14 sm:h-auto text-base px-8 bg-white/5 backdrop-blur-sm border-white/20 text-white"
               data-testid="button-hero-packages"
             >
               View Packages
@@ -204,8 +204,8 @@ function HeroSection() {
 
 function AboutSection() {
   return (
-    <section id="about" className="py-20 sm:py-28 lg:py-32 bg-[#050505]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="about" className="py-16 sm:py-28 lg:py-32 bg-[#050505]">
+      <div className="max-w-6xl mx-auto px-6 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -294,8 +294,8 @@ const techFeatures = [
 
 function TechSection() {
   return (
-    <section id="tech" className="py-20 sm:py-28 lg:py-32 bg-[#030303]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="tech" className="py-16 sm:py-28 lg:py-32 bg-[#030303]">
+      <div className="max-w-6xl mx-auto px-6 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -354,8 +354,8 @@ function PricingSection() {
   };
 
   return (
-    <section id="packages" className="py-20 sm:py-28 lg:py-32 bg-[#050505]">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="packages" className="py-16 sm:py-28 lg:py-32 bg-[#050505]">
+      <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -421,7 +421,7 @@ function PricingSection() {
 
                 <Button
                   onClick={() => scrollTo("booking")}
-                  className="w-full bg-primary text-primary-foreground border border-primary-border btn-glow"
+                  className="w-full h-14 sm:h-auto bg-primary text-primary-foreground border border-primary-border btn-glow"
                   data-testid="button-book-standard"
                 >
                   Book Now
@@ -477,7 +477,7 @@ function PricingSection() {
                 <Button
                   onClick={() => scrollTo("booking")}
                   variant="outline"
-                  className="w-full border-primary/30 text-primary bg-primary/5"
+                  className="w-full h-14 sm:h-auto border-primary/30 text-primary bg-primary/5"
                   data-testid="button-book-luxury"
                 >
                   Get a Quote
@@ -493,8 +493,8 @@ function PricingSection() {
 
 function LogisticsSection() {
   return (
-    <section className="py-16 sm:py-20 bg-[#030303]">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-12 sm:py-20 bg-[#030303]">
+      <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -588,8 +588,8 @@ function BookingSection() {
   };
 
   return (
-    <section id="booking" className="py-20 sm:py-28 lg:py-32 bg-[#050505]">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="booking" className="py-16 sm:py-28 lg:py-32 bg-[#050505]">
+      <div className="max-w-3xl mx-auto px-6 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -764,7 +764,7 @@ function BookingSection() {
                   <Button
                     type="submit"
                     disabled={mutation.isPending}
-                    className="w-full bg-primary text-primary-foreground border border-primary-border text-base btn-glow"
+                    className="w-full h-14 sm:h-auto bg-primary text-primary-foreground border border-primary-border text-base btn-glow"
                     size="lg"
                     data-testid="button-submit-booking"
                   >
@@ -800,8 +800,8 @@ function TrustedBySection() {
   ];
 
   return (
-    <section className="py-16 sm:py-20 bg-[#030303]">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-12 sm:py-20 bg-[#030303]">
+      <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -838,8 +838,8 @@ function TrustedBySection() {
 
 function PromiseSection() {
   return (
-    <section className="py-20 sm:py-28 bg-[#050505]">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <section className="py-16 sm:py-28 bg-[#050505]">
+      <div className="max-w-3xl mx-auto px-6 sm:px-6 lg:px-8 text-center">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -877,7 +877,7 @@ function Footer() {
 
   return (
     <footer className="bg-[#020202] border-t border-white/5 py-12 sm:py-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-6 sm:px-6 lg:px-8">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
           <div className="space-y-4">
             <span className="font-serif text-xl font-bold text-white">
@@ -940,7 +940,7 @@ function Footer() {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#050505]">
+    <div className="min-h-screen bg-[#050505] overflow-x-hidden">
       <Header />
       <HeroSection />
       <AboutSection />
