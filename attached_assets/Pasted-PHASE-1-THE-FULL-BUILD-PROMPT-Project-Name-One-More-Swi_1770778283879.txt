@@ -1,0 +1,54 @@
+PHASE 1: THE FULL BUILD PROMPT
+Project Name: One More Swing - Luxury Mobile Golf Simulator Website
+
+Goal: Build a complete, high-end, single-page React/Next.js website using Tailwind CSS. The site must feel like a premium luxury brand (think AllSaints meets Topgolf Select).
+
+1. Design & Branding:
+
+Theme: Ultra-Dark Luxury. Background: #050505. Text: Crisp White and Silver-Grey.
+
+Accents: Use the specific "Grass Green" from the uploaded logo for Call-to-Action (CTA) buttons and borders.
+
+Components: Use "Glassmorphism" for pricing cards (semi-transparent backgrounds with a subtle blur).
+
+Animations: Use Framer Motion for elegant scroll-triggered reveals.
+
+2. Hero Section:
+
+Headline: "Bring the Ultimate Golf Experience to Your Event"
+
+Sub-headline: "A premium mobile golf simulator delivered directly to your home, venue, or corporate space. Professional‑grade technology. Concierge‑level service. A luxury entertainment experience unlike anything else."
+
+CTA Buttons: "Book Your Event" (Primary) and "View Packages" (Secondary).
+
+3. About One More Swing (The Story):
+
+Text: "Arriving in Southern California, One More Swing brings the excitement of the course directly to you. We specialize in fully immersive simulator experiences designed for corporate gatherings, private events, and special occasions. Whether your guests are scratch golfers or picking up a club for the first time, we provide a professional and unforgettable atmosphere anywhere you host."
+
+4. The Tech & Experience (Grid Layout):
+
+Create a 4-column feature grid using these specs:
+
+Garmin R10 Launch Monitor: Precise ball and club data.
+
+GSPro Premium Software: Hyper-realistic 4K course play.
+
+Luxury Enclosure: 15x15x11 ft hitting bay for maximum safety and style.
+
+Premium Equipment: Titleist RCT balls and clubs for all players (RH/LH/Kids).
+
+5. Pricing & Packages Module:
+
+Package 1: Standard Hourly ($175/hr): 2-hour minimum. Includes full setup, onsite support, 4K projection, and all equipment.
+
+Package 2: Full-Day Luxury (Custom Pricing): For weddings and corporate activations. Includes extended support and flexible scheduling.
+
+6. Logistics & Booking:
+
+Requirements: Clear section stating: "Space Needed: 16x16x12 ft" and "Power: Standard Outlet."
+
+Booking Form: A sleek contact form collecting: Name, Email, Event Date, and Event Type.
+
+7. Technical:
+
+Ensure the site is mobile-responsive. Use the uploaded logo in the Header and Footer.
