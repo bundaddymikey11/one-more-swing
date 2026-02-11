@@ -65,7 +65,7 @@ function Header() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-[#050505]/80 backdrop-blur-xl border-b border-white/5"
+      className="fixed top-0 left-0 right-0 z-[999] bg-[#050505]/60 backdrop-blur-2xl backdrop-saturate-150 border-b border-white/5"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4 h-16 sm:h-20">
@@ -99,7 +99,7 @@ function Header() {
 
           <Button
             onClick={() => scrollTo("booking")}
-            className="bg-primary text-primary-foreground border border-primary-border shrink-0"
+            className="bg-primary text-primary-foreground border border-primary-border shrink-0 btn-glow"
             data-testid="button-header-book"
           >
             <span className="hidden sm:inline">Book Your Event</span>
@@ -120,13 +120,13 @@ function HeroSection() {
     <section id="hero" className="relative min-h-screen flex items-center justify-center">
       <div className="absolute inset-0">
         <img
-          src="/images/hero-golf.png"
-          alt="Luxury golf simulator experience"
+          src="/images/hero-socal.png"
+          alt="Southern California luxury golf lifestyle"
           className="w-full h-full object-cover"
           data-testid="img-hero"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/70 via-[#050505]/60 to-[#050505]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/60 via-[#050505]/50 to-[#050505]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/40 to-transparent" />
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
@@ -144,7 +144,7 @@ function HeroSection() {
 
           <motion.h1
             variants={fadeUp}
-            className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight"
+            className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight"
           >
             Bring the Ultimate Golf
             <br />
@@ -164,7 +164,7 @@ function HeroSection() {
             <Button
               size="lg"
               onClick={() => scrollTo("booking")}
-              className="bg-primary text-primary-foreground border border-primary-border text-base px-8"
+              className="bg-primary text-primary-foreground border border-primary-border text-base px-8 btn-glow"
               data-testid="button-hero-book"
             >
               Book Your Event
@@ -217,7 +217,7 @@ function AboutSection() {
               <span className="text-primary font-semibold text-xs tracking-[0.3em] uppercase">
                 The Story
               </span>
-              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tight">
                 About One More Swing
               </h2>
             </div>
@@ -307,7 +307,7 @@ function TechSection() {
           </motion.span>
           <motion.h2
             variants={fadeUp}
-            className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-3"
+            className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-3 tracking-tight"
           >
             The Tech & Experience
           </motion.h2>
@@ -367,7 +367,7 @@ function PricingSection() {
           </motion.span>
           <motion.h2
             variants={fadeUp}
-            className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-3"
+            className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-3 tracking-tight"
           >
             Packages & Pricing
           </motion.h2>
@@ -381,8 +381,8 @@ function PricingSection() {
           className="grid md:grid-cols-2 gap-6 sm:gap-8"
         >
           <motion.div variants={scaleIn}>
-            <Card
-              className="relative bg-white/[0.04] backdrop-blur-xl border-white/[0.08] p-8 sm:p-10 h-full"
+            <div
+              className="relative pricing-card rounded-md p-8 sm:p-10 h-full"
               data-testid="card-package-standard"
             >
               <div className="space-y-6">
@@ -420,18 +420,18 @@ function PricingSection() {
 
                 <Button
                   onClick={() => scrollTo("booking")}
-                  className="w-full bg-primary text-primary-foreground border border-primary-border"
+                  className="w-full bg-primary text-primary-foreground border border-primary-border btn-glow"
                   data-testid="button-book-standard"
                 >
                   Book Now
                 </Button>
               </div>
-            </Card>
+            </div>
           </motion.div>
 
           <motion.div variants={scaleIn}>
-            <Card
-              className="relative bg-white/[0.04] backdrop-blur-xl border-primary/20 p-8 sm:p-10 h-full"
+            <div
+              className="relative pricing-card rounded-md p-8 sm:p-10 h-full"
               data-testid="card-package-luxury"
             >
               <div className="absolute top-0 right-0 m-4">
@@ -482,7 +482,7 @@ function PricingSection() {
                   Get a Quote
                 </Button>
               </div>
-            </Card>
+            </div>
           </motion.div>
         </motion.div>
       </div>
@@ -598,7 +598,7 @@ function BookingSection() {
             <span className="text-primary font-semibold text-xs tracking-[0.3em] uppercase">
               Reserve Your Date
             </span>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-3">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-3 tracking-tight">
               Book Your Event
             </h2>
             <p className="text-white/50 max-w-xl mx-auto mt-4 text-base sm:text-lg">
@@ -730,7 +730,7 @@ function BookingSection() {
                   <Button
                     type="submit"
                     disabled={mutation.isPending}
-                    className="w-full bg-primary text-primary-foreground border border-primary-border text-base"
+                    className="w-full bg-primary text-primary-foreground border border-primary-border text-base btn-glow"
                     size="lg"
                     data-testid="button-submit-booking"
                   >
