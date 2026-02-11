@@ -1,0 +1,34 @@
+THE "PREMIUM CINEMATIC" REFINEMENT PROMPT
+Task: Transform the current site into a world-class, cinematic digital experience. Focus on "High-End Motion" and "Editorial Layout."
+
+1. Typography & Hierarchy (The Editorial Look):
+
+Headlines: Use a "Display" font style. Set letter-spacing: -0.05em and line-height: 0.9. Use "Fluid Typography" so headlines are massive but perfectly scaled on mobile.
+
+Contrast: Use high-contrast sizing—giant headlines paired with tiny, wide-spaced sub-labels (e.g., text-xs uppercase tracking-[0.3em]).
+
+2. Advanced Motion & Transitions (The "Mind-Blow" Factor):
+
+Parallax Scroll: Implement a subtle parallax effect on background images so they move slower than the foreground text.
+
+Reveal Animations: Use Framer Motion to create "Staggered Reveals." Don't just fade in; have lines of text "mask-up" (sliding up from an invisible line) like a premium movie trailer.
+
+Smooth Scroll: Enable a "Lenis" or "Smooth Scroll" behavior to give the entire site a silky, weighted movement.
+
+3. Creative Layout (Breaking the Grid):
+
+Asymmetry: Shift some elements slightly off-center. Use overlapping layers (e.g., a high-res photo of a golf ball partially overlapping a text block).
+
+Whitespace: Triple the current vertical spacing (py-40 or py-56). Luxury is the luxury of space.
+
+Background Depth: Add a subtle, dark "noise" or "grain" texture overlay to the entire site to remove the "flat AI" look and give it a tactile, filmic quality.
+
+4. High-End Mobile Specifics:
+
+One-Handed Navigation: Ensure the most important button (Inquire) is always pinned or easily reachable at the bottom of the mobile viewport in a "Floating Action Button" style.
+
+Haptic Feel: Ensure all buttons have a scale-down effect (0.95) when tapped to mimic a physical button press.
+
+5. Luxury "Details" Section:
+
+Create a "Features" section that uses high-res imagery and "Hotspots." As the user scrolls, have the specs (Garmin, 4K, Titleist) appear as elegant floating labels over a moody image of the simulator.

@@ -62,16 +62,29 @@ attached_assets/  → Reference materials and design specs
 - **Development**: Vite dev server runs as Express middleware with HMR
 - **Production**: Client is built to `dist/public/`, server is bundled with esbuild to `dist/index.cjs`
 
-### Design System
+### Design System — "Premium Cinematic" Theme
 - Ultra-dark luxury theme (background ~#050505 in dark mode)
 - Green accent color (grass green from logo) for primary/CTA elements
-- CSS variables for all colors, supporting light/dark modes
+- CSS variables for all colors, dark mode always enabled
+- **Film grain overlay**: SVG noise texture, animated, fixed position, pointer-events:none
+- **Lenis smooth scroll**: Silky weighted scroll behavior initialized in App.tsx
+- **Parallax hero**: Background image moves 30% slower via Framer Motion useScroll/useTransform
+- **Mask-up reveal animations**: clipPath inset reveals on headlines (1s cubic-bezier)
+- **Fluid typography**: clamp() for all headlines, letter-spacing -0.05em, line-height 0.9
+- **Tiny sub-labels**: text-[10px] tracking-[0.35em] uppercase for editorial look
+- **Massive whitespace**: py-24/py-40/py-56 for luxury spacing
+- **Asymmetric layouts**: Off-center grid columns, overlapping decorative borders
+- **Hotspot features section**: Floating animated labels with pinging dots over moody image
+- **Mobile FAB**: "Inquire" floating pill button appears after 600px scroll (mobile only)
+- **Haptic press**: All buttons scale to 0.96 on :active for physical feel
+- **Header**: Transparent-to-solid transition on scroll
 - Glassmorphism effects for pricing cards
 - Custom fonts: Montserrat (sans), Playfair Display (serif), JetBrains Mono (mono)
 
 ## External Dependencies
 
 - **PostgreSQL**: Required database, connection via `DATABASE_URL` environment variable
+- **Lenis**: Smooth scroll library for weighted scroll behavior
 - **Google Fonts**: Montserrat, Playfair Display, DM Sans, Geist Mono, Fira Code, Architects Daughter loaded via CDN
 - **No authentication**: Currently no auth system implemented
 - **No payment processing**: Pricing is displayed but no Stripe integration yet
