@@ -35,7 +35,10 @@ import {
   ArrowRight,
   ChevronDown,
   Mail,
+  Award,
+  Building2,
 } from "lucide-react";
+import logoImage from "@assets/4FE308C0-2329-4286-AFB7-55F3EA548A7F_1770779225660.jpeg";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -74,9 +77,7 @@ function Header() {
             className="flex items-center gap-2 sm:gap-3 shrink-0"
             data-testid="link-logo"
           >
-            <span className="font-serif text-lg sm:text-2xl font-bold text-white tracking-tight">
-              One More Swing
-            </span>
+            <img src={logoImage} alt="One More Swing" className="h-10 sm:h-14 w-auto" data-testid="img-logo-header" />
           </button>
 
           <nav className="hidden md:flex items-center gap-8" data-testid="nav-desktop">
@@ -556,6 +557,7 @@ function BookingSection() {
       email: "",
       eventDate: "",
       eventType: "",
+      location: "",
       message: "",
     },
   });
@@ -595,9 +597,19 @@ function BookingSection() {
           variants={staggerContainer}
         >
           <motion.div variants={fadeUp} className="text-center mb-12 sm:mb-16">
-            <span className="text-primary font-semibold text-xs tracking-[0.3em] uppercase">
-              Reserve Your Date
-            </span>
+            <div className="inline-block mb-4">
+              <span
+                className="text-[11px] font-bold tracking-[0.15em] uppercase bg-primary/10 text-primary px-4 py-2 rounded-md border border-primary/20"
+                data-testid="badge-urgency"
+              >
+                Now Booking for Spring 2026 &ndash; Limited Availability
+              </span>
+            </div>
+            <div>
+              <span className="text-primary font-semibold text-xs tracking-[0.3em] uppercase">
+                Reserve Your Date
+              </span>
+            </div>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-3 tracking-tight">
               Book Your Event
             </h2>
@@ -706,6 +718,28 @@ function BookingSection() {
 
                   <FormField
                     control={form.control}
+                    name="location"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-white/70 text-sm">
+                          Location <span className="text-white/30">(City or Zip Code)</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="e.g., Los Angeles, CA or 90210"
+                            className="bg-white/[0.04] border-white/10 text-white placeholder:text-white/25 focus:border-primary/50"
+                            data-testid="input-location"
+                            {...field}
+                            value={field.value || ""}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
                     name="message"
                     render={({ field }) => (
                       <FormItem>
@@ -750,6 +784,86 @@ function BookingSection() {
               </Form>
             </Card>
           </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function TrustedBySection() {
+  const placeholders = [
+    { name: "Your Venue", icon: Building2 },
+    { name: "Partner Logo", icon: Building2 },
+    { name: "Corporate Partner", icon: Building2 },
+    { name: "Event Venue", icon: Building2 },
+    { name: "Golf Club", icon: Building2 },
+  ];
+
+  return (
+    <section className="py-16 sm:py-20 bg-[#030303]">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={staggerContainer}
+        >
+          <motion.p
+            variants={fadeUp}
+            className="text-center text-xs font-semibold text-white/30 tracking-[0.3em] uppercase mb-10"
+          >
+            Trusted By
+          </motion.p>
+          <motion.div
+            variants={fadeUp}
+            className="flex flex-wrap items-center justify-center gap-8 sm:gap-12"
+            data-testid="section-trusted-by"
+          >
+            {placeholders.map((item, i) => (
+              <div
+                key={i}
+                className="flex flex-col items-center gap-2 opacity-20"
+                data-testid={`trusted-logo-${i}`}
+              >
+                <item.icon className="w-8 h-8 text-white" />
+                <span className="text-[10px] text-white/60 uppercase tracking-wider">{item.name}</span>
+              </div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function PromiseSection() {
+  return (
+    <section className="py-20 sm:py-28 bg-[#050505]">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={staggerContainer}
+        >
+          <motion.div variants={fadeUp} className="mb-6">
+            <Award className="w-8 h-8 text-primary mx-auto" />
+          </motion.div>
+          <motion.h2
+            variants={fadeUp}
+            className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight"
+          >
+            The One More Swing Promise
+          </motion.h2>
+          <motion.div variants={fadeUp} className="w-12 h-px bg-primary/40 mx-auto mt-6 mb-6" />
+          <motion.p
+            variants={fadeUp}
+            className="text-white/60 text-base sm:text-lg leading-relaxed italic"
+            data-testid="text-promise"
+          >
+            "From first contact to final teardown, we handle the details so you can enjoy the game.
+            Professionalism is our baseline; excellence is our standard."
+          </motion.p>
         </motion.div>
       </div>
     </section>
@@ -834,6 +948,8 @@ export default function Home() {
       <PricingSection />
       <LogisticsSection />
       <BookingSection />
+      <TrustedBySection />
+      <PromiseSection />
       <Footer />
     </div>
   );

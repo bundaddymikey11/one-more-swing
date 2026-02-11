@@ -35,7 +35,7 @@ Preferred communication style: Simple, everyday language.
 - **Schema Location**: `shared/schema.ts` — single source of truth for both DB schema and validation
 - **Migrations**: Drizzle Kit with `db:push` command for schema synchronization
 - **Tables**:
-  - `bookings` — id (UUID, auto-generated), name, email, event_date, event_type, message (optional)
+  - `bookings` — id (UUID, auto-generated), name, email, event_date, event_type, location (optional), message (optional)
 
 ### Project Structure
 ```
