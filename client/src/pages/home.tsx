@@ -78,6 +78,22 @@ const scaleIn = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.9, ease: [0.25, 0.1, 0.25, 1] } },
 };
 
+function AnnouncementBar() {
+  return (
+    <motion.div
+      initial={{ clipPath: "inset(100% 0 0 0)" }}
+      animate={{ clipPath: "inset(0% 0 0 0)" }}
+      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+      className="bg-primary/90 backdrop-blur-sm py-2.5 text-center"
+      data-testid="banner-scarcity"
+    >
+      <p className="text-white text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase px-4">
+        Now Accepting 10 Exclusive Bookings for Our Inaugural Spring Season
+      </p>
+    </motion.div>
+  );
+}
+
 function Header() {
   const [scrolled, setScrolled] = useState(false);
 
@@ -100,6 +116,7 @@ function Header() {
         scrolled ? "bg-[#000000]/95 backdrop-blur-md border-b border-white/5" : "bg-transparent"
       }`}
     >
+      <AnnouncementBar />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4 h-14 sm:h-20">
           <button
@@ -773,6 +790,26 @@ function BookingSection() {
                 Now Booking for Spring 2026 &ndash; Limited Availability
               </span>
             </div>
+
+            <motion.div
+              variants={maskUp}
+              className="mb-8"
+              data-testid="badge-inaugural"
+            >
+              <div className="inline-flex items-center gap-3 bg-white/[0.03] border border-white/[0.08] rounded-md px-5 py-3">
+                <span className="text-white/50 text-[10px] tracking-[0.25em] uppercase font-medium">
+                  Inaugural Season
+                </span>
+                <span className="text-white/10 text-lg font-thin">|</span>
+                <span className="font-mono text-primary text-lg sm:text-xl font-bold tracking-[0.1em]" data-testid="text-slots-counter">
+                  04<span className="text-white/20 mx-0.5">/</span>10
+                </span>
+                <span className="text-white/40 text-[10px] tracking-[0.2em] uppercase font-medium">
+                  Slots Remaining
+                </span>
+              </div>
+            </motion.div>
+
             <div>
               <span className="text-primary font-semibold text-[10px] tracking-[0.35em] uppercase">
                 Reserve Your Date
