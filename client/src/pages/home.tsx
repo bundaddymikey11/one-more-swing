@@ -41,21 +41,21 @@ import {
 import logoImage from "@assets/4FE308C0-2329-4286-AFB7-55F3EA548A7F_1770779225660.jpeg";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] } },
 };
 
 const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.1 },
+    transition: { staggerChildren: 0.2, delayChildren: 0.15 },
   },
 };
 
 const scaleIn = {
   hidden: { opacity: 0, scale: 0.95 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] } },
 };
 
 function Header() {
@@ -145,20 +145,21 @@ function HeroSection() {
 
           <motion.h1
             variants={fadeUp}
-            className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight"
+            className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tighter"
           >
-            Bring the Ultimate Golf
+            The New Standard of
             <br />
-            <span className="text-primary">Experience</span> to Your Event
+            Event <span className="text-primary">Entertainment</span>
           </motion.h1>
 
           <motion.p
             variants={fadeUp}
-            className="text-base sm:text-lg md:text-xl text-white/70 max-w-3xl mx-auto leading-relaxed"
+            className="text-base sm:text-lg md:text-xl text-white/70 max-w-3xl mx-auto"
+            style={{ lineHeight: 1.7 }}
           >
-            A premium mobile golf simulator delivered directly to your home, venue, or
-            corporate space. Professional-grade technology. Concierge-level service.
-            A luxury entertainment experience unlike anything else.
+            Most event entertainment is a distraction. One More Swing is a destination.
+            A premium mobile golf simulator delivered with concierge-level service
+            and professional-grade technology.
           </motion.p>
 
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
@@ -204,7 +205,7 @@ function HeroSection() {
 
 function AboutSection() {
   return (
-    <section id="about" className="py-16 sm:py-28 lg:py-32 bg-[#050505]">
+    <section id="about" className="py-16 sm:py-24 lg:py-32 bg-[#050505]">
       <div className="max-w-6xl mx-auto px-6 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
@@ -218,17 +219,17 @@ function AboutSection() {
               <span className="text-primary font-semibold text-xs tracking-[0.3em] uppercase">
                 The Story
               </span>
-              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tight">
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tighter">
                 About One More Swing
               </h2>
             </div>
-            <p className="text-white/60 text-base sm:text-lg leading-relaxed">
+            <p className="text-white/60 text-base sm:text-lg" style={{ lineHeight: 1.7 }}>
               Arriving in Southern California, One More Swing brings the excitement of
               the course directly to you. We specialize in fully immersive simulator
               experiences designed for corporate gatherings, private events, and special
               occasions.
             </p>
-            <p className="text-white/60 text-base sm:text-lg leading-relaxed">
+            <p className="text-white/60 text-base sm:text-lg" style={{ lineHeight: 1.7 }}>
               Whether your guests are scratch golfers or picking up a club for the first
               time, we provide a professional and unforgettable atmosphere anywhere you
               host.
@@ -252,7 +253,7 @@ function AboutSection() {
           </motion.div>
 
           <motion.div variants={scaleIn} className="relative">
-            <div className="relative rounded-md overflow-hidden border border-white/10">
+            <div className="relative rounded-md overflow-hidden border border-white/[0.10]">
               <img
                 src="/images/hero-golf.png"
                 alt="Golf simulator experience"
@@ -261,7 +262,7 @@ function AboutSection() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/60 to-transparent" />
             </div>
-            <div className="absolute -bottom-4 -right-4 w-24 h-24 sm:w-32 sm:h-32 border border-primary/30 rounded-md" />
+            <div className="absolute -bottom-4 -right-4 w-24 h-24 sm:w-32 sm:h-32 border border-primary/10 rounded-md" />
           </motion.div>
         </motion.div>
       </div>
@@ -294,7 +295,7 @@ const techFeatures = [
 
 function TechSection() {
   return (
-    <section id="tech" className="py-16 sm:py-28 lg:py-32 bg-[#030303]">
+    <section id="tech" className="py-16 sm:py-24 lg:py-32 bg-[#030303]">
       <div className="max-w-6xl mx-auto px-6 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
@@ -308,11 +309,11 @@ function TechSection() {
           </motion.span>
           <motion.h2
             variants={fadeUp}
-            className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-3 tracking-tight"
+            className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-3 tracking-tighter"
           >
             The Tech & Experience
           </motion.h2>
-          <motion.p variants={fadeUp} className="text-white/50 max-w-2xl mx-auto mt-4 text-base sm:text-lg">
+          <motion.p variants={fadeUp} className="text-white/50 max-w-2xl mx-auto mt-4 text-base sm:text-lg" style={{ lineHeight: 1.7 }}>
             Every detail has been carefully curated to deliver a truly premium experience
           </motion.p>
         </motion.div>
@@ -327,16 +328,16 @@ function TechSection() {
           {techFeatures.map((feature, index) => (
             <motion.div key={index} variants={fadeUp}>
               <Card
-                className="group relative bg-white/[0.03] border-white/[0.06] p-6 sm:p-8 h-full hover-elevate"
+                className="group relative bg-white/[0.03] border-white/10 p-6 sm:p-8 h-full hover-elevate"
                 data-testid={`card-tech-${index}`}
               >
-                <div className="w-12 h-12 rounded-md bg-primary/10 border border-primary/20 flex items-center justify-center mb-5">
+                <div className="w-12 h-12 rounded-md bg-primary/10 border border-white/10 flex items-center justify-center mb-5">
                   <feature.icon className="w-5 h-5 text-primary" />
                 </div>
                 <h3 className="font-semibold text-white text-base mb-3">
                   {feature.title}
                 </h3>
-                <p className="text-white/50 text-sm leading-relaxed">
+                <p className="text-white/50 text-sm" style={{ lineHeight: 1.7 }}>
                   {feature.description}
                 </p>
               </Card>
@@ -354,7 +355,7 @@ function PricingSection() {
   };
 
   return (
-    <section id="packages" className="py-16 sm:py-28 lg:py-32 bg-[#050505]">
+    <section id="packages" className="py-16 sm:py-24 lg:py-32 bg-[#050505]">
       <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
@@ -368,7 +369,7 @@ function PricingSection() {
           </motion.span>
           <motion.h2
             variants={fadeUp}
-            className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-3 tracking-tight"
+            className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-3 tracking-tighter"
           >
             Packages & Pricing
           </motion.h2>
@@ -414,7 +415,7 @@ function PricingSection() {
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                      <span className="text-white/70 text-sm">{item}</span>
+                      <span className="text-white/70 text-sm" style={{ lineHeight: 1.7 }}>{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -436,7 +437,7 @@ function PricingSection() {
               data-testid="card-package-luxury"
             >
               <div className="absolute top-0 right-0 m-4">
-                <span className="text-[10px] font-bold text-primary tracking-[0.2em] uppercase bg-primary/10 px-3 py-1.5 rounded-md border border-primary/20">
+                <span className="text-[10px] font-bold text-primary tracking-[0.2em] uppercase bg-primary/10 px-3 py-1.5 rounded-md border border-white/10">
                   Premium
                 </span>
               </div>
@@ -469,7 +470,7 @@ function PricingSection() {
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                      <span className="text-white/70 text-sm">{item}</span>
+                      <span className="text-white/70 text-sm" style={{ lineHeight: 1.7 }}>{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -493,7 +494,7 @@ function PricingSection() {
 
 function LogisticsSection() {
   return (
-    <section className="py-12 sm:py-20 bg-[#030303]">
+    <section className="py-12 sm:py-24 lg:py-32 bg-[#030303]">
       <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
@@ -504,17 +505,17 @@ function LogisticsSection() {
         >
           <motion.div variants={fadeUp}>
             <Card
-              className="bg-white/[0.03] border-white/[0.06] p-6 sm:p-8 h-full"
+              className="bg-white/[0.03] border-white/10 p-6 sm:p-8 h-full"
               data-testid="card-logistics-space"
             >
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-md bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                <div className="w-12 h-12 rounded-md bg-primary/10 border border-white/10 flex items-center justify-center shrink-0">
                   <MapPin className="w-5 h-5 text-primary" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-white text-base mb-1">Space Needed</h3>
                   <p className="text-2xl font-bold text-white mb-2">16 x 16 x 12 ft</p>
-                  <p className="text-white/50 text-sm">
+                  <p className="text-white/50 text-sm" style={{ lineHeight: 1.7 }}>
                     Minimum clearance for our premium enclosure. We handle all setup and teardown.
                   </p>
                 </div>
@@ -524,17 +525,17 @@ function LogisticsSection() {
 
           <motion.div variants={fadeUp}>
             <Card
-              className="bg-white/[0.03] border-white/[0.06] p-6 sm:p-8 h-full"
+              className="bg-white/[0.03] border-white/10 p-6 sm:p-8 h-full"
               data-testid="card-logistics-power"
             >
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-md bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                <div className="w-12 h-12 rounded-md bg-primary/10 border border-white/10 flex items-center justify-center shrink-0">
                   <Zap className="w-5 h-5 text-primary" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-white text-base mb-1">Power Required</h3>
                   <p className="text-2xl font-bold text-white mb-2">Standard Outlet</p>
-                  <p className="text-white/50 text-sm">
+                  <p className="text-white/50 text-sm" style={{ lineHeight: 1.7 }}>
                     Just one standard 120V outlet is all we need. No special electrical requirements.
                   </p>
                 </div>
@@ -588,7 +589,7 @@ function BookingSection() {
   };
 
   return (
-    <section id="booking" className="py-16 sm:py-28 lg:py-32 bg-[#050505]">
+    <section id="booking" className="py-16 sm:py-24 lg:py-32 bg-[#050505]">
       <div className="max-w-3xl mx-auto px-6 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
@@ -599,7 +600,7 @@ function BookingSection() {
           <motion.div variants={fadeUp} className="text-center mb-12 sm:mb-16">
             <div className="inline-block mb-4">
               <span
-                className="text-[11px] font-bold tracking-[0.15em] uppercase bg-primary/10 text-primary px-4 py-2 rounded-md border border-primary/20"
+                className="text-[11px] font-bold tracking-[0.15em] uppercase bg-primary/10 text-primary px-4 py-2 rounded-md border border-white/10"
                 data-testid="badge-urgency"
               >
                 Now Booking for Spring 2026 &ndash; Limited Availability
@@ -610,17 +611,17 @@ function BookingSection() {
                 Reserve Your Date
               </span>
             </div>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-3 tracking-tight">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-3 tracking-tighter">
               Book Your Event
             </h2>
-            <p className="text-white/50 max-w-xl mx-auto mt-4 text-base sm:text-lg">
+            <p className="text-white/50 max-w-xl mx-auto mt-4 text-base sm:text-lg" style={{ lineHeight: 1.7 }}>
               Tell us about your event and we'll craft the perfect experience
             </p>
           </motion.div>
 
           <motion.div variants={scaleIn}>
             <Card
-              className="bg-white/[0.03] border-white/[0.06] p-6 sm:p-8 lg:p-10"
+              className="bg-white/[0.03] border-white/10 p-6 sm:p-8 lg:p-10"
               data-testid="card-booking-form"
             >
               <Form {...form}>
@@ -800,7 +801,7 @@ function TrustedBySection() {
   ];
 
   return (
-    <section className="py-12 sm:py-20 bg-[#030303]">
+    <section className="py-12 sm:py-24 lg:py-32 bg-[#030303]">
       <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
@@ -838,7 +839,7 @@ function TrustedBySection() {
 
 function PromiseSection() {
   return (
-    <section className="py-16 sm:py-28 bg-[#050505]">
+    <section className="py-16 sm:py-24 lg:py-32 bg-[#050505]">
       <div className="max-w-3xl mx-auto px-6 sm:px-6 lg:px-8 text-center">
         <motion.div
           initial="hidden"
@@ -851,14 +852,15 @@ function PromiseSection() {
           </motion.div>
           <motion.h2
             variants={fadeUp}
-            className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight"
+            className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tighter"
           >
             The One More Swing Promise
           </motion.h2>
           <motion.div variants={fadeUp} className="w-12 h-px bg-primary/40 mx-auto mt-6 mb-6" />
           <motion.p
             variants={fadeUp}
-            className="text-white/60 text-base sm:text-lg leading-relaxed italic"
+            className="text-white/60 text-base sm:text-lg italic"
+            style={{ lineHeight: 1.7 }}
             data-testid="text-promise"
           >
             "From first contact to final teardown, we handle the details so you can enjoy the game.
@@ -883,7 +885,7 @@ function Footer() {
             <span className="font-serif text-xl font-bold text-white">
               One More Swing
             </span>
-            <p className="text-white/40 text-sm leading-relaxed max-w-xs">
+            <p className="text-white/40 text-sm max-w-xs" style={{ lineHeight: 1.7 }}>
               Premium mobile golf simulator experiences in Southern California. Concierge-level service for every event.
             </p>
           </div>
@@ -940,7 +942,7 @@ function Footer() {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#050505] overflow-x-hidden">
+    <div className="min-h-screen bg-[#050505] overflow-x-hidden safe-area-bottom">
       <Header />
       <HeroSection />
       <AboutSection />
