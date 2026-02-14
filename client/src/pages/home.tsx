@@ -30,6 +30,7 @@ import {
   ShieldCheck,
   Trophy,
   MapPin,
+  Phone,
   Zap,
   Star,
   ArrowRight,
@@ -39,6 +40,7 @@ import {
   Building2,
   Crosshair,
 } from "lucide-react";
+import { Link } from "wouter";
 import { useRef, useState, useEffect } from "react";
 import logoImage from "@assets/Logo_1771044908308.png";
 
@@ -143,6 +145,13 @@ function Header() {
                 {item.label}
               </button>
             ))}
+            <Link
+              href="/contact"
+              className="text-[11px] font-medium text-white/50 tracking-[0.2em] uppercase hover-elevate px-2 py-1 rounded-md"
+              data-testid="link-nav-contact"
+            >
+              Contact
+            </Link>
           </nav>
 
           <Button
@@ -1145,8 +1154,12 @@ function Footer() {
                 <span className="text-white/30 text-[13px]" data-testid="text-location">Southern California</span>
               </div>
               <div className="flex items-center gap-3">
+                <Phone className="w-3.5 h-3.5 text-primary shrink-0" />
+                <a href="tel:+17602169598" className="text-white/30 text-[13px]" data-testid="text-phone">760-216-9598</a>
+              </div>
+              <div className="flex items-center gap-3">
                 <Mail className="w-3.5 h-3.5 text-primary shrink-0" />
-                <span className="text-white/30 text-[13px]" data-testid="text-email">info@onemoreswing.com</span>
+                <a href="mailto:info@onemoreswing.golf" className="text-white/30 text-[13px]" data-testid="text-email">info@onemoreswing.golf</a>
               </div>
             </div>
           </div>
