@@ -40,7 +40,7 @@ import {
   Crosshair,
 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
-import logoImage from "@assets/4FE308C0-2329-4286-AFB7-55F3EA548A7F_1770779225660.jpeg";
+import logoImage from "@assets/Logo_1771044908308.png";
 
 const maskUp = {
   hidden: { opacity: 0, y: 60, clipPath: "inset(100% 0 0 0)" },
@@ -124,7 +124,7 @@ function Header() {
             className="flex items-center shrink-0"
             data-testid="link-logo"
           >
-            <img src={logoImage} alt="One More Swing" className="h-9 sm:h-14 w-auto" data-testid="img-logo-header" />
+            <img src={logoImage} alt="One More Swing" className="h-10 w-10 sm:h-14 sm:w-14 rounded-full object-cover" data-testid="img-logo-header" />
           </button>
 
           <nav className="hidden md:flex items-center gap-8" data-testid="nav-desktop">
