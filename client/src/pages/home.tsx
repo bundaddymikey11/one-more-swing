@@ -653,10 +653,10 @@ function PricingSection() {
                   {[
                     "Perfect for weddings & corporate events",
                     "Extended support & flexible scheduling",
-                    "Dedicated event coordinator",
+                    "Multi-bay configurations available",
                     "Custom branding options",
                     "All premium equipment included",
-                    "White-glove setup & teardown",
+                    "Priority date reservation",
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
                       <Star className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
