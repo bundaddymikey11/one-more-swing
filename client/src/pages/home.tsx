@@ -581,10 +581,15 @@ function PricingSection() {
                   </h3>
                 </div>
 
-                <div className="flex items-baseline gap-3">
-                  <span className="text-xl sm:text-2xl font-bold text-white/30 tracking-tight line-through">$250</span>
-                  <span className="text-4xl sm:text-5xl font-bold text-white tracking-tight">$150</span>
-                  <span className="text-white/30 text-xs uppercase tracking-wider">/hour</span>
+                <div className="flex items-baseline justify-between gap-3 flex-wrap">
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-xl sm:text-2xl font-bold text-white/30 tracking-tight line-through">$250</span>
+                    <span className="text-4xl sm:text-5xl font-bold text-white tracking-tight">$150</span>
+                    <span className="text-white/30 text-xs uppercase tracking-wider">/hour</span>
+                  </div>
+                  <span className="text-[10px] font-semibold text-primary tracking-[0.15em] uppercase">
+                    First 10 bookings only
+                  </span>
                 </div>
 
                 <div className="w-full h-px bg-white/[0.06]" />
