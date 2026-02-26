@@ -386,7 +386,7 @@ const techFeatures = [
   {
     icon: Trophy,
     title: "Equipment",
-    description: "Titleist RCT balls and clubs for all players. Right-handed, left-handed, and kids' equipment included.\n\nKids club available upon request.",
+    description: "Kids club available upon request.",
   },
 ];
 
