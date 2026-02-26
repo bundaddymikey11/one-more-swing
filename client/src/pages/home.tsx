@@ -42,6 +42,9 @@ import {
 import { Link } from "wouter";
 import { useRef, useState, useEffect } from "react";
 import logoImage from "@assets/Logo_1771044908308.png";
+import simFrontImage from "@assets/one_more_swing_web_3_1772081755924.jpg";
+import simAngleImage from "@assets/one_more_swing_web_2_1772081755925.jpg";
+import simSideImage from "@assets/one_more_swing_web_1_1772081755925.jpg";
 
 const maskUp = {
   hidden: { opacity: 0, y: 60, clipPath: "inset(100% 0 0 0)" },
@@ -329,12 +332,32 @@ function AboutSection() {
           <motion.div variants={scaleIn} className="lg:col-span-7 relative">
             <div className="relative rounded-md overflow-hidden border border-white/[0.08] lg:ml-12 lg:-mr-8">
               <img
-                src="/images/hero-golf.png"
-                alt="Golf simulator experience"
+                src={simFrontImage}
+                alt="One More Swing mobile golf simulator setup"
                 className="w-full aspect-[4/3] object-cover"
                 data-testid="img-about"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/70 via-transparent to-transparent" />
+            </div>
+            <div className="grid grid-cols-2 gap-3 mt-3 lg:ml-12 lg:-mr-8">
+              <div className="relative rounded-md overflow-hidden border border-white/[0.08]">
+                <img
+                  src={simAngleImage}
+                  alt="Golf simulator angle view"
+                  className="w-full aspect-[4/3] object-cover"
+                  data-testid="img-about-angle"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/50 via-transparent to-transparent" />
+              </div>
+              <div className="relative rounded-md overflow-hidden border border-white/[0.08]">
+                <img
+                  src={simSideImage}
+                  alt="Golf simulator side view"
+                  className="w-full aspect-[4/3] object-cover"
+                  data-testid="img-about-side"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/50 via-transparent to-transparent" />
+              </div>
             </div>
             <div className="absolute -bottom-6 -left-6 w-28 h-28 sm:w-40 sm:h-40 border border-primary/8 rounded-md hidden lg:block" />
             <div className="absolute -top-4 -right-4 w-20 h-20 border border-white/5 rounded-md hidden lg:block" />
