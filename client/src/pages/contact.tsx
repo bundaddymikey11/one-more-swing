@@ -90,7 +90,7 @@ function ContactHeader() {
 
           <Link href="/#booking">
             <Button
-              className="bg-primary text-primary-foreground border border-primary-border shrink-0 btn-glow h-10 sm:h-auto"
+              className="bg-primary text-primary-foreground border border-primary-border shrink-0 btn-glow min-h-[44px] sm:h-auto"
               data-testid="button-contact-header-book"
             >
               <span className="hidden sm:inline">Inquire Now</span>
@@ -144,18 +144,18 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] overflow-x-hidden">
+    <div className="min-h-screen bg-[#050505] overflow-x-hidden safe-area-bottom">
       <div className="film-grain" />
       <ContactHeader />
 
-      <section className="pt-32 sm:pt-44 pb-24 sm:pb-40">
-        <div className="max-w-6xl mx-auto px-6 sm:px-6 lg:px-8">
+      <section className="pt-28 sm:pt-44 pb-16 sm:pb-40">
+        <div className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
             animate="visible"
             variants={staggerSlow}
           >
-            <motion.div variants={maskUp} className="text-center mb-16 sm:mb-24">
+            <motion.div variants={maskUp} className="text-center mb-10 sm:mb-24">
               <span className="text-primary font-semibold text-[10px] tracking-[0.35em] uppercase block mb-4">
                 Reach Out
               </span>
@@ -175,9 +175,9 @@ export default function Contact() {
               </p>
             </motion.div>
 
-            <div className="grid lg:grid-cols-5 gap-8 lg:gap-10">
-              <motion.div variants={maskUp} className="lg:col-span-2 space-y-6">
-                <Card className="bg-white/[0.02] border-white/[0.06] p-8" data-testid="card-contact-info">
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-10">
+              <motion.div variants={maskUp} className="lg:col-span-2 space-y-4 sm:space-y-6">
+                <Card className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-8 rounded-lg" data-testid="card-contact-info">
                   <h2 className="font-serif text-xl font-bold text-white mb-8" style={{ letterSpacing: "-0.03em" }}>
                     Contact Information
                   </h2>
@@ -193,7 +193,7 @@ export default function Contact() {
                         </span>
                         <a
                           href="tel:+17602169598"
-                          className="text-white font-semibold text-base hover-elevate px-1 py-0.5 rounded-md -ml-1 inline-block"
+                          className="text-white font-semibold text-[15px] sm:text-base hover-elevate px-1 py-1 rounded-md -ml-1 inline-block min-h-[44px] flex items-center"
                           data-testid="link-phone"
                         >
                           760-216-9598
@@ -211,7 +211,7 @@ export default function Contact() {
                         </span>
                         <a
                           href="mailto:info@onemoreswing.golf"
-                          className="text-white font-semibold text-base hover-elevate px-1 py-0.5 rounded-md -ml-1 inline-block"
+                          className="text-white font-semibold text-[15px] sm:text-base hover-elevate px-1 py-1 rounded-md -ml-1 inline-block min-h-[44px] flex items-center"
                           data-testid="link-email"
                         >
                           info@onemoreswing.golf
@@ -235,7 +235,7 @@ export default function Contact() {
                   </div>
                 </Card>
 
-                <Card className="bg-white/[0.02] border-white/[0.06] p-8" data-testid="card-why-choose">
+                <Card className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-8 rounded-lg" data-testid="card-why-choose">
                   <h2 className="font-serif text-xl font-bold text-primary mb-6" style={{ letterSpacing: "-0.03em" }}>
                     Why Choose Us?
                   </h2>
@@ -248,7 +248,7 @@ export default function Contact() {
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-3">
                         <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                        <span className="text-white/50 text-sm" style={{ lineHeight: 1.7 }}>{item}</span>
+                        <span className="text-white/50 text-[13px] sm:text-sm" style={{ lineHeight: 1.7 }}>{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -256,7 +256,7 @@ export default function Contact() {
               </motion.div>
 
               <motion.div variants={fadeUp} className="lg:col-span-3">
-                <Card className="bg-white/[0.02] border-white/[0.06] p-8 sm:p-10" data-testid="card-contact-form">
+                <Card className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-10 rounded-lg" data-testid="card-contact-form">
                   <h2 className="font-serif text-xl font-bold text-white mb-8" style={{ letterSpacing: "-0.03em" }}>
                     Send a Message
                   </h2>
@@ -344,7 +344,7 @@ export default function Contact() {
 
                       <Button
                         type="submit"
-                        className="w-full bg-primary text-primary-foreground border border-primary-border h-12 text-base btn-glow"
+                        className="w-full bg-primary text-primary-foreground border border-primary-border min-h-[48px] text-base btn-glow"
                         disabled={mutation.isPending}
                         data-testid="button-contact-submit"
                       >
@@ -360,8 +360,8 @@ export default function Contact() {
         </div>
       </section>
 
-      <footer className="bg-[#020202] border-t border-white/[0.04] py-10">
-        <div className="max-w-6xl mx-auto px-6 text-center">
+      <footer className="bg-[#020202] border-t border-white/[0.04] py-8 sm:py-10">
+        <div className="max-w-6xl mx-auto px-5 sm:px-6 text-center">
           <p className="text-white/20 text-[11px] tracking-wider">
             &copy; {new Date().getFullYear()} One More Swing. All rights reserved.
           </p>

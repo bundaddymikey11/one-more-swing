@@ -92,14 +92,14 @@ function AnnouncementBar() {
       initial={{ clipPath: "inset(100% 0 0 0)" }}
       animate={{ clipPath: "inset(0% 0 0 0)" }}
       transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-      className="bg-primary/90 backdrop-blur-sm py-2.5 text-center cursor-pointer"
+      className="bg-primary/90 backdrop-blur-sm py-3 sm:py-2.5 text-center cursor-pointer min-h-[44px] flex items-center justify-center"
       data-testid="banner-scarcity"
       onClick={() => scrollTo("packages")}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === "Enter") scrollTo("packages"); }}
     >
-      <p className="text-white text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase px-4">
+      <p className="text-white text-[10px] sm:text-[11px] font-semibold tracking-[0.15em] sm:tracking-[0.2em] uppercase px-5 sm:px-4 leading-relaxed">
         Be Among the First to Host One More Swing at Your Next Event
       </p>
     </motion.div>
@@ -130,7 +130,7 @@ function Header() {
     >
       <AnnouncementBar />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-4 h-14 sm:h-20">
+        <div className="flex items-center justify-between gap-4 h-[56px] sm:h-20">
           <nav className="hidden md:flex items-center gap-8" data-testid="nav-desktop">
             {[
               { label: "About", id: "about" },
@@ -158,7 +158,7 @@ function Header() {
 
           <Button
             onClick={() => scrollTo("booking")}
-            className="bg-primary text-primary-foreground border border-primary-border shrink-0 btn-glow h-10 sm:h-auto"
+            className="bg-primary text-primary-foreground border border-primary-border shrink-0 btn-glow min-h-[44px] sm:h-auto"
             data-testid="button-header-book"
           >
             <span className="hidden sm:inline">Inquire Now</span>
@@ -196,15 +196,15 @@ function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/50 to-transparent" />
       </motion.div>
 
-      <motion.div style={{ opacity: heroOpacity }} className="relative z-10 max-w-6xl mx-auto px-6 sm:px-6 lg:px-8 text-center pt-20">
+      <motion.div style={{ opacity: heroOpacity }} className="relative z-10 max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 text-center pt-24 sm:pt-20">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={staggerSlow}
-          className="space-y-8 sm:space-y-10"
+          className="space-y-6 sm:space-y-10"
         >
           <motion.div variants={maskUp}>
-            <span className="inline-block text-primary font-semibold text-[10px] sm:text-xs tracking-[0.35em] uppercase">
+            <span className="inline-block text-primary font-semibold text-[10px] sm:text-xs tracking-[0.3em] sm:tracking-[0.35em] uppercase">
               Mobile Golf Simulator Rental
             </span>
           </motion.div>
@@ -213,16 +213,15 @@ function HeroSection() {
             <img
               src={logoImage}
               alt="One More Swing"
-              className="h-40 sm:h-56 lg:h-64 w-auto object-contain"
+              className="h-32 sm:h-56 lg:h-64 w-auto object-contain"
               data-testid="img-hero-logo"
             />
           </motion.div>
 
           <motion.p
             variants={maskUp}
-            className="text-white/60 max-w-2xl mx-auto"
+            className="text-white/60 max-w-[34ch] sm:max-w-2xl mx-auto text-[15px] sm:text-base"
             style={{
-              fontSize: "clamp(0.95rem, 1.5vw, 1.25rem)",
               lineHeight: 1.8,
               letterSpacing: "0.02em",
             }}
@@ -232,11 +231,11 @@ function HeroSection() {
             One More Swing is a <span className="text-primary font-bold">destination</span>.
           </motion.p>
 
-          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2 sm:pt-4">
             <Button
               size="lg"
               onClick={() => scrollTo("booking")}
-              className="w-full sm:w-auto h-14 sm:h-auto bg-primary text-primary-foreground border border-primary-border text-base px-10 btn-glow"
+              className="w-full sm:w-auto min-h-[48px] sm:h-auto bg-primary text-primary-foreground border border-primary-border text-base px-10 btn-glow"
               data-testid="button-hero-book"
             >
               Inquire Now
@@ -246,7 +245,7 @@ function HeroSection() {
               size="lg"
               variant="outline"
               onClick={() => scrollTo("packages")}
-              className="w-full sm:w-auto h-14 sm:h-auto text-base px-10 bg-white/5 backdrop-blur-sm border-white/15 text-white"
+              className="w-full sm:w-auto min-h-[48px] sm:h-auto text-base px-10 bg-white/5 backdrop-blur-sm border-white/15 text-white"
               data-testid="button-hero-packages"
             >
               View Packages
@@ -262,7 +261,7 @@ function HeroSection() {
         >
           <button
             onClick={() => scrollTo("about")}
-            className="text-white/30 animate-bounce"
+            className="text-white/30 animate-bounce min-w-[44px] min-h-[44px] flex items-center justify-center"
             data-testid="button-scroll-down"
           >
             <ChevronDown className="w-6 h-6" />
@@ -275,17 +274,17 @@ function HeroSection() {
 
 function AboutSection() {
   return (
-    <section id="about" className="py-24 sm:py-40 lg:py-56 bg-[#050505]">
-      <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8">
+    <section id="about" className="py-16 sm:py-40 lg:py-56 bg-[#050505]">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.15 }}
           variants={staggerSlow}
-          className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center"
+          className="grid lg:grid-cols-12 gap-10 lg:gap-8 items-center"
         >
-          <motion.div variants={maskUp} className="lg:col-span-5 space-y-8">
-            <div className="space-y-4">
+          <motion.div variants={maskUp} className="lg:col-span-5 space-y-6 sm:space-y-8">
+            <div className="space-y-3 sm:space-y-4">
               <span className="text-primary font-semibold text-[10px] tracking-[0.35em] uppercase block">
                 Our Story
               </span>
@@ -302,29 +301,29 @@ function AboutSection() {
                 One More Swing
               </h2>
             </div>
-            <p className="text-white/50 text-base sm:text-lg" style={{ lineHeight: 1.8 }}>
+            <p className="text-white/50 text-[15px] sm:text-lg max-w-[40ch] sm:max-w-none" style={{ lineHeight: 1.8 }}>
               What started as a simple idea, bringing people together through the love of golf, is now becoming a reality. At One More Swing, we believe some of the best moments happen between swings: the laughs after a missed shot, the friendly competition, the "just one more try" that turns into an unforgettable memory.
             </p>
-            <p className="text-white/50 text-base sm:text-lg" style={{ lineHeight: 1.8 }}>
+            <p className="text-white/50 text-[15px] sm:text-lg max-w-[40ch] sm:max-w-none" style={{ lineHeight: 1.8 }}>
               Based in Southern California, One More Swing delivers a fully immersive golf simulator setup designed for:
             </p>
-            <ul className="space-y-2 pl-4">
+            <ul className="space-y-2 pl-2 sm:pl-4">
               {[
                 "Corporate gatherings",
                 "Private parties",
                 "Community celebrations",
                 "Any special occasion you want to elevate",
               ].map((item, i) => (
-                <li key={i} className="text-white/50 text-base sm:text-lg flex items-start gap-3" style={{ lineHeight: 1.8 }}>
+                <li key={i} className="text-white/50 text-[15px] sm:text-lg flex items-start gap-3" style={{ lineHeight: 1.8 }}>
                   <span className="text-primary mt-2 block w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
                   {item}
                 </li>
               ))}
             </ul>
-            <p className="text-white/50 text-base sm:text-lg" style={{ lineHeight: 1.8 }}>
+            <p className="text-white/50 text-[15px] sm:text-lg max-w-[40ch] sm:max-w-none" style={{ lineHeight: 1.8 }}>
               Whether your guests are seasoned golfers or picking up a club for the very first time, our setup is designed to be welcoming, professional, and most importantly, fun.
             </p>
-            <p className="text-white/50 text-base sm:text-lg" style={{ lineHeight: 1.8 }}>
+            <p className="text-white/50 text-[15px] sm:text-lg max-w-[40ch] sm:max-w-none" style={{ lineHeight: 1.8 }}>
               From the first swing to the last cheer, One More Swing creates moments people will talk about long after the event ends. Sometimes all it takes is one more swing.
             </p>
           </motion.div>
@@ -393,14 +392,14 @@ const techFeatures = [
 
 function TechSection() {
   return (
-    <section id="tech" className="py-24 sm:py-40 lg:py-56 bg-[#030303]">
-      <div className="max-w-6xl mx-auto px-6 sm:px-6 lg:px-8">
+    <section id="tech" className="py-16 sm:py-40 lg:py-56 bg-[#030303]">
+      <div className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           variants={staggerSlow}
-          className="text-center mb-20 sm:mb-28"
+          className="text-center mb-12 sm:mb-28"
         >
           <motion.h2
             variants={maskUp}
@@ -420,18 +419,18 @@ function TechSection() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           variants={staggerContainer}
-          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
         >
           {techFeatures.map((feature, index) => (
             <motion.div key={index} variants={maskUp}>
               <Card
-                className="group relative bg-white/[0.02] border-white/[0.06] p-6 sm:p-8 h-full hover-elevate"
+                className="group relative bg-white/[0.02] border-white/[0.06] p-5 sm:p-8 h-full hover-elevate rounded-lg"
                 data-testid={`card-tech-${index}`}
               >
-                <div className="w-11 h-11 rounded-md bg-primary/8 border border-white/[0.06] flex items-center justify-center mb-5">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-md bg-primary/8 border border-white/[0.06] flex items-center justify-center mb-4 sm:mb-5">
                   <feature.icon className="w-4 h-4 text-primary" />
                 </div>
-                <h3 className="font-semibold text-white text-sm mb-3 tracking-tight">
+                <h3 className="font-semibold text-white text-sm mb-2 sm:mb-3 tracking-tight">
                   {feature.title}
                 </h3>
                 <p className="text-white/40 text-[13px] whitespace-pre-line" style={{ lineHeight: 1.8 }}>
@@ -452,14 +451,14 @@ function PricingSection() {
   };
 
   return (
-    <section id="packages" className="py-24 sm:py-40 lg:py-56 bg-[#030303]">
-      <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8">
+    <section id="packages" className="py-16 sm:py-40 lg:py-56 bg-[#030303]">
+      <div className="max-w-5xl mx-auto px-5 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           variants={staggerSlow}
-          className="text-center mb-20 sm:mb-28"
+          className="text-center mb-12 sm:mb-28"
         >
           <motion.span variants={maskUp} className="text-primary font-semibold text-[10px] tracking-[0.35em] uppercase block">
             Tailored For You
@@ -482,14 +481,14 @@ function PricingSection() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           variants={staggerContainer}
-          className="grid md:grid-cols-2 gap-6 sm:gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8"
         >
           <motion.div variants={maskUp}>
             <div
-              className="relative pricing-card rounded-md p-8 sm:p-10 h-full"
+              className="relative pricing-card rounded-lg p-6 sm:p-10 h-full"
               data-testid="card-package-executive"
             >
-              <div className="space-y-6">
+              <div className="space-y-5 sm:space-y-6">
                 <div className="space-y-2">
                   <span className="text-[10px] font-semibold text-primary tracking-[0.25em] uppercase">
                     Executive
@@ -499,13 +498,13 @@ function PricingSection() {
                   </h3>
                 </div>
 
-                <div className="flex items-baseline justify-between gap-3 flex-wrap">
-                  <div className="flex items-baseline gap-3">
-                    <span className="text-xl sm:text-2xl font-bold text-white/20 tracking-tight line-through">$250</span>
-                    <span className="text-4xl sm:text-5xl font-bold text-white tracking-tight">$225</span>
+                <div className="space-y-1.5">
+                  <div className="flex items-baseline gap-2 sm:gap-3">
+                    <span className="text-lg sm:text-2xl font-bold text-white/20 tracking-tight line-through">$250</span>
+                    <span className="text-3xl sm:text-5xl font-bold text-white tracking-tight">$225</span>
                     <span className="text-white/30 text-xs uppercase tracking-wider">/hour</span>
                   </div>
-                  <span className="text-[10px] font-semibold text-primary tracking-[0.15em] uppercase">
+                  <span className="text-[10px] font-semibold text-primary tracking-[0.15em] uppercase block">
                     First 5 bookings only
                   </span>
                 </div>
@@ -522,14 +521,14 @@ function PricingSection() {
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
                       <Star className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
-                      <span className="text-white/60 text-sm" style={{ lineHeight: 1.7 }}>{item}</span>
+                      <span className="text-white/60 text-[13px] sm:text-sm" style={{ lineHeight: 1.7 }}>{item}</span>
                     </li>
                   ))}
                 </ul>
 
                 <Button
                   onClick={() => scrollTo("booking")}
-                  className="w-full h-14 sm:h-auto bg-primary text-primary-foreground border border-primary-border btn-glow"
+                  className="w-full min-h-[48px] sm:h-auto bg-primary text-primary-foreground border border-primary-border btn-glow text-base"
                   data-testid="button-book-executive"
                 >
                   Book Now
@@ -540,10 +539,10 @@ function PricingSection() {
 
           <motion.div variants={maskUp}>
             <div
-              className="relative pricing-card rounded-md p-8 sm:p-10 h-full"
+              className="relative pricing-card rounded-lg p-6 sm:p-10 h-full flex flex-col justify-center"
               data-testid="card-package-allday"
             >
-              <div className="space-y-6">
+              <div className="space-y-5 sm:space-y-6">
                 <div className="space-y-2">
                   <span className="text-[10px] font-semibold text-primary tracking-[0.25em] uppercase">
                     All Day
@@ -556,7 +555,7 @@ function PricingSection() {
                 <Button
                   onClick={() => scrollTo("booking")}
                   variant="outline"
-                  className="w-full h-14 sm:h-auto border-primary/20 text-primary bg-primary/5"
+                  className="w-full min-h-[48px] sm:h-auto border-primary/20 text-primary bg-primary/5 text-base"
                   data-testid="button-book-allday"
                 >
                   Get a Quote
@@ -572,18 +571,18 @@ function PricingSection() {
 
 function LogisticsSection() {
   return (
-    <section className="py-16 sm:py-32 lg:py-40 bg-[#050505]">
-      <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8">
+    <section className="py-12 sm:py-32 lg:py-40 bg-[#050505]">
+      <div className="max-w-5xl mx-auto px-5 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
           variants={staggerContainer}
-          className="grid sm:grid-cols-2 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6"
         >
           <motion.div variants={maskUp}>
             <Card
-              className="bg-white/[0.02] border-white/[0.06] p-6 sm:p-8 h-full"
+              className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-8 h-full rounded-lg"
               data-testid="card-logistics-space"
             >
               <div className="flex items-start gap-4">
@@ -603,7 +602,7 @@ function LogisticsSection() {
 
           <motion.div variants={maskUp}>
             <Card
-              className="bg-white/[0.02] border-white/[0.06] p-6 sm:p-8 h-full"
+              className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-8 h-full rounded-lg"
               data-testid="card-logistics-power"
             >
               <div className="flex items-start gap-4">
@@ -675,18 +674,18 @@ function BookingSection() {
   };
 
   return (
-    <section id="booking" className="py-24 sm:py-40 lg:py-56 bg-[#030303]">
-      <div className="max-w-3xl mx-auto px-6 sm:px-6 lg:px-8">
+    <section id="booking" className="py-16 sm:py-40 lg:py-56 bg-[#030303]">
+      <div className="max-w-3xl mx-auto px-5 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           variants={staggerSlow}
         >
-          <motion.div variants={maskUp} className="text-center mb-14 sm:mb-20">
-            <div className="inline-block mb-5">
+          <motion.div variants={maskUp} className="text-center mb-10 sm:mb-20">
+            <div className="inline-block mb-4 sm:mb-5">
               <span
-                className="text-[10px] font-bold tracking-[0.2em] uppercase bg-primary/8 text-primary px-4 py-2 rounded-md border border-white/[0.06]"
+                className="text-[9px] sm:text-[10px] font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase bg-primary/8 text-primary px-3 sm:px-4 py-2 rounded-md border border-white/[0.06] leading-relaxed inline-block"
                 data-testid="badge-urgency"
               >
                 Be Among the First to Host One More Swing at Your Next Event
@@ -695,14 +694,14 @@ function BookingSection() {
 
             <motion.div
               variants={maskUp}
-              className="mb-8"
+              className="mb-6 sm:mb-8"
               data-testid="badge-slots"
             >
-              <div className="inline-flex items-center gap-3 bg-white/[0.03] border border-white/[0.08] rounded-md px-5 py-3">
+              <div className="inline-flex items-center gap-2 sm:gap-3 bg-white/[0.03] border border-white/[0.08] rounded-md px-4 sm:px-5 py-3">
                 <span className="font-mono text-primary text-lg sm:text-xl font-bold tracking-[0.1em]" data-testid="text-slots-counter">
                   04<span className="text-white/20 mx-0.5">/</span>05
                 </span>
-                <span className="text-white/40 text-[10px] tracking-[0.2em] uppercase font-medium">
+                <span className="text-white/40 text-[10px] tracking-[0.15em] sm:tracking-[0.2em] uppercase font-medium">
                   Slots Remaining
                 </span>
               </div>
@@ -730,7 +729,7 @@ function BookingSection() {
 
           <motion.div variants={scaleIn}>
             <Card
-              className="bg-white/[0.02] border-white/[0.06] p-6 sm:p-8 lg:p-10"
+              className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-8 lg:p-10 rounded-lg"
               data-testid="card-booking-form"
             >
               <Form {...form}>
@@ -889,7 +888,7 @@ function BookingSection() {
                   <Button
                     type="submit"
                     disabled={mutation.isPending}
-                    className="w-full h-14 sm:h-auto bg-primary text-primary-foreground border border-primary-border text-base btn-glow"
+                    className="w-full min-h-[48px] sm:h-auto bg-primary text-primary-foreground border border-primary-border text-base btn-glow"
                     size="lg"
                     data-testid="button-submit-booking"
                   >
@@ -921,14 +920,14 @@ function Footer() {
   };
 
   return (
-    <footer className="bg-[#020202] border-t border-white/[0.04] py-16 sm:py-20">
-      <div className="max-w-6xl mx-auto px-6 sm:px-6 lg:px-8">
-        <div className="grid sm:grid-cols-2 gap-8 lg:gap-12">
-          <div className="space-y-5">
+    <footer className="bg-[#020202] border-t border-white/[0.04] py-12 sm:py-20">
+      <div className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12">
+          <div className="space-y-4 sm:space-y-5">
             <h4 className="text-[10px] font-semibold text-white/40 tracking-[0.25em] uppercase">
               Quick Links
             </h4>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
               {[
                 { label: "About Us", id: "about" },
                 { label: "Experience", id: "tech" },
@@ -938,7 +937,7 @@ function Footer() {
                 <button
                   key={link.id}
                   onClick={() => scrollTo(link.id)}
-                  className="text-white/30 text-[13px] text-left hover-elevate px-2 py-1 rounded-md"
+                  className="text-white/30 text-[13px] text-left hover-elevate px-2 py-2 sm:py-1 rounded-md min-h-[44px] sm:min-h-0 flex items-center"
                   data-testid={`link-footer-${link.id}`}
                 >
                   {link.label}
@@ -946,7 +945,7 @@ function Footer() {
               ))}
               <Link
                 href="/contact"
-                className="text-white/30 text-[13px] text-left hover-elevate px-2 py-1 rounded-md"
+                className="text-white/30 text-[13px] text-left hover-elevate px-2 py-2 sm:py-1 rounded-md min-h-[44px] sm:min-h-0 flex items-center"
                 data-testid="link-footer-contact"
               >
                 Contact
@@ -954,36 +953,34 @@ function Footer() {
             </div>
           </div>
 
-          <div className="space-y-5">
+          <div className="space-y-4 sm:space-y-5">
             <h4 className="text-[10px] font-semibold text-white/40 tracking-[0.25em] uppercase">
               Get In Touch
             </h4>
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-3">
+            <div className="flex flex-col gap-2 sm:gap-3">
+              <a href="mailto:info@onemoreswing.golf" className="flex items-center gap-3 min-h-[44px] sm:min-h-0" data-testid="text-email">
                 <Mail className="w-3.5 h-3.5 text-primary shrink-0" />
-                <a href="mailto:info@onemoreswing.golf" className="text-white/30 text-[13px]" data-testid="text-email">info@onemoreswing.golf</a>
-              </div>
-              <div className="flex items-center gap-3">
+                <span className="text-white/30 text-[13px]">info@onemoreswing.golf</span>
+              </a>
+              <a href="tel:+17602169598" className="flex items-center gap-3 min-h-[44px] sm:min-h-0" data-testid="text-phone">
                 <Phone className="w-3.5 h-3.5 text-primary shrink-0" />
-                <a href="tel:+17602169598" className="text-white/30 text-[13px]" data-testid="text-phone">760-216-9598</a>
-              </div>
-              <div className="flex items-center gap-3">
+                <span className="text-white/30 text-[13px]">760-216-9598</span>
+              </a>
+              <a
+                href="https://www.instagram.com/onemoreswing_/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 min-h-[44px] sm:min-h-0"
+                data-testid="link-instagram"
+              >
                 <Instagram className="w-3.5 h-3.5 text-primary shrink-0" />
-                <a
-                  href="https://www.instagram.com/onemoreswing_/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white/30 text-[13px]"
-                  data-testid="link-instagram"
-                >
-                  @onemoreswing_
-                </a>
-              </div>
+                <span className="text-white/30 text-[13px]">@onemoreswing_</span>
+              </a>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-white/[0.04] mt-12 pt-10 text-center">
+        <div className="border-t border-white/[0.04] mt-10 sm:mt-12 pt-8 sm:pt-10 text-center">
           <p className="text-white/20 text-[11px] tracking-wider">
             &copy; {new Date().getFullYear()} One More Swing. All rights reserved.
           </p>

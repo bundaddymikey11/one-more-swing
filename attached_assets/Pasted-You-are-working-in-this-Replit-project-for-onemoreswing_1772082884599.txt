@@ -1,0 +1,68 @@
+You are working in this Replit project for onemoreswing.replit.app.
+
+MISSION
+Do a MOBILE-ONLY polish pass (layout, spacing, typography, and micro-interactions). Do NOT change marketing copy, headings, pricing values, or section content except where required to fix accessibility labels or broken layout. Keep the current design language; make it feel premium on mobile.
+
+SCOPE (STRICT)
+✅ Mobile layout: <= 768px, plus small tablets <= 900px if needed
+✅ Typography scale, margins, padding, section rhythm
+✅ Buttons and form inputs thumb-friendly
+✅ Images consistent sizing/cropping behavior and spacing
+✅ Pricing cards: hierarchy and spacing, full-width CTAs
+✅ Footer: stack cleanly, tap targets, spacing
+✅ Add subtle micro-animations (mobile-only) that feel premium
+✅ Accessibility: semantic headings, focus states, labels, reduced motion
+❌ Do NOT change desktop layout unless it is required to prevent mobile regressions
+❌ Do NOT rewrite copy or change wording
+❌ Do NOT add heavy animation libraries
+
+DELIVERABLES
+1) A “Mobile Polish Checklist” with each item marked DONE
+2) Files changed list
+3) Before/after screenshots if possible (or describe exactly what you verified)
+4) Lighthouse mobile score before/after (Performance, Accessibility, Best Practices). If Lighthouse is not available, run equivalent audits or explain.
+
+PROCESS (DO THIS IN ORDER)
+A) Identify stack (React/Vite/Next/static) and styling method (CSS modules, Tailwind, global CSS, styled-components, etc.).
+B) Run a mobile audit:
+   - If possible run Lighthouse mobile against the local dev server and/or deployed site.
+   - Also visually inspect key breakpoints: 390px, 430px, 768px.
+C) Create a mobile design system layer:
+   - Define spacing tokens (e.g. 12/16/20/24/32/48/64)
+   - Define typography scale for mobile (H1/H2/H3/body/small)
+   - Define container padding (typically 20px) and section vertical padding (typically 64px)
+   - Ensure max line-length for long copy sections (~34–40ch)
+D) Apply section-by-section tuning (mobile only):
+   1) Top Banner: readable, not cramped, tap target >=44px height, safe padding.
+   2) Hero: headline size/line-height, logo placement, CTA spacing, avoid 4+ line wraps.
+   3) Our Story: constrain width, paragraph spacing, comfortable reading rhythm.
+   4) Experience: stack cards, add consistent card padding + radius, improve scannability.
+   5) Packages & Pricing: make pricing hierarchy obvious, remove tight columns, make CTAs full width, set card spacing, ensure no overflow.
+   6) Book Your Event: input font-size 16px (prevent iOS zoom), labels, spacing, dropdown + conditional field clean.
+   7) Footer: remove clutter, stack links, ensure tap targets and spacing.
+E) Micro animations (tasteful, mobile-only):
+   - Use CSS transitions and simple reveal animations (fade+translate 6–10px)
+   - Respect prefers-reduced-motion (disable animations)
+   - Do NOT animate layout-affecting properties heavily (avoid jank)
+   - Add a subtle “on tap” feedback for buttons (scale 0.98, 120ms) with reduced-motion safe
+   - Add an IntersectionObserver for reveal-on-scroll (tiny, no dependencies) OR do pure CSS if already using a framework.
+F) QA gates:
+   - No horizontal scrolling at 390px
+   - Tap targets >=44px
+   - Form labels present and accessible
+   - Focus rings visible
+   - Headings are semantic (single H1)
+   - Images not stretched, no CLS spikes
+
+IMPLEMENTATION NOTES (IMPORTANT)
+- Prefer adding a mobile-only stylesheet layer or a scoped @media block rather than touching many desktop styles.
+- If Tailwind is used, use responsive classes (sm/md) and avoid changing desktop tokens.
+- If CSS modules, keep changes localized to components.
+
+OUTPUT FORMAT
+- Start with “Mobile Polish Checklist”
+- Then “Files Changed”
+- Then “Audit Results (Lighthouse)”
+- Then “Notes / Assumptions”
+
+Now do the audit and implement the mobile polish.
