@@ -184,7 +184,7 @@ function HeroSection() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <section id="hero" ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ position: "relative" }}>
+    <section id="hero" ref={heroRef} className="relative min-h-dvh flex items-center justify-center overflow-hidden" style={{ position: "relative" }}>
       <motion.div className="absolute inset-0" style={{ y: heroY }}>
         <img
           src="/images/hero-socal.png"
@@ -1026,7 +1026,7 @@ function FloatingActionButton() {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#050505] overflow-x-hidden safe-area-bottom">
+    <div className="min-h-dvh bg-[#050505] overflow-x-hidden safe-area-bottom">
       <div className="film-grain" />
       <Header />
       <HeroSection />

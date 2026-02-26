@@ -144,7 +144,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] overflow-x-hidden safe-area-bottom">
+    <div className="min-h-dvh bg-[#050505] overflow-x-hidden safe-area-bottom">
       <div className="film-grain" />
       <ContactHeader />
 

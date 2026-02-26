@@ -104,6 +104,16 @@ attached_assets/  → Reference materials and design specs
 - Instagram: @onemoreswing_ (https://www.instagram.com/onemoreswing_/)
 - Service area: Southern California
 
+### Mobile UX & Accessibility
+- **Viewport**: `width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover` — allows user zoom for accessibility
+- **Dynamic viewport height**: All layout containers use `min-h-dvh` (100dvh) instead of `min-h-screen` (100vh) to avoid layout shifts when mobile keyboard opens
+- **Input font-size**: All inputs/selects/textareas enforce 16px font-size to prevent iOS auto-zoom on focus
+- **Scroll margins**: Form fields have `scroll-margin-top: 120px` so they remain visible below the sticky header when scrolled into view
+- **Tap targets**: On touch devices (`pointer: coarse`), all interactive elements enforce 44px minimum tap target size
+- **Lenis keyboard handling**: On touch devices, Lenis smooth scrolling is paused while form inputs are focused, then the input is scrolled into view. Lenis resumes on blur. Desktop focus behavior is unaffected.
+- **iOS appearance reset**: Inputs and textareas have `-webkit-appearance: none` to prevent iOS default styling
+- **Safe area insets**: Footer and FAB use `env(safe-area-inset-bottom)` for notched devices
+
 ## External Dependencies
 
 - **PostgreSQL**: Required database, connection via `DATABASE_URL` environment variable

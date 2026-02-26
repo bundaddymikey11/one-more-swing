@@ -35,7 +35,41 @@ function App() {
     }
     requestAnimationFrame(raf);
 
+    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+
+    const handleFocusIn = (e: FocusEvent) => {
+      if (!isTouchDevice) return;
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT"
+      ) {
+        lenis.stop();
+        requestAnimationFrame(() => {
+          target.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+      }
+    };
+
+    const handleFocusOut = (e: FocusEvent) => {
+      if (!isTouchDevice) return;
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT"
+      ) {
+        lenis.start();
+      }
+    };
+
+    document.addEventListener("focusin", handleFocusIn);
+    document.addEventListener("focusout", handleFocusOut);
+
     return () => {
+      document.removeEventListener("focusin", handleFocusIn);
+      document.removeEventListener("focusout", handleFocusOut);
       lenis.destroy();
     };
   }, []);
