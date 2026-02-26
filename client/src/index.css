@@ -217,6 +217,15 @@
     -webkit-appearance: none;
     appearance: none;
   }
+
+  p {
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .film-grain {
@@ -282,19 +291,6 @@ button:active,
   box-shadow: 0 0 40px hsl(var(--primary) / 0.06);
 }
 
-.floating-fab {
-  position: fixed;
-  bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
-  right: 1.25rem;
-  z-index: 998;
-  box-shadow: 0 0 30px hsl(var(--primary) / 0.4), 0 4px 20px rgba(0,0,0,0.5);
-}
-
-@media (min-width: 768px) {
-  .floating-fab {
-    display: none;
-  }
-}
 
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
   .safe-area-bottom {
@@ -436,10 +432,5 @@ button:active,
 @media (max-width: 767px) {
   .pricing-card:hover {
     transform: none;
-  }
-
-  .floating-fab {
-    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
-    right: 1rem;
   }
 }

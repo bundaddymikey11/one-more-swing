@@ -38,7 +38,6 @@ import {
   ArrowRight,
   ChevronDown,
   Mail,
-  Crosshair,
   Instagram,
   CalendarIcon,
   Clock,
@@ -295,7 +294,7 @@ function AboutSection() {
           variants={staggerSlow}
           className="grid lg:grid-cols-12 gap-8 lg:gap-8 items-center"
         >
-          <motion.div variants={maskUp} className="lg:col-span-5 space-y-5 sm:space-y-6">
+          <motion.div variants={maskUp} className="lg:col-span-5 space-y-5 sm:space-y-6 text-center lg:text-left">
             <div className="space-y-3">
               <span className="text-primary font-semibold text-[10px] tracking-[0.35em] uppercase block">
                 Our Story
@@ -313,29 +312,29 @@ function AboutSection() {
                 One More Swing
               </h2>
             </div>
-            <p className="text-white/50 text-[14px] sm:text-base max-w-[40ch] sm:max-w-none" style={{ lineHeight: 1.8 }}>
+            <p className="text-white/50 text-[14px] sm:text-base" style={{ lineHeight: 1.7, marginBottom: "1.75rem" }}>
               What started as a simple idea, bringing people together through the love of golf, is now becoming a reality. At One More Swing, we believe some of the best moments happen between swings: the laughs after a missed shot, the friendly competition, the "just one more try" that turns into an unforgettable memory.
             </p>
-            <p className="text-white/50 text-[14px] sm:text-base max-w-[40ch] sm:max-w-none" style={{ lineHeight: 1.8 }}>
+            <p className="text-white/50 text-[14px] sm:text-base" style={{ lineHeight: 1.7, marginBottom: "1.25rem" }}>
               Based in Southern California, One More Swing delivers a fully immersive golf simulator setup designed for:
             </p>
-            <ul className="space-y-2 pl-2 sm:pl-4">
+            <ul className="space-y-2 list-none p-0 m-0">
               {[
                 "Corporate gatherings",
                 "Private parties",
                 "Community celebrations",
                 "Any special occasion you want to elevate",
               ].map((item, i) => (
-                <li key={i} className="text-white/50 text-[14px] sm:text-base flex items-start gap-3" style={{ lineHeight: 1.8 }}>
-                  <span className="text-primary mt-2 block w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                <li key={i} className="text-white/50 text-[14px] sm:text-base flex items-center justify-center lg:justify-start gap-3" style={{ lineHeight: 1.7 }}>
+                  <span className="block w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
                   {item}
                 </li>
               ))}
             </ul>
-            <p className="text-white/50 text-[14px] sm:text-base max-w-[40ch] sm:max-w-none" style={{ lineHeight: 1.8 }}>
+            <p className="text-white/50 text-[14px] sm:text-base" style={{ lineHeight: 1.7, marginBottom: "1.25rem" }}>
               Whether your guests are seasoned golfers or picking up a club for the very first time, our setup is designed to be welcoming, professional, and most importantly, fun.
             </p>
-            <p className="text-white/50 text-[14px] sm:text-base max-w-[40ch] sm:max-w-none" style={{ lineHeight: 1.8 }}>
+            <p className="text-white/50 text-[14px] sm:text-base" style={{ lineHeight: 1.7, marginBottom: 0 }}>
               From the first swing to the last cheer, One More Swing creates moments people will talk about long after the event ends. Sometimes all it takes is one more swing.
             </p>
           </motion.div>
@@ -398,7 +397,7 @@ const techFeatures = [
   {
     icon: Trophy,
     title: "Equipment",
-    description: "Kids club available upon request.",
+    description: "Kids clubs available upon request.",
   },
 ];
 
@@ -436,16 +435,16 @@ function TechSection() {
           {techFeatures.map((feature, index) => (
             <motion.div key={index} variants={maskUp}>
               <Card
-                className="group relative bg-white/[0.02] border-white/[0.06] p-5 sm:p-7 h-full hover-elevate rounded-lg"
+                className="group relative bg-white/[0.02] border-white/[0.06] p-5 sm:p-7 h-full hover-elevate rounded-lg text-center"
                 data-testid={`card-tech-${index}`}
               >
-                <div className="w-10 h-10 rounded-md bg-primary/8 border border-white/[0.06] flex items-center justify-center mb-4">
+                <div className="w-10 h-10 rounded-md bg-primary/8 border border-white/[0.06] flex items-center justify-center mb-4 mx-auto">
                   <feature.icon className="w-4 h-4 text-primary" />
                 </div>
                 <h3 className="font-semibold text-white text-sm mb-2 tracking-tight">
                   {feature.title}
                 </h3>
-                <p className="text-white/40 text-[13px] whitespace-pre-line" style={{ lineHeight: 1.8 }}>
+                <p className="text-white/40 text-[13px] whitespace-pre-line" style={{ lineHeight: 1.7, marginBottom: 0 }}>
                   {feature.description}
                 </p>
               </Card>
@@ -1061,40 +1060,6 @@ function Footer() {
   );
 }
 
-function FloatingActionButton() {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setVisible(window.scrollY > 600);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8, y: 20 }}
-      animate={visible ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.8, y: 20 }}
-      transition={{ duration: 0.3 }}
-      className="floating-fab"
-    >
-      <Button
-        onClick={() => scrollTo("booking")}
-        className="bg-primary text-primary-foreground border border-primary-border rounded-full px-6 h-12 text-sm font-semibold"
-        data-testid="button-fab-inquire"
-      >
-        <Crosshair className="w-4 h-4 mr-2" />
-        Inquire
-      </Button>
-    </motion.div>
-  );
-}
-
 export default function Home() {
   return (
     <div className="min-h-dvh bg-[#050505] overflow-x-hidden safe-area-bottom">
@@ -1107,7 +1072,6 @@ export default function Home() {
       <LogisticsSection />
       <BookingSection />
       <Footer />
-      <FloatingActionButton />
     </div>
   );
 }
