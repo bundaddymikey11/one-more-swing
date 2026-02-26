@@ -1,0 +1,110 @@
+You are working inside this Replit project. I have a Microsoft Word document that contains the exact website edit requests and replacement copy. Treat the Word doc as the single source of truth.
+
+GOAL
+Implement every change described in the Word document across the website. Do not “interpret” or rewrite the copy unless required for grammar/typos. Match the requested text exactly. Preserve existing design quality, responsiveness, accessibility, and interactions.
+
+INPUT DOC
+Locate and read: "One More Swing Website Updates.docx"
+Extract each requested change and convert it into an implementation checklist, then execute it.
+
+PROCESS (DO THIS IN ORDER)
+1) Identify the site stack (React/Next/Vite/static HTML, etc.). List the key files that control:
+   - Top banner
+   - Hero/first section
+   - About section
+   - Experience section
+   - Packages & Pricing section
+   - Book Your Event section (form + email destination)
+   - Footer / Quick Links / Get in Touch
+2) Convert the Word doc into a checklist grouped by section. Include the exact before/after text and any behavior changes (links, dropdown options, email routing).
+3) Implement the changes in code.
+4) After edits, verify:
+   - All headings and copy match the Word doc exactly
+   - Any removed sections are fully removed (not just hidden)
+   - Banner click navigates to “Packages & Pricing”
+   - “Send Inquiry” sends to info@onemoreswing.golf
+   - Event Type dropdown options match the doc and “Other Special Occasion” reveals a text input
+   - Footer links/labels match the doc (Technology -> Experience, remove left OMS footer section, IG handle link + icon)
+   - Accessibility: proper semantic headings, labels for form fields, keyboard nav, focus states, contrast (especially the requested green bold “destination”)
+   - Mobile layout looks premium and not cramped
+
+SPECIFIC REQUIRED CHANGES (FROM THE DOC)
+Top Banner
+- Replace banner text with: “Be Among the First to Host One More Swing at Your Next Event”
+- Clicking the banner must navigate/scroll to “Packages & Pricing”
+
+First Section (Hero)
+- Title change: “Premium Mobile Golf Simulator” -> “Mobile Golf Simulator Rental”
+- Remove the logo on the top left
+- Replace “The New Standard of Entertainment” with the logo (use existing logo asset; if multiple sizes exist, pick the crisp one for retina)
+- Bold the word “destination” in green, matching the green from the logo (sample the logo’s green if a hex isn’t defined)
+
+Second Section (About One More Swing)
+- “The Story” -> “Our Story”
+- Replace the paragraph with the exact multi-paragraph copy from the doc
+- Remove “200+ courses, 4k resolution, and 5-star service”
+
+Third Section (The Experience)
+- Remove “World Class Technology”
+- Remove “Every detail has been…”
+- Replace “Garmin R10 Launch Monitor” with “Home Tee Hero Software”
+  Add description: “Garmin’s virtual golf course software that lets you play real, mapped-out courses in a video game style environment.”
+- Update GSPro Premium Software description to:
+  “Hyper-realistic 4K course play across 2,000+ courses. GSPro’s library is entirely user-created and includes both real-world recreations and fantasy designs.”
+- Rename “Luxury Enclosure” -> “Performance Bay”
+  Update copy to:
+  “A 15x15x11 ft hitting bay for maximum safety and style. Allowing you to swing securely and freely.”
+  Add requirements line:
+  “Requirements: minimum of 18x18x12 ft space, a flat surface, and access to a standard power source”
+- Rename “Premium Equipment” -> “Equipment”
+  Add line: “Kids club available upon request.”
+- Remove the entire section “Inside the Experience”
+
+Fourth Section (Packages & Pricing)
+- Replace “Standard” with “Executive”
+- Hourly Rental: keep $250/hour but grey it out, and show: “$225/hour first 5 bookings” as the primary emphasis
+- Replace “2-hour minimum” -> “3-hour minimum”
+- Add: “Choose between Home Tee Hero or GSPro Software”
+- Replace “full professional setup and onsite technician support” -> “On-site setup & management”
+- Replace “all premium equipment included” -> “All necessary equipment included”
+- Add: “Additional Hours: $200 per extra hour if available”
+- Keep the “Book Now” button
+- Replace “Full-Day” -> “All Day”
+- Remove the word “Premium” in the right-hand corner
+- Remove “Luxury Experience” and move up the “Get a Quote” box
+- Remove “Custom” row
+- Remove all bullet points in that area
+
+Fifth Section (Book Your Event)
+- Replace “Now Booking…” with “Be Among the First to Host One More Swing at Your Next Event”
+- Remove “Inaugural Season”
+- Replace the “10” with a “5” (keep the same style)
+- Event Type dropdown options:
+  Corporate
+  Birthday
+  Wedding
+  Grand Opening
+  Community Celebration
+  Other Special Occasion (if selected, show a text field)
+- On submit, inquiries must go to info@onemoreswing.golf
+  If the site uses a backend form handler, update it. If it’s mailto, update accordingly. If using a service, update destination.
+- Remove the “Trusted by” section under the inquiry box
+
+Sixth Section
+- Remove “One More Swing Promise” section entirely
+
+Bottom / Footer
+- Remove the “One More Swing” section on the left
+- Under Quick Links, replace “Technology” with “Experience”
+- Under Get in Touch: remove “Southern California” and list:
+  info@onemoreswing.golf
+  @onemoreswing_ (link to Instagram) and add an Instagram logo/icon next to it
+
+DELIVERABLE
+When finished, output:
+- A completed checklist with each item marked DONE
+- A list of files changed
+- Any notes about assumptions (only if unavoidable)
+- A quick manual test plan (5–10 bullets)
+
+Do the edits now.

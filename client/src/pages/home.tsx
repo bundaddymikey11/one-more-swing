@@ -36,9 +36,8 @@ import {
   ArrowRight,
   ChevronDown,
   Mail,
-  Award,
-  Building2,
   Crosshair,
+  Instagram,
 } from "lucide-react";
 import { Link } from "wouter";
 import { useRef, useState, useEffect } from "react";
@@ -81,16 +80,24 @@ const scaleIn = {
 };
 
 function AnnouncementBar() {
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <motion.div
       initial={{ clipPath: "inset(100% 0 0 0)" }}
       animate={{ clipPath: "inset(0% 0 0 0)" }}
       transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-      className="bg-primary/90 backdrop-blur-sm py-2.5 text-center"
+      className="bg-primary/90 backdrop-blur-sm py-2.5 text-center cursor-pointer"
       data-testid="banner-scarcity"
+      onClick={() => scrollTo("packages")}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === "Enter") scrollTo("packages"); }}
     >
       <p className="text-white text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase px-4">
-        Now Accepting 10 Exclusive Bookings for Our Inaugural Spring Season
+        Be Among the First to Host One More Swing at Your Next Event
       </p>
     </motion.div>
   );
@@ -121,14 +128,6 @@ function Header() {
       <AnnouncementBar />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4 h-14 sm:h-20">
-          <button
-            onClick={() => scrollTo("hero")}
-            className="flex items-center shrink-0"
-            data-testid="link-logo"
-          >
-            <img src={logoImage} alt="One More Swing" className="h-10 w-10 sm:h-14 sm:w-14 rounded-full object-cover" data-testid="img-logo-header" />
-          </button>
-
           <nav className="hidden md:flex items-center gap-8" data-testid="nav-desktop">
             {[
               { label: "About", id: "about" },
@@ -203,23 +202,18 @@ function HeroSection() {
         >
           <motion.div variants={maskUp}>
             <span className="inline-block text-primary font-semibold text-[10px] sm:text-xs tracking-[0.35em] uppercase">
-              Premium Mobile Golf Simulator
+              Mobile Golf Simulator Rental
             </span>
           </motion.div>
 
-          <motion.h1
-            variants={maskUp}
-            className="font-serif font-bold text-white"
-            style={{
-              fontSize: "clamp(2.5rem, 8vw, 7rem)",
-              letterSpacing: "-0.05em",
-              lineHeight: 0.9,
-            }}
-          >
-            The New Standard
-            <br />
-            <span className="text-primary">of Entertainment</span>
-          </motion.h1>
+          <motion.div variants={maskUp} className="flex justify-center">
+            <img
+              src={logoImage}
+              alt="One More Swing"
+              className="h-40 sm:h-56 lg:h-64 w-auto object-contain"
+              data-testid="img-hero-logo"
+            />
+          </motion.div>
 
           <motion.p
             variants={maskUp}
@@ -232,7 +226,7 @@ function HeroSection() {
           >
             Most event entertainment is a distraction.
             <br className="hidden sm:block" />
-            One More Swing is a destination.
+            One More Swing is a <span className="text-primary font-bold">destination</span>.
           </motion.p>
 
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
@@ -290,7 +284,7 @@ function AboutSection() {
           <motion.div variants={maskUp} className="lg:col-span-5 space-y-8">
             <div className="space-y-4">
               <span className="text-primary font-semibold text-[10px] tracking-[0.35em] uppercase block">
-                The Story
+                Our Story
               </span>
               <h2
                 className="font-serif font-bold text-white"
@@ -306,32 +300,30 @@ function AboutSection() {
               </h2>
             </div>
             <p className="text-white/50 text-base sm:text-lg" style={{ lineHeight: 1.8 }}>
-              Arriving in Southern California, One More Swing brings the excitement of
-              the course directly to you. We specialize in fully immersive simulator
-              experiences designed for corporate gatherings, private events, and special
-              occasions.
+              What started as a simple idea, bringing people together through the love of golf, is now becoming a reality. At One More Swing, we believe some of the best moments happen between swings: the laughs after a missed shot, the friendly competition, the "just one more try" that turns into an unforgettable memory.
             </p>
             <p className="text-white/50 text-base sm:text-lg" style={{ lineHeight: 1.8 }}>
-              Whether your guests are scratch golfers or picking up a club for the first
-              time, we provide a professional and unforgettable atmosphere anywhere you
-              host.
+              Based in Southern California, One More Swing delivers a fully immersive golf simulator setup designed for:
             </p>
-            <div className="flex items-center gap-8 pt-6">
-              <div>
-                <div className="text-3xl sm:text-4xl font-bold text-primary tracking-tight" data-testid="text-stat-courses">200+</div>
-                <div className="text-[10px] text-white/30 uppercase tracking-[0.2em] mt-2">Courses</div>
-              </div>
-              <div className="w-px h-14 bg-white/10" />
-              <div>
-                <div className="text-3xl sm:text-4xl font-bold text-primary tracking-tight" data-testid="text-stat-4k">4K</div>
-                <div className="text-[10px] text-white/30 uppercase tracking-[0.2em] mt-2">Resolution</div>
-              </div>
-              <div className="w-px h-14 bg-white/10" />
-              <div>
-                <div className="text-3xl sm:text-4xl font-bold text-primary tracking-tight" data-testid="text-stat-service">5-Star</div>
-                <div className="text-[10px] text-white/30 uppercase tracking-[0.2em] mt-2">Service</div>
-              </div>
-            </div>
+            <ul className="space-y-2 pl-4">
+              {[
+                "Corporate gatherings",
+                "Private parties",
+                "Community celebrations",
+                "Any special occasion you want to elevate",
+              ].map((item, i) => (
+                <li key={i} className="text-white/50 text-base sm:text-lg flex items-start gap-3" style={{ lineHeight: 1.8 }}>
+                  <span className="text-primary mt-2 block w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <p className="text-white/50 text-base sm:text-lg" style={{ lineHeight: 1.8 }}>
+              Whether your guests are seasoned golfers or picking up a club for the very first time, our setup is designed to be welcoming, professional, and most importantly, fun.
+            </p>
+            <p className="text-white/50 text-base sm:text-lg" style={{ lineHeight: 1.8 }}>
+              From the first swing to the last cheer, One More Swing creates moments people will talk about long after the event ends. Sometimes all it takes is one more swing.
+            </p>
           </motion.div>
 
           <motion.div variants={scaleIn} className="lg:col-span-7 relative">
@@ -356,23 +348,23 @@ function AboutSection() {
 const techFeatures = [
   {
     icon: Target,
-    title: "Garmin R10 Launch Monitor",
-    description: "Precise ball and club data for every shot. Track spin rate, launch angle, ball speed, and more with tour-level accuracy.",
+    title: "Home Tee Hero Software",
+    description: "Garmin's virtual golf course software that lets you play real, mapped-out courses in a video game style environment.",
   },
   {
     icon: Monitor,
     title: "GSPro Premium Software",
-    description: "Hyper-realistic 4K course play across 200+ world-renowned courses. The most immersive golf simulation available.",
+    description: "Hyper-realistic 4K course play across 2,000+ courses. GSPro's library is entirely user-created and includes both real-world recreations and fantasy designs.",
   },
   {
     icon: ShieldCheck,
-    title: "Luxury Enclosure",
-    description: "15x15x11 ft hitting bay for maximum safety and style. Premium materials ensure an elegant and secure environment.",
+    title: "Performance Bay",
+    description: "A 15x15x11 ft hitting bay for maximum safety and style. Allowing you to swing securely and freely.\n\nRequirements: minimum of 18x18x12 ft space, a flat surface, and access to a standard power source.",
   },
   {
     icon: Trophy,
-    title: "Premium Equipment",
-    description: "Titleist RCT balls and clubs for all players. Right-handed, left-handed, and kids' equipment included.",
+    title: "Equipment",
+    description: "Titleist RCT balls and clubs for all players. Right-handed, left-handed, and kids' equipment included.\n\nKids club available upon request.",
   },
 ];
 
@@ -387,9 +379,6 @@ function TechSection() {
           variants={staggerSlow}
           className="text-center mb-20 sm:mb-28"
         >
-          <motion.span variants={maskUp} className="text-primary font-semibold text-[10px] tracking-[0.35em] uppercase block">
-            World-Class Technology
-          </motion.span>
           <motion.h2
             variants={maskUp}
             className="font-serif font-bold text-white mt-4"
@@ -401,9 +390,6 @@ function TechSection() {
           >
             The Experience
           </motion.h2>
-          <motion.p variants={fadeUp} className="text-white/40 max-w-xl mx-auto mt-6 text-sm sm:text-base" style={{ lineHeight: 1.8 }}>
-            Every detail has been carefully curated to deliver a truly premium experience
-          </motion.p>
         </motion.div>
 
         <motion.div
@@ -425,113 +411,13 @@ function TechSection() {
                 <h3 className="font-semibold text-white text-sm mb-3 tracking-tight">
                   {feature.title}
                 </h3>
-                <p className="text-white/40 text-[13px]" style={{ lineHeight: 1.8 }}>
+                <p className="text-white/40 text-[13px] whitespace-pre-line" style={{ lineHeight: 1.8 }}>
                   {feature.description}
                 </p>
               </Card>
             </motion.div>
           ))}
         </motion.div>
-      </div>
-    </section>
-  );
-}
-
-const hotspots = [
-  { label: "Garmin R10", sublabel: "Launch Monitor", x: "15%", y: "60%", delay: 0.3 },
-  { label: "4K Projection", sublabel: "Ultra HD Display", x: "50%", y: "25%", delay: 0.6 },
-  { label: "Titleist RCT", sublabel: "Premium Balls", x: "80%", y: "70%", delay: 0.9 },
-  { label: "15x15x11", sublabel: "Luxury Enclosure", x: "30%", y: "85%", delay: 1.2 },
-];
-
-function FeaturesHotspotSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
-
-  return (
-    <section className="py-24 sm:py-40 lg:py-56 bg-[#050505]" ref={sectionRef}>
-      <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={staggerSlow}
-          className="text-center mb-16 sm:mb-24"
-        >
-          <motion.span variants={maskUp} className="text-primary font-semibold text-[10px] tracking-[0.35em] uppercase block">
-            Inside the Experience
-          </motion.span>
-          <motion.h2
-            variants={maskUp}
-            className="font-serif font-bold text-white mt-4"
-            style={{
-              fontSize: "clamp(2rem, 5vw, 3.5rem)",
-              letterSpacing: "-0.05em",
-              lineHeight: 0.95,
-            }}
-          >
-            Every Detail, Curated
-          </motion.h2>
-        </motion.div>
-
-        <div className="relative max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.97 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
-            className="relative rounded-md overflow-hidden border border-white/[0.06]"
-          >
-            <img
-              src="/images/hero-golf.png"
-              alt="Premium golf simulator setup"
-              className="w-full aspect-[16/9] sm:aspect-[2/1] object-cover"
-              data-testid="img-features-hotspot"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/80 via-[#050505]/20 to-[#050505]/40" />
-
-            {hotspots.map((spot, i) => (
-              <motion.div
-                key={i}
-                className="absolute hidden sm:flex flex-col items-start"
-                style={{ left: spot.x, top: spot.y }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: spot.delay, ease: [0.25, 0.1, 0.25, 1] }}
-                data-testid={`hotspot-${i}`}
-              >
-                <div className="flex items-center gap-2.5">
-                  <div className="relative">
-                    <div className="w-2.5 h-2.5 rounded-full bg-primary" />
-                    <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-primary animate-ping opacity-40" />
-                  </div>
-                  <div className="bg-[#050505]/80 backdrop-blur-md border border-white/10 rounded-md px-3 py-2">
-                    <div className="text-white text-xs font-semibold tracking-tight">{spot.label}</div>
-                    <div className="text-white/40 text-[10px] tracking-[0.1em] uppercase">{spot.sublabel}</div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          <div className="sm:hidden grid grid-cols-2 gap-3 mt-6">
-            {hotspots.map((spot, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.3 + i * 0.1 }}
-                className="bg-white/[0.03] border border-white/[0.06] rounded-md p-4 flex items-center gap-3"
-              >
-                <div className="w-2 h-2 rounded-full bg-primary shrink-0" />
-                <div>
-                  <div className="text-white text-xs font-semibold tracking-tight">{spot.label}</div>
-                  <div className="text-white/40 text-[10px] tracking-[0.1em] uppercase">{spot.sublabel}</div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );
@@ -578,12 +464,12 @@ function PricingSection() {
           <motion.div variants={maskUp}>
             <div
               className="relative pricing-card rounded-md p-8 sm:p-10 h-full"
-              data-testid="card-package-standard"
+              data-testid="card-package-executive"
             >
               <div className="space-y-6">
                 <div className="space-y-2">
                   <span className="text-[10px] font-semibold text-primary tracking-[0.25em] uppercase">
-                    Standard
+                    Executive
                   </span>
                   <h3 className="font-serif text-2xl sm:text-3xl font-bold text-white" style={{ letterSpacing: "-0.03em" }}>
                     Hourly Rental
@@ -592,12 +478,12 @@ function PricingSection() {
 
                 <div className="flex items-baseline justify-between gap-3 flex-wrap">
                   <div className="flex items-baseline gap-3">
-                    <span className="text-xl sm:text-2xl font-bold text-white/30 tracking-tight line-through">$250</span>
-                    <span className="text-4xl sm:text-5xl font-bold text-white tracking-tight">$150</span>
+                    <span className="text-xl sm:text-2xl font-bold text-white/20 tracking-tight line-through">$250</span>
+                    <span className="text-4xl sm:text-5xl font-bold text-white tracking-tight">$225</span>
                     <span className="text-white/30 text-xs uppercase tracking-wider">/hour</span>
                   </div>
                   <span className="text-[10px] font-semibold text-primary tracking-[0.15em] uppercase">
-                    First 10 bookings only
+                    First 5 bookings only
                   </span>
                 </div>
 
@@ -605,12 +491,11 @@ function PricingSection() {
 
                 <ul className="space-y-3">
                   {[
-                    "2-hour minimum",
-                    "Full professional setup",
-                    "Onsite technician support",
-                    "4K projection system",
-                    "All premium equipment included",
-                    "Titleist RCT balls & clubs (RH/LH/Kids)",
+                    "3-hour minimum",
+                    "Choose between Home Tee Hero or GSPro Software",
+                    "On-site setup & management",
+                    "All necessary equipment included",
+                    "Additional Hours: $200 per extra hour if available",
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
                       <Star className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
@@ -622,7 +507,7 @@ function PricingSection() {
                 <Button
                   onClick={() => scrollTo("booking")}
                   className="w-full h-14 sm:h-auto bg-primary text-primary-foreground border border-primary-border btn-glow"
-                  data-testid="button-book-standard"
+                  data-testid="button-book-executive"
                 >
                   Book Now
                 </Button>
@@ -633,52 +518,23 @@ function PricingSection() {
           <motion.div variants={maskUp}>
             <div
               className="relative pricing-card rounded-md p-8 sm:p-10 h-full"
-              data-testid="card-package-luxury"
+              data-testid="card-package-allday"
             >
-              <div className="absolute top-0 right-0 m-4">
-                <span className="text-[10px] font-bold text-primary tracking-[0.25em] uppercase bg-primary/8 px-3 py-1.5 rounded-md border border-white/[0.06]">
-                  Premium
-                </span>
-              </div>
-
               <div className="space-y-6">
                 <div className="space-y-2">
                   <span className="text-[10px] font-semibold text-primary tracking-[0.25em] uppercase">
-                    Full-Day
+                    All Day
                   </span>
                   <h3 className="font-serif text-2xl sm:text-3xl font-bold text-white" style={{ letterSpacing: "-0.03em" }}>
-                    Luxury Experience
+                    Full Event Coverage
                   </h3>
                 </div>
-
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl sm:text-5xl font-bold text-white tracking-tight">Custom</span>
-                  <span className="text-white/30 text-xs uppercase tracking-wider">pricing</span>
-                </div>
-
-                <div className="w-full h-px bg-white/[0.06]" />
-
-                <ul className="space-y-3">
-                  {[
-                    "Perfect for weddings & corporate events",
-                    "Extended support & flexible scheduling",
-                    "Multi-bay configurations available",
-                    "Custom branding options",
-                    "All premium equipment included",
-                    "Priority date reservation",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <Star className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
-                      <span className="text-white/60 text-sm" style={{ lineHeight: 1.7 }}>{item}</span>
-                    </li>
-                  ))}
-                </ul>
 
                 <Button
                   onClick={() => scrollTo("booking")}
                   variant="outline"
                   className="w-full h-14 sm:h-auto border-primary/20 text-primary bg-primary/5"
-                  data-testid="button-book-luxury"
+                  data-testid="button-book-allday"
                 >
                   Get a Quote
                 </Button>
@@ -713,9 +569,9 @@ function LogisticsSection() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-white text-sm mb-1 tracking-tight">Space Needed</h3>
-                  <p className="text-2xl font-bold text-white mb-2 tracking-tight">16 x 16 x 12 ft</p>
+                  <p className="text-2xl font-bold text-white mb-2 tracking-tight">18 x 18 x 12 ft</p>
                   <p className="text-white/40 text-[13px]" style={{ lineHeight: 1.8 }}>
-                    Minimum clearance for our premium enclosure. We handle all setup and teardown.
+                    Minimum clearance for our Performance Bay. A flat surface is required. We handle all setup and teardown.
                   </p>
                 </div>
               </div>
@@ -735,7 +591,7 @@ function LogisticsSection() {
                   <h3 className="font-semibold text-white text-sm mb-1 tracking-tight">Power Required</h3>
                   <p className="text-2xl font-bold text-white mb-2 tracking-tight">Standard Outlet</p>
                   <p className="text-white/40 text-[13px]" style={{ lineHeight: 1.8 }}>
-                    Just one standard 120V outlet is all we need. No special electrical requirements.
+                    Just one standard power source is all we need. No special electrical requirements.
                   </p>
                 </div>
               </div>
@@ -749,6 +605,7 @@ function LogisticsSection() {
 
 function BookingSection() {
   const { toast } = useToast();
+  const [customEventType, setCustomEventType] = useState("");
 
   const form = useForm<InsertBooking>({
     resolver: zodResolver(insertBookingSchema),
@@ -762,9 +619,15 @@ function BookingSection() {
     },
   });
 
+  const watchedEventType = form.watch("eventType");
+
   const mutation = useMutation({
     mutationFn: async (data: InsertBooking) => {
-      const res = await apiRequest("POST", "/api/bookings", data);
+      const submitData = { ...data };
+      if (submitData.eventType === "other_special_occasion" && customEventType) {
+        submitData.eventType = `Other Special Occasion: ${customEventType}`;
+      }
+      const res = await apiRequest("POST", "/api/bookings", submitData);
       return res.json();
     },
     onSuccess: () => {
@@ -773,6 +636,7 @@ function BookingSection() {
         description: "We'll be in touch within 24 hours to confirm your event details.",
       });
       form.reset();
+      setCustomEventType("");
     },
     onError: () => {
       toast({
@@ -802,22 +666,18 @@ function BookingSection() {
                 className="text-[10px] font-bold tracking-[0.2em] uppercase bg-primary/8 text-primary px-4 py-2 rounded-md border border-white/[0.06]"
                 data-testid="badge-urgency"
               >
-                Now Booking for Spring 2026 &ndash; Limited Availability
+                Be Among the First to Host One More Swing at Your Next Event
               </span>
             </div>
 
             <motion.div
               variants={maskUp}
               className="mb-8"
-              data-testid="badge-inaugural"
+              data-testid="badge-slots"
             >
               <div className="inline-flex items-center gap-3 bg-white/[0.03] border border-white/[0.08] rounded-md px-5 py-3">
-                <span className="text-white/50 text-[10px] tracking-[0.25em] uppercase font-medium">
-                  Inaugural Season
-                </span>
-                <span className="text-white/10 text-lg font-thin">|</span>
                 <span className="font-mono text-primary text-lg sm:text-xl font-bold tracking-[0.1em]" data-testid="text-slots-counter">
-                  04<span className="text-white/20 mx-0.5">/</span>10
+                  04<span className="text-white/20 mx-0.5">/</span>05
                 </span>
                 <span className="text-white/40 text-[10px] tracking-[0.2em] uppercase font-medium">
                   Slots Remaining
@@ -929,12 +789,12 @@ function BookingSection() {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="corporate" data-testid="option-corporate">Corporate Event</SelectItem>
+                              <SelectItem value="corporate" data-testid="option-corporate">Corporate</SelectItem>
+                              <SelectItem value="birthday" data-testid="option-birthday">Birthday</SelectItem>
                               <SelectItem value="wedding" data-testid="option-wedding">Wedding</SelectItem>
-                              <SelectItem value="private" data-testid="option-private">Private Party</SelectItem>
-                              <SelectItem value="birthday" data-testid="option-birthday">Birthday Celebration</SelectItem>
-                              <SelectItem value="fundraiser" data-testid="option-fundraiser">Fundraiser</SelectItem>
-                              <SelectItem value="other" data-testid="option-other">Other</SelectItem>
+                              <SelectItem value="grand_opening" data-testid="option-grand-opening">Grand Opening</SelectItem>
+                              <SelectItem value="community_celebration" data-testid="option-community">Community Celebration</SelectItem>
+                              <SelectItem value="other_special_occasion" data-testid="option-other">Other Special Occasion</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -942,6 +802,21 @@ function BookingSection() {
                       )}
                     />
                   </div>
+
+                  {watchedEventType === "other_special_occasion" && (
+                    <div>
+                      <label className="text-white/60 text-xs uppercase tracking-[0.1em] block mb-2">
+                        Describe Your Event
+                      </label>
+                      <Input
+                        placeholder="Tell us about your special occasion"
+                        className="bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/20 focus:border-primary/40"
+                        data-testid="input-custom-event-type"
+                        value={customEventType}
+                        onChange={(e) => setCustomEventType(e.target.value)}
+                      />
+                    </div>
+                  )}
 
                   <FormField
                     control={form.control}
@@ -1017,92 +892,6 @@ function BookingSection() {
   );
 }
 
-function TrustedBySection() {
-  const placeholders = [
-    { name: "Your Venue", icon: Building2 },
-    { name: "Partner Logo", icon: Building2 },
-    { name: "Corporate Partner", icon: Building2 },
-    { name: "Event Venue", icon: Building2 },
-    { name: "Golf Club", icon: Building2 },
-  ];
-
-  return (
-    <section className="py-16 sm:py-32 lg:py-40 bg-[#050505]">
-      <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={staggerContainer}
-        >
-          <motion.p
-            variants={fadeUp}
-            className="text-center text-[10px] font-semibold text-white/25 tracking-[0.35em] uppercase mb-12"
-          >
-            Trusted By
-          </motion.p>
-          <motion.div
-            variants={fadeUp}
-            className="flex flex-wrap items-center justify-center gap-8 sm:gap-14"
-            data-testid="section-trusted-by"
-          >
-            {placeholders.map((item, i) => (
-              <div
-                key={i}
-                className="flex flex-col items-center gap-2 opacity-15"
-                data-testid={`trusted-logo-${i}`}
-              >
-                <item.icon className="w-8 h-8 text-white" />
-                <span className="text-[9px] text-white/50 uppercase tracking-[0.15em]">{item.name}</span>
-              </div>
-            ))}
-          </motion.div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-function PromiseSection() {
-  return (
-    <section className="py-24 sm:py-40 lg:py-56 bg-[#030303]">
-      <div className="max-w-3xl mx-auto px-6 sm:px-6 lg:px-8 text-center">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={staggerSlow}
-        >
-          <motion.div variants={maskUp} className="mb-8">
-            <Award className="w-7 h-7 text-primary mx-auto" />
-          </motion.div>
-          <motion.h2
-            variants={maskUp}
-            className="font-serif font-bold text-white"
-            style={{
-              fontSize: "clamp(1.5rem, 4vw, 2.75rem)",
-              letterSpacing: "-0.04em",
-              lineHeight: 0.95,
-            }}
-          >
-            The One More Swing Promise
-          </motion.h2>
-          <motion.div variants={fadeUp} className="w-10 h-px bg-primary/30 mx-auto mt-8 mb-8" />
-          <motion.p
-            variants={maskUp}
-            className="text-white/50 text-base sm:text-lg italic"
-            style={{ lineHeight: 1.8 }}
-            data-testid="text-promise"
-          >
-            "From first contact to final teardown, we handle the details so you can enjoy the game.
-            Professionalism is our baseline; excellence is our standard."
-          </motion.p>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
 function Footer() {
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -1111,16 +900,7 @@ function Footer() {
   return (
     <footer className="bg-[#020202] border-t border-white/[0.04] py-16 sm:py-20">
       <div className="max-w-6xl mx-auto px-6 sm:px-6 lg:px-8">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-          <div className="space-y-5">
-            <span className="font-serif text-xl font-bold text-white tracking-tight">
-              One More Swing
-            </span>
-            <p className="text-white/30 text-[13px] max-w-xs" style={{ lineHeight: 1.8 }}>
-              Premium mobile golf simulator experiences in Southern California. Concierge-level service for every event.
-            </p>
-          </div>
-
+        <div className="grid sm:grid-cols-2 gap-8 lg:gap-12">
           <div className="space-y-5">
             <h4 className="text-[10px] font-semibold text-white/40 tracking-[0.25em] uppercase">
               Quick Links
@@ -1128,7 +908,7 @@ function Footer() {
             <div className="flex flex-col gap-2">
               {[
                 { label: "About Us", id: "about" },
-                { label: "Technology", id: "tech" },
+                { label: "Experience", id: "tech" },
                 { label: "Packages", id: "packages" },
                 { label: "Book Event", id: "booking" },
               ].map((link) => (
@@ -1141,6 +921,13 @@ function Footer() {
                   {link.label}
                 </button>
               ))}
+              <Link
+                href="/contact"
+                className="text-white/30 text-[13px] text-left hover-elevate px-2 py-1 rounded-md"
+                data-testid="link-footer-contact"
+              >
+                Contact
+              </Link>
             </div>
           </div>
 
@@ -1150,16 +937,24 @@ function Footer() {
             </h4>
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-3">
-                <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
-                <span className="text-white/30 text-[13px]" data-testid="text-location">Southern California</span>
+                <Mail className="w-3.5 h-3.5 text-primary shrink-0" />
+                <a href="mailto:info@onemoreswing.golf" className="text-white/30 text-[13px]" data-testid="text-email">info@onemoreswing.golf</a>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="w-3.5 h-3.5 text-primary shrink-0" />
                 <a href="tel:+17602169598" className="text-white/30 text-[13px]" data-testid="text-phone">760-216-9598</a>
               </div>
               <div className="flex items-center gap-3">
-                <Mail className="w-3.5 h-3.5 text-primary shrink-0" />
-                <a href="mailto:info@onemoreswing.golf" className="text-white/30 text-[13px]" data-testid="text-email">info@onemoreswing.golf</a>
+                <Instagram className="w-3.5 h-3.5 text-primary shrink-0" />
+                <a
+                  href="https://www.instagram.com/onemoreswing_/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/30 text-[13px]"
+                  data-testid="link-instagram"
+                >
+                  @onemoreswing_
+                </a>
               </div>
             </div>
           </div>
@@ -1217,12 +1012,9 @@ export default function Home() {
       <HeroSection />
       <AboutSection />
       <TechSection />
-      <FeaturesHotspotSection />
       <PricingSection />
       <LogisticsSection />
       <BookingSection />
-      <TrustedBySection />
-      <PromiseSection />
       <Footer />
       <FloatingActionButton />
     </div>

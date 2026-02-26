@@ -26,7 +26,6 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
-import logoImage from "@assets/Logo_1771044908308.png";
 
 const maskUp = {
   hidden: { opacity: 0, y: 60, clipPath: "inset(100% 0 0 0)" },
@@ -71,10 +70,6 @@ function ContactHeader() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4 h-14 sm:h-20">
-          <Link href="/" className="flex items-center shrink-0" data-testid="link-logo-contact">
-            <img src={logoImage} alt="One More Swing" className="h-10 w-10 sm:h-14 sm:w-14 rounded-full object-cover" data-testid="img-logo-contact" />
-          </Link>
-
           <nav className="hidden md:flex items-center gap-8" data-testid="nav-contact-desktop">
             {[
               { label: "Home", href: "/" },
@@ -247,9 +242,9 @@ export default function Contact() {
                   <ul className="space-y-4">
                     {[
                       "Fully mobile simulator — we come to you",
-                      "Tour-grade Garmin R10 launch monitor",
-                      "200+ world-class courses in stunning 4K",
-                      "Professional setup, support & teardown included",
+                      "Home Tee Hero & GSPro software options",
+                      "2,000+ courses in stunning 4K",
+                      "Professional on-site setup & management included",
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-3">
                         <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />

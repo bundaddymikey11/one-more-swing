@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a luxury single-page website for "One More Swing," a premium mobile golf simulator rental service in Southern California. The site features an ultra-dark luxury design theme with glassmorphism effects, scroll-triggered animations, and a booking form that submits to a PostgreSQL database. The business offers mobile golf simulator experiences for corporate events, weddings, private parties, and other gatherings.
+This is a luxury single-page website for "One More Swing," a premium mobile golf simulator rental service in Southern California. The site features an ultra-dark luxury design theme with glassmorphism effects, scroll-triggered animations, and a booking form that submits to a PostgreSQL database. The business offers mobile golf simulator experiences for corporate events, weddings, private parties, community celebrations, and other gatherings.
 
 ## User Preferences
 
@@ -12,7 +12,7 @@ Preferred communication style: Simple, everyday language.
 
 ### Frontend
 - **Framework**: React with TypeScript (no SSR, pure SPA)
-- **Routing**: Wouter (lightweight client-side router) — currently just a home page and 404
+- **Routing**: Wouter (lightweight client-side router) — home page, contact page, and 404
 - **Styling**: Tailwind CSS with CSS variables for theming, dark mode enabled by default
 - **UI Components**: shadcn/ui (new-york style) built on Radix UI primitives — comprehensive component library already installed
 - **Animations**: Framer Motion for scroll-triggered reveal animations
@@ -42,7 +42,7 @@ Preferred communication style: Simple, everyday language.
 client/           → React frontend (Vite SPA)
   src/
     components/ui/ → shadcn/ui components
-    pages/         → Page components (home, not-found)
+    pages/         → Page components (home, contact, not-found)
     hooks/         → Custom React hooks
     lib/           → Utilities (queryClient, cn helper)
 server/           → Express backend
@@ -74,12 +74,35 @@ attached_assets/  → Reference materials and design specs
 - **Tiny sub-labels**: text-[10px] tracking-[0.35em] uppercase for editorial look
 - **Massive whitespace**: py-24/py-40/py-56 for luxury spacing
 - **Asymmetric layouts**: Off-center grid columns, overlapping decorative borders
-- **Hotspot features section**: Floating animated labels with pinging dots over moody image
 - **Mobile FAB**: "Inquire" floating pill button appears after 600px scroll (mobile only)
 - **Haptic press**: All buttons scale to 0.96 on :active for physical feel
-- **Header**: Transparent-to-solid transition on scroll
+- **Header**: Nav links only (no logo), transparent-to-solid transition on scroll
+- **Hero**: Logo image centered as main visual, "Mobile Golf Simulator Rental" sub-label
 - Glassmorphism effects for pricing cards
 - Custom fonts: Montserrat (sans), Playfair Display (serif), JetBrains Mono (mono)
+
+### Site Sections (Home Page)
+1. **Announcement Banner** — "Be Among the First..." clickable, scrolls to Packages
+2. **Hero** — Logo as centerpiece, "destination" in green bold, CTAs
+3. **About (Our Story)** — Multi-paragraph narrative copy, no stats
+4. **The Experience** — 4 tech cards: Home Tee Hero, GSPro, Performance Bay, Equipment
+5. **Packages & Pricing** — Executive ($225/hr first 5 bookings) + All Day (Get a Quote)
+6. **Logistics** — Space (18x18x12 ft) and Power requirements
+7. **Book Your Event** — Form with 6 event types including "Other Special Occasion" with custom text field, 04/05 slots counter
+8. **Footer** — Quick Links + Get in Touch (email, phone, Instagram @onemoreswing_)
+
+### Contact Page (/contact)
+- Separate page with same cinematic styling
+- Contact Information card (phone, email, service area)
+- Why Choose Us card
+- Send a Message form
+- No logo in header (matches home page)
+
+### Contact Information
+- Phone: 760-216-9598
+- Email: info@onemoreswing.golf
+- Instagram: @onemoreswing_ (https://www.instagram.com/onemoreswing_/)
+- Service area: Southern California
 
 ## External Dependencies
 
