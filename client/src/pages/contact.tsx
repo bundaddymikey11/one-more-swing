@@ -29,9 +29,7 @@ import {
 import {
   Phone,
   Mail,
-  MapPin,
   Send,
-  CheckCircle2,
   CalendarIcon,
   Clock,
 } from "lucide-react";
@@ -242,39 +240,7 @@ export default function Contact() {
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                        <MapPin className="w-4 h-4 text-primary" />
-                      </div>
-                      <div>
-                        <span className="text-primary font-semibold text-[10px] tracking-[0.25em] uppercase block mb-1">
-                          Service Area
-                        </span>
-                        <span className="text-white font-semibold text-base" data-testid="text-service-area">
-                          Southern California
-                        </span>
-                      </div>
-                    </div>
                   </div>
-                </Card>
-
-                <Card className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-7 rounded-lg" data-testid="card-why-choose">
-                  <h2 className="font-serif text-xl font-bold text-primary mb-5" style={{ letterSpacing: "-0.03em" }}>
-                    Why Choose Us?
-                  </h2>
-                  <ul className="space-y-3">
-                    {[
-                      "Fully mobile simulator — we come to you",
-                      "Home Tee Hero & GSPro software options",
-                      "2,000+ courses in stunning 4K",
-                      "Professional on-site setup & management included",
-                    ].map((item, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                        <span className="text-white/50 text-[13px] sm:text-sm" style={{ lineHeight: 1.7 }}>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </Card>
               </motion.div>
 
