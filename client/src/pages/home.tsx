@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Form,
   FormControl,
@@ -38,9 +40,12 @@ import {
   Mail,
   Crosshair,
   Instagram,
+  CalendarIcon,
+  Clock,
 } from "lucide-react";
 import { Link } from "wouter";
 import { useRef, useState, useEffect } from "react";
+import { format } from "date-fns";
 import logoImage from "@assets/Logo_1771044908308.png";
 import simFrontImage from "@assets/one_more_swing_web_3_1772081755924.jpg";
 import simAngleImage from "@assets/one_more_swing_web_2_1772081755925.jpg";
@@ -81,6 +86,13 @@ const scaleIn = {
   hidden: { opacity: 0, scale: 0.95 },
   visible: { opacity: 1, scale: 1, transition: { duration: 0.9, ease: [0.25, 0.1, 0.25, 1] } },
 };
+
+const timeSlots = [
+  "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM",
+  "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM",
+  "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM",
+  "8:00 PM",
+];
 
 function AnnouncementBar() {
   const scrollTo = (id: string) => {
@@ -201,7 +213,7 @@ function HeroSection() {
           initial="hidden"
           animate="visible"
           variants={staggerSlow}
-          className="space-y-6 sm:space-y-10"
+          className="space-y-5 sm:space-y-8"
         >
           <motion.div variants={maskUp}>
             <span className="inline-block text-primary font-semibold text-[10px] sm:text-xs tracking-[0.3em] sm:tracking-[0.35em] uppercase">
@@ -213,7 +225,7 @@ function HeroSection() {
             <img
               src={logoImage}
               alt="One More Swing"
-              className="h-32 sm:h-56 lg:h-64 w-auto object-contain"
+              className="h-28 sm:h-48 lg:h-56 w-auto object-contain"
               data-testid="img-hero-logo"
             />
           </motion.div>
@@ -231,7 +243,7 @@ function HeroSection() {
             One More Swing is a <span className="text-primary font-bold">destination</span>.
           </motion.p>
 
-          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2 sm:pt-4">
+          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2">
             <Button
               size="lg"
               onClick={() => scrollTo("booking")}
@@ -274,24 +286,24 @@ function HeroSection() {
 
 function AboutSection() {
   return (
-    <section id="about" className="py-16 sm:py-40 lg:py-56 bg-[#050505]">
+    <section id="about" className="py-12 sm:py-20 lg:py-28 bg-[#050505]">
       <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.15 }}
           variants={staggerSlow}
-          className="grid lg:grid-cols-12 gap-10 lg:gap-8 items-center"
+          className="grid lg:grid-cols-12 gap-8 lg:gap-8 items-center"
         >
-          <motion.div variants={maskUp} className="lg:col-span-5 space-y-6 sm:space-y-8">
-            <div className="space-y-3 sm:space-y-4">
+          <motion.div variants={maskUp} className="lg:col-span-5 space-y-5 sm:space-y-6">
+            <div className="space-y-3">
               <span className="text-primary font-semibold text-[10px] tracking-[0.35em] uppercase block">
                 Our Story
               </span>
               <h2
                 className="font-serif font-bold text-white"
                 style={{
-                  fontSize: "clamp(2rem, 5vw, 3.5rem)",
+                  fontSize: "clamp(1.75rem, 5vw, 3.5rem)",
                   letterSpacing: "-0.05em",
                   lineHeight: 0.95,
                 }}
@@ -301,10 +313,10 @@ function AboutSection() {
                 One More Swing
               </h2>
             </div>
-            <p className="text-white/50 text-[15px] sm:text-lg max-w-[40ch] sm:max-w-none" style={{ lineHeight: 1.8 }}>
+            <p className="text-white/50 text-[14px] sm:text-base max-w-[40ch] sm:max-w-none" style={{ lineHeight: 1.8 }}>
               What started as a simple idea, bringing people together through the love of golf, is now becoming a reality. At One More Swing, we believe some of the best moments happen between swings: the laughs after a missed shot, the friendly competition, the "just one more try" that turns into an unforgettable memory.
             </p>
-            <p className="text-white/50 text-[15px] sm:text-lg max-w-[40ch] sm:max-w-none" style={{ lineHeight: 1.8 }}>
+            <p className="text-white/50 text-[14px] sm:text-base max-w-[40ch] sm:max-w-none" style={{ lineHeight: 1.8 }}>
               Based in Southern California, One More Swing delivers a fully immersive golf simulator setup designed for:
             </p>
             <ul className="space-y-2 pl-2 sm:pl-4">
@@ -314,16 +326,16 @@ function AboutSection() {
                 "Community celebrations",
                 "Any special occasion you want to elevate",
               ].map((item, i) => (
-                <li key={i} className="text-white/50 text-[15px] sm:text-lg flex items-start gap-3" style={{ lineHeight: 1.8 }}>
+                <li key={i} className="text-white/50 text-[14px] sm:text-base flex items-start gap-3" style={{ lineHeight: 1.8 }}>
                   <span className="text-primary mt-2 block w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
                   {item}
                 </li>
               ))}
             </ul>
-            <p className="text-white/50 text-[15px] sm:text-lg max-w-[40ch] sm:max-w-none" style={{ lineHeight: 1.8 }}>
+            <p className="text-white/50 text-[14px] sm:text-base max-w-[40ch] sm:max-w-none" style={{ lineHeight: 1.8 }}>
               Whether your guests are seasoned golfers or picking up a club for the very first time, our setup is designed to be welcoming, professional, and most importantly, fun.
             </p>
-            <p className="text-white/50 text-[15px] sm:text-lg max-w-[40ch] sm:max-w-none" style={{ lineHeight: 1.8 }}>
+            <p className="text-white/50 text-[14px] sm:text-base max-w-[40ch] sm:max-w-none" style={{ lineHeight: 1.8 }}>
               From the first swing to the last cheer, One More Swing creates moments people will talk about long after the event ends. Sometimes all it takes is one more swing.
             </p>
           </motion.div>
@@ -392,20 +404,20 @@ const techFeatures = [
 
 function TechSection() {
   return (
-    <section id="tech" className="py-16 sm:py-40 lg:py-56 bg-[#030303]">
+    <section id="tech" className="py-12 sm:py-20 lg:py-28 bg-[#030303]">
       <div className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           variants={staggerSlow}
-          className="text-center mb-12 sm:mb-28"
+          className="text-center mb-8 sm:mb-16"
         >
           <motion.h2
             variants={maskUp}
             className="font-serif font-bold text-white mt-4"
             style={{
-              fontSize: "clamp(2rem, 5vw, 3.5rem)",
+              fontSize: "clamp(1.75rem, 5vw, 3.5rem)",
               letterSpacing: "-0.05em",
               lineHeight: 0.95,
             }}
@@ -419,18 +431,18 @@ function TechSection() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           variants={staggerContainer}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"
         >
           {techFeatures.map((feature, index) => (
             <motion.div key={index} variants={maskUp}>
               <Card
-                className="group relative bg-white/[0.02] border-white/[0.06] p-5 sm:p-8 h-full hover-elevate rounded-lg"
+                className="group relative bg-white/[0.02] border-white/[0.06] p-5 sm:p-7 h-full hover-elevate rounded-lg"
                 data-testid={`card-tech-${index}`}
               >
-                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-md bg-primary/8 border border-white/[0.06] flex items-center justify-center mb-4 sm:mb-5">
+                <div className="w-10 h-10 rounded-md bg-primary/8 border border-white/[0.06] flex items-center justify-center mb-4">
                   <feature.icon className="w-4 h-4 text-primary" />
                 </div>
-                <h3 className="font-semibold text-white text-sm mb-2 sm:mb-3 tracking-tight">
+                <h3 className="font-semibold text-white text-sm mb-2 tracking-tight">
                   {feature.title}
                 </h3>
                 <p className="text-white/40 text-[13px] whitespace-pre-line" style={{ lineHeight: 1.8 }}>
@@ -451,23 +463,23 @@ function PricingSection() {
   };
 
   return (
-    <section id="packages" className="py-16 sm:py-40 lg:py-56 bg-[#030303]">
+    <section id="packages" className="py-12 sm:py-20 lg:py-28 bg-[#030303]">
       <div className="max-w-5xl mx-auto px-5 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           variants={staggerSlow}
-          className="text-center mb-12 sm:mb-28"
+          className="text-center mb-8 sm:mb-16"
         >
           <motion.span variants={maskUp} className="text-primary font-semibold text-[10px] tracking-[0.35em] uppercase block">
             Tailored For You
           </motion.span>
           <motion.h2
             variants={maskUp}
-            className="font-serif font-bold text-white mt-4"
+            className="font-serif font-bold text-white mt-3"
             style={{
-              fontSize: "clamp(2rem, 5vw, 3.5rem)",
+              fontSize: "clamp(1.75rem, 5vw, 3.5rem)",
               letterSpacing: "-0.05em",
               lineHeight: 0.95,
             }}
@@ -481,14 +493,14 @@ function PricingSection() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           variants={staggerContainer}
-          className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6"
         >
           <motion.div variants={maskUp}>
             <div
-              className="relative pricing-card rounded-lg p-6 sm:p-10 h-full"
+              className="relative pricing-card rounded-lg p-5 sm:p-8 h-full"
               data-testid="card-package-executive"
             >
-              <div className="space-y-5 sm:space-y-6">
+              <div className="space-y-4 sm:space-y-5">
                 <div className="space-y-2">
                   <span className="text-[10px] font-semibold text-primary tracking-[0.25em] uppercase">
                     Executive
@@ -511,7 +523,7 @@ function PricingSection() {
 
                 <div className="w-full h-px bg-white/[0.06]" />
 
-                <ul className="space-y-3">
+                <ul className="space-y-2.5">
                   {[
                     "3-hour minimum",
                     "Choose between Home Tee Hero or GSPro Software",
@@ -539,10 +551,10 @@ function PricingSection() {
 
           <motion.div variants={maskUp}>
             <div
-              className="relative pricing-card rounded-lg p-6 sm:p-10 h-full flex flex-col justify-center"
+              className="relative pricing-card rounded-lg p-5 sm:p-8 h-full flex flex-col justify-center"
               data-testid="card-package-allday"
             >
-              <div className="space-y-5 sm:space-y-6">
+              <div className="space-y-4 sm:space-y-5">
                 <div className="space-y-2">
                   <span className="text-[10px] font-semibold text-primary tracking-[0.25em] uppercase">
                     All Day
@@ -571,18 +583,18 @@ function PricingSection() {
 
 function LogisticsSection() {
   return (
-    <section className="py-12 sm:py-32 lg:py-40 bg-[#050505]">
+    <section className="py-10 sm:py-16 lg:py-20 bg-[#050505]">
       <div className="max-w-5xl mx-auto px-5 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
           variants={staggerContainer}
-          className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5"
         >
           <motion.div variants={maskUp}>
             <Card
-              className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-8 h-full rounded-lg"
+              className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-7 h-full rounded-lg"
               data-testid="card-logistics-space"
             >
               <div className="flex items-start gap-4">
@@ -602,7 +614,7 @@ function LogisticsSection() {
 
           <motion.div variants={maskUp}>
             <Card
-              className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-8 h-full rounded-lg"
+              className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-7 h-full rounded-lg"
               data-testid="card-logistics-power"
             >
               <div className="flex items-start gap-4">
@@ -628,6 +640,8 @@ function LogisticsSection() {
 function BookingSection() {
   const { toast } = useToast();
   const [customEventType, setCustomEventType] = useState("");
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+  const [calendarOpen, setCalendarOpen] = useState(false);
 
   const form = useForm<InsertBooking>({
     resolver: zodResolver(insertBookingSchema),
@@ -636,6 +650,7 @@ function BookingSection() {
       email: "",
       eventDate: "",
       eventType: "",
+      startTime: "",
       location: "",
       message: "",
     },
@@ -659,6 +674,7 @@ function BookingSection() {
       });
       form.reset();
       setCustomEventType("");
+      setSelectedDate(undefined);
     },
     onError: () => {
       toast({
@@ -674,7 +690,7 @@ function BookingSection() {
   };
 
   return (
-    <section id="booking" className="py-16 sm:py-40 lg:py-56 bg-[#030303]">
+    <section id="booking" className="py-12 sm:py-20 lg:py-28 bg-[#030303]">
       <div className="max-w-3xl mx-auto px-5 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
@@ -682,8 +698,8 @@ function BookingSection() {
           viewport={{ once: true, amount: 0.2 }}
           variants={staggerSlow}
         >
-          <motion.div variants={maskUp} className="text-center mb-10 sm:mb-20">
-            <div className="inline-block mb-4 sm:mb-5">
+          <motion.div variants={maskUp} className="text-center mb-8 sm:mb-14">
+            <div className="inline-block mb-4">
               <span
                 className="text-[9px] sm:text-[10px] font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase bg-primary/8 text-primary px-3 sm:px-4 py-2 rounded-md border border-white/[0.06] leading-relaxed inline-block"
                 data-testid="badge-urgency"
@@ -694,10 +710,10 @@ function BookingSection() {
 
             <motion.div
               variants={maskUp}
-              className="mb-6 sm:mb-8"
+              className="mb-5 sm:mb-6"
               data-testid="badge-slots"
             >
-              <div className="inline-flex items-center gap-2 sm:gap-3 bg-white/[0.03] border border-white/[0.08] rounded-md px-4 sm:px-5 py-3">
+              <div className="inline-flex items-center gap-2 sm:gap-3 bg-white/[0.03] border border-white/[0.08] rounded-md px-4 sm:px-5 py-2.5">
                 <span className="font-mono text-primary text-lg sm:text-xl font-bold tracking-[0.1em]" data-testid="text-slots-counter">
                   04<span className="text-white/20 mx-0.5">/</span>05
                 </span>
@@ -713,16 +729,16 @@ function BookingSection() {
               </span>
             </div>
             <h2
-              className="font-serif font-bold text-white mt-4"
+              className="font-serif font-bold text-white mt-3"
               style={{
-                fontSize: "clamp(2rem, 5vw, 3.5rem)",
+                fontSize: "clamp(1.75rem, 5vw, 3.5rem)",
                 letterSpacing: "-0.05em",
                 lineHeight: 0.95,
               }}
             >
               Book Your Event
             </h2>
-            <p className="text-white/40 max-w-lg mx-auto mt-5 text-sm sm:text-base" style={{ lineHeight: 1.8 }}>
+            <p className="text-white/40 max-w-lg mx-auto mt-4 text-sm sm:text-base" style={{ lineHeight: 1.8 }}>
               Tell us about your event and we'll craft the perfect experience
             </p>
           </motion.div>
@@ -733,8 +749,8 @@ function BookingSection() {
               data-testid="card-booking-form"
             >
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <div className="grid sm:grid-cols-2 gap-6">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                  <div className="grid sm:grid-cols-2 gap-5">
                     <FormField
                       control={form.control}
                       name="name"
@@ -775,21 +791,45 @@ function BookingSection() {
                     />
                   </div>
 
-                  <div className="grid sm:grid-cols-2 gap-6">
+                  <div className="grid sm:grid-cols-2 gap-5">
                     <FormField
                       control={form.control}
                       name="eventDate"
                       render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="flex flex-col">
                           <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Event Date</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="date"
-                              className="bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/20 focus:border-primary/40"
-                              data-testid="input-date"
-                              {...field}
-                            />
-                          </FormControl>
+                          <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  className={`w-full justify-start text-left font-normal bg-white/[0.03] border-white/[0.08] hover:bg-white/[0.05] h-9 ${
+                                    !field.value ? "text-white/20" : "text-white"
+                                  }`}
+                                  data-testid="input-date"
+                                >
+                                  <CalendarIcon className="mr-2 h-4 w-4 text-white/40" />
+                                  {selectedDate ? format(selectedDate, "MMMM d, yyyy") : "Pick a date"}
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0 bg-[#0a0a0a] border-white/10" align="start">
+                              <Calendar
+                                mode="single"
+                                selected={selectedDate}
+                                onSelect={(date) => {
+                                  setSelectedDate(date);
+                                  if (date) {
+                                    field.onChange(format(date, "yyyy-MM-dd"));
+                                  }
+                                  setCalendarOpen(false);
+                                }}
+                                disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -797,26 +837,28 @@ function BookingSection() {
 
                     <FormField
                       control={form.control}
-                      name="eventType"
+                      name="startTime"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Event Type</FormLabel>
-                          <Select onValueChange={field.onChange} value={field.value}>
+                          <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Start Time</FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value || ""}>
                             <FormControl>
                               <SelectTrigger
                                 className="bg-white/[0.03] border-white/[0.08] text-white"
-                                data-testid="select-event-type"
+                                data-testid="select-start-time"
                               >
-                                <SelectValue placeholder="Select event type" />
+                                <div className="flex items-center gap-2">
+                                  <Clock className="h-4 w-4 text-white/40" />
+                                  <SelectValue placeholder="Select time" />
+                                </div>
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="corporate" data-testid="option-corporate">Corporate</SelectItem>
-                              <SelectItem value="birthday" data-testid="option-birthday">Birthday</SelectItem>
-                              <SelectItem value="wedding" data-testid="option-wedding">Wedding</SelectItem>
-                              <SelectItem value="grand_opening" data-testid="option-grand-opening">Grand Opening</SelectItem>
-                              <SelectItem value="community_celebration" data-testid="option-community">Community Celebration</SelectItem>
-                              <SelectItem value="other_special_occasion" data-testid="option-other">Other Special Occasion</SelectItem>
+                              {timeSlots.map((time) => (
+                                <SelectItem key={time} value={time} data-testid={`option-time-${time.replace(/\s/g, "-").toLowerCase()}`}>
+                                  {time}
+                                </SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -824,6 +866,35 @@ function BookingSection() {
                       )}
                     />
                   </div>
+
+                  <FormField
+                    control={form.control}
+                    name="eventType"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Event Type</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger
+                              className="bg-white/[0.03] border-white/[0.08] text-white"
+                              data-testid="select-event-type"
+                            >
+                              <SelectValue placeholder="Select event type" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="corporate" data-testid="option-corporate">Corporate</SelectItem>
+                            <SelectItem value="birthday" data-testid="option-birthday">Birthday</SelectItem>
+                            <SelectItem value="wedding" data-testid="option-wedding">Wedding</SelectItem>
+                            <SelectItem value="grand_opening" data-testid="option-grand-opening">Grand Opening</SelectItem>
+                            <SelectItem value="community_celebration" data-testid="option-community">Community Celebration</SelectItem>
+                            <SelectItem value="other_special_occasion" data-testid="option-other">Other Special Occasion</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
                   {watchedEventType === "other_special_occasion" && (
                     <div>
@@ -920,10 +991,10 @@ function Footer() {
   };
 
   return (
-    <footer className="bg-[#020202] border-t border-white/[0.04] py-12 sm:py-20">
+    <footer className="bg-[#020202] border-t border-white/[0.04] py-10 sm:py-16">
       <div className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12">
-          <div className="space-y-4 sm:space-y-5">
+          <div className="space-y-4">
             <h4 className="text-[10px] font-semibold text-white/40 tracking-[0.25em] uppercase">
               Quick Links
             </h4>
@@ -953,7 +1024,7 @@ function Footer() {
             </div>
           </div>
 
-          <div className="space-y-4 sm:space-y-5">
+          <div className="space-y-4">
             <h4 className="text-[10px] font-semibold text-white/40 tracking-[0.25em] uppercase">
               Get In Touch
             </h4>
@@ -980,7 +1051,7 @@ function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/[0.04] mt-10 sm:mt-12 pt-8 sm:pt-10 text-center">
+        <div className="border-t border-white/[0.04] mt-8 sm:mt-10 pt-6 sm:pt-8 text-center">
           <p className="text-white/20 text-[11px] tracking-wider">
             &copy; {new Date().getFullYear()} One More Swing. All rights reserved.
           </p>

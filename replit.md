@@ -35,7 +35,7 @@ Preferred communication style: Simple, everyday language.
 - **Schema Location**: `shared/schema.ts` — single source of truth for both DB schema and validation
 - **Migrations**: Drizzle Kit with `db:push` command for schema synchronization
 - **Tables**:
-  - `bookings` — id (UUID, auto-generated), name, email, event_date, event_type, location (optional), message (optional)
+  - `bookings` — id (UUID, auto-generated), name, email, event_date, event_type, start_time (optional), location (optional), message (optional)
 
 ### Project Structure
 ```
@@ -88,14 +88,14 @@ attached_assets/  → Reference materials and design specs
 4. **The Experience** — 4 tech cards: Home Tee Hero, GSPro, Performance Bay, Equipment
 5. **Packages & Pricing** — Executive ($225/hr first 5 bookings) + All Day (Get a Quote)
 6. **Logistics** — Space (18x18x12 ft) and Power requirements
-7. **Book Your Event** — Form with 6 event types including "Other Special Occasion" with custom text field, 04/05 slots counter
+7. **Book Your Event** — Form with calendar date picker, start time selector, 6 event types including "Other Special Occasion" with custom text field, 04/05 slots counter
 8. **Footer** — Quick Links + Get in Touch (email, phone, Instagram @onemoreswing_)
 
 ### Contact Page (/contact)
 - Separate page with same cinematic styling
 - Contact Information card (phone, email, service area)
 - Why Choose Us card
-- Send a Message form
+- Send a Message form with calendar date picker and start time selector
 - No logo in header (matches home page)
 
 ### Contact Information

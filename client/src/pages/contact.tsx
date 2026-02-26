@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Form,
   FormControl,
@@ -18,14 +20,24 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Phone,
   Mail,
   MapPin,
   Send,
   CheckCircle2,
+  CalendarIcon,
+  Clock,
 } from "lucide-react";
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
+import { format } from "date-fns";
 
 const maskUp = {
   hidden: { opacity: 0, y: 60, clipPath: "inset(100% 0 0 0)" },
@@ -49,6 +61,13 @@ const staggerSlow = {
     transition: { staggerChildren: 0.25, delayChildren: 0.2 },
   },
 };
+
+const timeSlots = [
+  "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM",
+  "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM",
+  "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM",
+  "8:00 PM",
+];
 
 function ContactHeader() {
   const [scrolled, setScrolled] = useState(false);
@@ -105,6 +124,8 @@ function ContactHeader() {
 
 export default function Contact() {
   const { toast } = useToast();
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+  const [calendarOpen, setCalendarOpen] = useState(false);
 
   const form = useForm<InsertBooking>({
     resolver: zodResolver(insertBookingSchema),
@@ -113,6 +134,7 @@ export default function Contact() {
       email: "",
       eventDate: "",
       eventType: "other",
+      startTime: "",
       location: "",
       message: "",
     },
@@ -129,6 +151,7 @@ export default function Contact() {
         description: "We'll get back to you within 24 hours.",
       });
       form.reset();
+      setSelectedDate(undefined);
     },
     onError: () => {
       toast({
@@ -148,41 +171,41 @@ export default function Contact() {
       <div className="film-grain" />
       <ContactHeader />
 
-      <section className="pt-28 sm:pt-44 pb-16 sm:pb-40">
+      <section className="pt-24 sm:pt-36 pb-12 sm:pb-20">
         <div className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
             animate="visible"
             variants={staggerSlow}
           >
-            <motion.div variants={maskUp} className="text-center mb-10 sm:mb-24">
-              <span className="text-primary font-semibold text-[10px] tracking-[0.35em] uppercase block mb-4">
+            <motion.div variants={maskUp} className="text-center mb-8 sm:mb-14">
+              <span className="text-primary font-semibold text-[10px] tracking-[0.35em] uppercase block mb-3">
                 Reach Out
               </span>
               <h1
                 className="font-serif font-bold text-white"
                 style={{
-                  fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
+                  fontSize: "clamp(2rem, 6vw, 4rem)",
                   letterSpacing: "-0.05em",
                   lineHeight: 0.9,
                 }}
               >
                 Get in Touch
               </h1>
-              <p className="text-white/40 max-w-xl mx-auto mt-6 text-sm sm:text-base" style={{ lineHeight: 1.8 }}>
+              <p className="text-white/40 max-w-xl mx-auto mt-4 text-sm sm:text-base" style={{ lineHeight: 1.8 }}>
                 Have a question about our services? Ready to book your event?
                 Fill out the form below or give us a call.
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-10">
-              <motion.div variants={maskUp} className="lg:col-span-2 space-y-4 sm:space-y-6">
-                <Card className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-8 rounded-lg" data-testid="card-contact-info">
-                  <h2 className="font-serif text-xl font-bold text-white mb-8" style={{ letterSpacing: "-0.03em" }}>
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 lg:gap-8">
+              <motion.div variants={maskUp} className="lg:col-span-2 space-y-4">
+                <Card className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-7 rounded-lg" data-testid="card-contact-info">
+                  <h2 className="font-serif text-xl font-bold text-white mb-6" style={{ letterSpacing: "-0.03em" }}>
                     Contact Information
                   </h2>
 
-                  <div className="space-y-7">
+                  <div className="space-y-5">
                     <div className="flex items-start gap-4">
                       <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
                         <Phone className="w-4 h-4 text-primary" />
@@ -193,7 +216,7 @@ export default function Contact() {
                         </span>
                         <a
                           href="tel:+17602169598"
-                          className="text-white font-semibold text-[15px] sm:text-base hover-elevate px-1 py-1 rounded-md -ml-1 inline-block min-h-[44px] flex items-center"
+                          className="text-white font-semibold text-[15px] sm:text-base hover-elevate px-1 py-1 rounded-md -ml-1 inline-flex items-center min-h-[44px]"
                           data-testid="link-phone"
                         >
                           760-216-9598
@@ -211,7 +234,7 @@ export default function Contact() {
                         </span>
                         <a
                           href="mailto:info@onemoreswing.golf"
-                          className="text-white font-semibold text-[15px] sm:text-base hover-elevate px-1 py-1 rounded-md -ml-1 inline-block min-h-[44px] flex items-center"
+                          className="text-white font-semibold text-[15px] sm:text-base hover-elevate px-1 py-1 rounded-md -ml-1 inline-flex items-center min-h-[44px]"
                           data-testid="link-email"
                         >
                           info@onemoreswing.golf
@@ -235,11 +258,11 @@ export default function Contact() {
                   </div>
                 </Card>
 
-                <Card className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-8 rounded-lg" data-testid="card-why-choose">
-                  <h2 className="font-serif text-xl font-bold text-primary mb-6" style={{ letterSpacing: "-0.03em" }}>
+                <Card className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-7 rounded-lg" data-testid="card-why-choose">
+                  <h2 className="font-serif text-xl font-bold text-primary mb-5" style={{ letterSpacing: "-0.03em" }}>
                     Why Choose Us?
                   </h2>
-                  <ul className="space-y-4">
+                  <ul className="space-y-3">
                     {[
                       "Fully mobile simulator — we come to you",
                       "Home Tee Hero & GSPro software options",
@@ -256,51 +279,53 @@ export default function Contact() {
               </motion.div>
 
               <motion.div variants={fadeUp} className="lg:col-span-3">
-                <Card className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-10 rounded-lg" data-testid="card-contact-form">
-                  <h2 className="font-serif text-xl font-bold text-white mb-8" style={{ letterSpacing: "-0.03em" }}>
+                <Card className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-8 rounded-lg" data-testid="card-contact-form">
+                  <h2 className="font-serif text-xl font-bold text-white mb-6" style={{ letterSpacing: "-0.03em" }}>
                     Send a Message
                   </h2>
 
                   <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                      <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Name</FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="Your Name"
-                                className="bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/20 focus:border-primary/40"
-                                data-testid="input-contact-name"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                      <div className="grid sm:grid-cols-2 gap-5">
+                        <FormField
+                          control={form.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Name</FormLabel>
+                              <FormControl>
+                                <Input
+                                  placeholder="Your Name"
+                                  className="bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/20 focus:border-primary/40"
+                                  data-testid="input-contact-name"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
 
-                      <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Email</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="email"
-                                placeholder="your@email.com"
-                                className="bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/20 focus:border-primary/40"
-                                data-testid="input-contact-email"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Email</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="email"
+                                  placeholder="your@email.com"
+                                  className="bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/20 focus:border-primary/40"
+                                  data-testid="input-contact-email"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
 
                       <FormField
                         control={form.control}
@@ -321,6 +346,82 @@ export default function Contact() {
                         )}
                       />
 
+                      <div className="grid sm:grid-cols-2 gap-5">
+                        <FormField
+                          control={form.control}
+                          name="eventDate"
+                          render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                              <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Preferred Date</FormLabel>
+                              <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                                <PopoverTrigger asChild>
+                                  <FormControl>
+                                    <Button
+                                      type="button"
+                                      variant="outline"
+                                      className={`w-full justify-start text-left font-normal bg-white/[0.03] border-white/[0.08] hover:bg-white/[0.05] h-9 ${
+                                        !field.value ? "text-white/20" : "text-white"
+                                      }`}
+                                      data-testid="input-contact-date"
+                                    >
+                                      <CalendarIcon className="mr-2 h-4 w-4 text-white/40" />
+                                      {selectedDate ? format(selectedDate, "MMMM d, yyyy") : "Pick a date"}
+                                    </Button>
+                                  </FormControl>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0 bg-[#0a0a0a] border-white/10" align="start">
+                                  <Calendar
+                                    mode="single"
+                                    selected={selectedDate}
+                                    onSelect={(date) => {
+                                      setSelectedDate(date);
+                                      if (date) {
+                                        field.onChange(format(date, "yyyy-MM-dd"));
+                                      }
+                                      setCalendarOpen(false);
+                                    }}
+                                    disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                                    initialFocus
+                                  />
+                                </PopoverContent>
+                              </Popover>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="startTime"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Start Time</FormLabel>
+                              <Select onValueChange={field.onChange} value={field.value || ""}>
+                                <FormControl>
+                                  <SelectTrigger
+                                    className="bg-white/[0.03] border-white/[0.08] text-white"
+                                    data-testid="select-contact-start-time"
+                                  >
+                                    <div className="flex items-center gap-2">
+                                      <Clock className="h-4 w-4 text-white/40" />
+                                      <SelectValue placeholder="Select time" />
+                                    </div>
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {timeSlots.map((time) => (
+                                    <SelectItem key={time} value={time}>
+                                      {time}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
                       <FormField
                         control={form.control}
                         name="message"
@@ -330,7 +431,7 @@ export default function Contact() {
                             <FormControl>
                               <Textarea
                                 placeholder="How can we help you?"
-                                rows={5}
+                                rows={4}
                                 className="bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/20 focus:border-primary/40 resize-none"
                                 data-testid="input-contact-message"
                                 {...field}

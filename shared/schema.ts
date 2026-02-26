@@ -9,6 +9,7 @@ export const bookings = pgTable("bookings", {
   email: text("email").notNull(),
   eventDate: text("event_date").notNull(),
   eventType: text("event_type").notNull(),
+  startTime: text("start_time"),
   location: text("location"),
   message: text("message"),
 });
@@ -20,6 +21,7 @@ export const insertBookingSchema = createInsertSchema(bookings).omit({
   email: z.string().email("Please enter a valid email"),
   eventDate: z.string().min(1, "Please select an event date"),
   eventType: z.string().min(1, "Please select an event type"),
+  startTime: z.string().optional(),
   location: z.string().optional(),
 });
 
