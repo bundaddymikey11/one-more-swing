@@ -1,0 +1,68 @@
+You are a senior full stack engineer + UI/UX polish specialist. Perform a ruthless “final production pass” on this Replit website so it is launch ready. Do not redesign the brand. Improve quality, correctness, responsiveness, accessibility, and reliability. Make minimal, surgical changes with maximum impact.
+
+GOALS (non negotiable)
+- Everything must look and feel premium on mobile first (iPhone sizes) and desktop.
+- No layout shifts when focusing inputs or opening the keyboard.
+- No overlapping sticky elements covering content.
+- Typography spacing is clean and readable (line height, margins, section rhythm).
+- All buttons and links work, routes work, forms submit correctly, and errors are handled gracefully.
+- Performance is fast (optimize images, reduce unused code, avoid blocking resources).
+- Accessibility passes (keyboard nav, focus states, contrast, headings, aria where needed).
+- SEO and sharing look correct (title, description, OG tags, favicon).
+- No console errors or warnings in production build.
+- Build and deploy must succeed.
+
+EXECUTE THESE STEPS
+1) Audit + fix layout and responsive behavior
+- Ensure all sections and text align consistently (center where intended).
+- Fix cramped paragraphs (p line-height around 1.7, paragraph margin bottom around 1.25rem).
+- Add consistent section padding and spacing between components.
+- Ensure cards and buttons have consistent sizes and spacing.
+- Remove or disable any floating or sticky CTA that covers content on mobile unless it is absolutely necessary.
+
+2) Fix mobile keyboard and form focus behavior
+- Prevent the viewport from jumping when focusing inputs on iOS.
+- Use proper input sizes (min font-size 16px on iOS), padding, and scroll into view behavior.
+- Ensure the header or any fixed elements do not push content off screen when typing.
+
+3) Verify all navigation and CTAs
+- Confirm every CTA goes to the correct section or page.
+- Ensure smooth scrolling anchors work and do not hide headings under fixed headers.
+- Make sure “Inquire” and “Inquire Now” actions are consistent and not duplicated in a confusing way.
+
+4) Forms
+- Validate required fields, show friendly inline error messages, and show a success state.
+- Prevent double submits, add loading state, and handle network errors.
+- Ensure emails or submissions are actually delivered or stored (implement a reliable backend endpoint or third party form service if needed). Document exactly how it works in the README.
+
+5) Performance
+- Compress and properly size images, use modern formats when possible.
+- Add lazy loading to below the fold images.
+- Eliminate unused dependencies and dead code.
+- Ensure fast first paint and smooth scrolling.
+
+6) Accessibility
+- Correct heading structure (h1 once, then h2, h3).
+- Add visible focus states for keyboard navigation.
+- Ensure buttons have accessible names and icons have aria labels.
+- Check color contrast for text on backgrounds and adjust if needed without changing brand identity.
+
+7) SEO + sharing
+- Set correct page title, meta description, canonical if needed.
+- Add Open Graph and Twitter card tags with correct preview image.
+- Ensure favicon and app icons are configured.
+- Ensure the site looks good when shared in iMessage and social apps.
+
+8) Quality gates
+- Run lint and fix errors.
+- Run a production build and fix any build time issues.
+- Remove console logs and debug code.
+- Confirm no runtime errors.
+
+DELIVERABLES
+- Implement all changes directly in code.
+- Provide a short “What changed” summary.
+- Provide a quick “Launch checklist” I can follow in 5 minutes (domain, SSL, forms tested, analytics optional).
+- Do not ask me questions unless something is truly blocked; otherwise make reasonable assumptions and proceed.
+
+Start now and polish everything until it feels perfect.

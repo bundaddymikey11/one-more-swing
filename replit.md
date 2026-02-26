@@ -112,13 +112,23 @@ attached_assets/  → Reference materials and design specs
 - **Tap targets**: On touch devices (`pointer: coarse`), all interactive elements enforce 44px minimum tap target size
 - **Lenis keyboard handling**: On touch devices, Lenis smooth scrolling is paused while form inputs are focused, then the input is scrolled into view. Lenis resumes on blur. Desktop focus behavior is unaffected.
 - **iOS appearance reset**: Inputs and textareas have `-webkit-appearance: none` to prevent iOS default styling
-- **Safe area insets**: Footer and FAB use `env(safe-area-inset-bottom)` for notched devices
+- **Safe area insets**: Footer uses `env(safe-area-inset-bottom)` for notched devices
+- **Section scroll offsets**: `section[id]` elements have `scroll-margin-top: 140px` to account for fixed header + announcement bar
+- **Accessibility**: sr-only h1 on homepage, aria-labels on icon buttons, aria-live on loading states, focus-visible outlines, prefers-reduced-motion support
+
+## SEO & Social Sharing
+
+- **Title/description**: Set in `client/index.html` with keyword-optimized copy
+- **Open Graph tags**: og:title, og:description, og:type, og:image (hero image)
+- **Twitter Card tags**: summary_large_image card with title, description, and image
+- **Theme color**: #050505 (matches dark background)
+- **Favicon**: PNG favicon at `/favicon.png`
 
 ## External Dependencies
 
 - **PostgreSQL**: Required database, connection via `DATABASE_URL` environment variable
 - **Lenis**: Smooth scroll library for weighted scroll behavior
-- **Google Fonts**: Montserrat, Playfair Display, DM Sans, Geist Mono, Fira Code, Architects Daughter loaded via CDN
+- **Google Fonts**: Montserrat (sans), Playfair Display (serif), JetBrains Mono (mono) loaded via CDN
 - **No authentication**: Currently no auth system implemented
 - **No payment processing**: Pricing is displayed but no Stripe integration yet
 - **No email service**: Booking form saves to DB only, no email notifications configured

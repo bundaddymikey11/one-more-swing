@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -219,6 +219,7 @@ function HeroSection() {
           </motion.div>
 
           <motion.div variants={maskUp} className="flex justify-center">
+            <h1 className="sr-only">One More Swing — Premium Mobile Golf Simulator Rental</h1>
             <img
               src={logoImage}
               alt="One More Swing"
@@ -270,6 +271,7 @@ function HeroSection() {
         >
           <button
             onClick={() => scrollTo("about")}
+            aria-label="Scroll to About section"
             className="text-white/30 animate-bounce min-w-[44px] min-h-[44px] flex items-center justify-center"
             data-testid="button-scroll-down"
           >
@@ -345,6 +347,7 @@ function AboutSection() {
                 src={simFrontImage}
                 alt="One More Swing mobile golf simulator setup"
                 className="w-full aspect-[4/3] object-cover"
+                loading="lazy"
                 data-testid="img-about"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/70 via-transparent to-transparent" />
@@ -355,6 +358,7 @@ function AboutSection() {
                   src={simAngleImage}
                   alt="Golf simulator angle view"
                   className="w-full aspect-[4/3] object-cover"
+                  loading="lazy"
                   data-testid="img-about-angle"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/50 via-transparent to-transparent" />
@@ -364,6 +368,7 @@ function AboutSection() {
                   src={simSideImage}
                   alt="Golf simulator side view"
                   className="w-full aspect-[4/3] object-cover"
+                  loading="lazy"
                   data-testid="img-about-side"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/50 via-transparent to-transparent" />
@@ -908,14 +913,14 @@ function BookingSection() {
                     data-testid="button-submit-booking"
                   >
                     {mutation.isPending ? (
-                      <span className="flex items-center gap-2">
-                        <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span className="flex items-center gap-2" role="status" aria-live="polite">
+                        <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" aria-hidden="true" />
                         Sending...
                       </span>
                     ) : (
                       <>
                         Send Inquiry
-                        <ArrowRight className="ml-2 w-4 h-4" />
+                        <ArrowRight className="ml-2 w-4 h-4" aria-hidden="true" />
                       </>
                     )}
                   </Button>
