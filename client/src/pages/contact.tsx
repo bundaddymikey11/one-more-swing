@@ -410,13 +410,14 @@ export default function Contact() {
 
                       <Button
                         type="submit"
-                        className="w-full bg-primary text-primary-foreground border border-primary-border min-h-[48px] text-base btn-glow"
+                        className={`w-full bg-primary text-primary-foreground border border-primary-border min-h-[48px] text-base btn-glow ${mutation.isPending ? "btn-ball-loader" : ""}`}
                         disabled={mutation.isPending}
                         data-testid="button-contact-submit"
                       >
                         {mutation.isPending ? (
-                          <span className="flex items-center gap-2" role="status" aria-live="polite">
-                            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" aria-hidden="true" />
+                          <span role="status" aria-live="polite">
+                            <span className="btn-ball" aria-hidden="true" />
+                            <span className="btn-hole" aria-hidden="true" />
                             Sending...
                           </span>
                         ) : (

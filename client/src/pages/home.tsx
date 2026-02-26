@@ -907,13 +907,14 @@ function BookingSection() {
                   <Button
                     type="submit"
                     disabled={mutation.isPending}
-                    className="w-full min-h-[48px] sm:h-auto bg-primary text-primary-foreground border border-primary-border text-base btn-glow"
+                    className={`w-full min-h-[48px] sm:h-auto bg-primary text-primary-foreground border border-primary-border text-base btn-glow ${mutation.isPending ? "btn-ball-loader" : ""}`}
                     size="lg"
                     data-testid="button-submit-booking"
                   >
                     {mutation.isPending ? (
-                      <span className="flex items-center gap-2" role="status" aria-live="polite">
-                        <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" aria-hidden="true" />
+                      <span role="status" aria-live="polite">
+                        <span className="btn-ball" aria-hidden="true" />
+                        <span className="btn-hole" aria-hidden="true" />
                         Sending...
                       </span>
                     ) : (
