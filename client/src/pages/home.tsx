@@ -296,7 +296,7 @@ function AboutSection() {
         >
           <motion.div variants={maskUp} className="lg:col-span-5 space-y-5 sm:space-y-6 text-center lg:text-left">
             <div className="space-y-3">
-              <span className="text-primary font-semibold text-[10px] tracking-[0.35em] uppercase block">
+              <span className="text-primary font-semibold text-sm tracking-[0.25em] uppercase block">
                 Our Story
               </span>
               <h2
@@ -318,19 +318,21 @@ function AboutSection() {
             <p className="text-white/50 text-[14px] sm:text-base" style={{ lineHeight: 1.7, marginBottom: "1.25rem" }}>
               Based in Southern California, One More Swing delivers a fully immersive golf simulator setup designed for:
             </p>
-            <ul className="space-y-2 list-none p-0 m-0">
-              {[
-                "Corporate gatherings",
-                "Private parties",
-                "Community celebrations",
-                "Any special occasion you want to elevate",
-              ].map((item, i) => (
-                <li key={i} className="text-white/50 text-[14px] sm:text-base flex items-center justify-center lg:justify-start gap-3" style={{ lineHeight: 1.7 }}>
-                  <span className="block w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
-                  {item}
-                </li>
-              ))}
-            </ul>
+            <div className="flex justify-center lg:justify-start">
+              <ul className="space-y-2 list-none p-0 m-0 inline-flex flex-col items-start">
+                {[
+                  "Corporate gatherings",
+                  "Private parties",
+                  "Community celebrations",
+                  "Any special occasion you want to elevate",
+                ].map((item, i) => (
+                  <li key={i} className="text-white/50 text-[14px] sm:text-base flex items-center gap-3" style={{ lineHeight: 1.7 }}>
+                    <span className="block w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
             <p className="text-white/50 text-[14px] sm:text-base" style={{ lineHeight: 1.7, marginBottom: "1.25rem" }}>
               Whether your guests are seasoned golfers or picking up a club for the very first time, our setup is designed to be welcoming, professional, and most importantly, fun.
             </p>
