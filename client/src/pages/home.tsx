@@ -31,9 +31,7 @@ import {
   Monitor,
   ShieldCheck,
   Trophy,
-  MapPin,
   Phone,
-  Zap,
   Star,
   ArrowRight,
   ChevronDown,
@@ -582,61 +580,6 @@ function PricingSection() {
   );
 }
 
-function LogisticsSection() {
-  return (
-    <section className="py-10 sm:py-16 lg:py-20 bg-[#050505]">
-      <div className="max-w-5xl mx-auto px-5 sm:px-6 lg:px-8">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={staggerContainer}
-          className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5"
-        >
-          <motion.div variants={maskUp}>
-            <Card
-              className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-7 h-full rounded-lg"
-              data-testid="card-logistics-space"
-            >
-              <div className="flex items-start gap-4">
-                <div className="w-11 h-11 rounded-md bg-primary/8 border border-white/[0.06] flex items-center justify-center shrink-0">
-                  <MapPin className="w-4 h-4 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-white text-sm mb-1 tracking-tight">Space Needed</h3>
-                  <p className="text-2xl font-bold text-white mb-2 tracking-tight">18 x 18 x 12 ft</p>
-                  <p className="text-white/40 text-[13px]" style={{ lineHeight: 1.8 }}>
-                    Minimum clearance for our Performance Bay. A flat surface is required. We handle all setup and teardown.
-                  </p>
-                </div>
-              </div>
-            </Card>
-          </motion.div>
-
-          <motion.div variants={maskUp}>
-            <Card
-              className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-7 h-full rounded-lg"
-              data-testid="card-logistics-power"
-            >
-              <div className="flex items-start gap-4">
-                <div className="w-11 h-11 rounded-md bg-primary/8 border border-white/[0.06] flex items-center justify-center shrink-0">
-                  <Zap className="w-4 h-4 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-white text-sm mb-1 tracking-tight">Power Required</h3>
-                  <p className="text-2xl font-bold text-white mb-2 tracking-tight">Standard Outlet</p>
-                  <p className="text-white/40 text-[13px]" style={{ lineHeight: 1.8 }}>
-                    Just one standard power source is all we need. No special electrical requirements.
-                  </p>
-                </div>
-              </div>
-            </Card>
-          </motion.div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
 
 function BookingSection() {
   const { toast } = useToast();
@@ -1071,7 +1014,6 @@ export default function Home() {
       <AboutSection />
       <TechSection />
       <PricingSection />
-      <LogisticsSection />
       <BookingSection />
       <Footer />
     </div>
