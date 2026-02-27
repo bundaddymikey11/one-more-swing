@@ -943,36 +943,28 @@ function BookingSection() {
 
 const faqItems = [
   {
-    question: "What space do I need for the simulator?",
-    answer: "You'll need a minimum of 18×18×12 ft of open space, a flat surface, and access to a standard power outlet. We'll confirm everything fits during our pre-event walkthrough.",
+    question: "What types of events do you service?",
+    answer: "We specialize in corporate events, birthdays, private parties, community celebrations, weddings, and grand openings. If you have a reason to gather, we have a reason to swing.",
   },
   {
-    question: "How long does setup take?",
-    answer: "Our team typically arrives 1–2 hours before your event to handle full setup and calibration. Teardown takes about 45 minutes after the event ends.",
+    question: "Do guests need golf experience?",
+    answer: "Not at all! Whether someone is a seasoned golfer or picking up a club for the first time, our setup is designed to be fun, welcoming, and easy to enjoy.",
   },
   {
-    question: "What's included in a rental?",
-    answer: "Every rental includes the full simulator enclosure, launch monitor, GSPro software with 2,000+ courses, a laptop display, hitting mat, and on-site support for the duration of your event.",
+    question: "How much space is required for setup?",
+    answer: "We require a flat surface, minimum of 18x18x12 ft space, and access to a standard power source. We're happy to review your location in advance.",
   },
   {
-    question: "Do you provide golf clubs?",
-    answer: "We provide kids clubs upon request. For adults, we recommend guests bring their own clubs for the most comfortable and authentic experience.",
+    question: "Can I use my own golf clubs?",
+    answer: "Yes, you're welcome to bring your own clubs! We provide standard left- & right-handed clubs with rental, along with kids' clubs upon request.",
   },
   {
-    question: "What areas do you serve?",
-    answer: "We serve all of Southern California, including San Diego, Orange County, Los Angeles, and the Inland Empire. Contact us if you're outside these areas — we're happy to discuss options.",
+    question: "How far in advance should we book?",
+    answer: "We recommend booking at least 2 weeks in advance to ensure availability and allow time for proper planning.",
   },
   {
-    question: "Can I use the simulator indoors?",
-    answer: "Yes, as long as the indoor space meets the minimum height (12 ft) and floor area (18×18 ft) requirements with a flat, level surface.",
-  },
-  {
-    question: "What happens if it rains?",
-    answer: "The simulator is designed for outdoor use but does need a dry environment. If rain is expected, we recommend having a covered area or tent, or we can reschedule at no extra charge.",
-  },
-  {
-    question: "How do I book?",
-    answer: "Simply fill out our inquiry form on this page or contact us directly. We'll respond within 24 hours to confirm availability, discuss details, and lock in your date.",
+    question: "How do I book One More Swing for my event?",
+    answer: "Contact us at info@onemoreswing.golf with your event date, location, and a few details about what you're planning, and we'll confirm availability and walk you through the next steps.",
   },
 ];
 
