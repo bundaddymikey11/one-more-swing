@@ -27,6 +27,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
   Target,
   Monitor,
   ShieldCheck,
@@ -144,6 +150,7 @@ function Header() {
               { label: "About", id: "about" },
               { label: "Experience", id: "tech" },
               { label: "Packages", id: "packages" },
+              { label: "FAQ", id: "faq" },
               { label: "Book", id: "booking" },
             ].map((item) => (
               <button
@@ -396,7 +403,7 @@ const techFeatures = [
   {
     icon: ShieldCheck,
     title: "Performance Bay",
-    description: "A 15x15x11 ft hitting bay for maximum safety and style. Allowing you to swing securely and freely.\n\nRequirements: minimum of 18x18x12 ft space, a flat surface, and access to a standard power source.",
+    description: "A 15x15x11 ft hitting bay for maximum safety and style. Allowing you to swing securely and freely.",
   },
   {
     icon: Trophy,
@@ -934,6 +941,88 @@ function BookingSection() {
   );
 }
 
+const faqItems = [
+  {
+    question: "What space do I need for the simulator?",
+    answer: "You'll need a minimum of 18×18×12 ft of open space, a flat surface, and access to a standard power outlet. We'll confirm everything fits during our pre-event walkthrough.",
+  },
+  {
+    question: "How long does setup take?",
+    answer: "Our team typically arrives 1–2 hours before your event to handle full setup and calibration. Teardown takes about 45 minutes after the event ends.",
+  },
+  {
+    question: "What's included in a rental?",
+    answer: "Every rental includes the full simulator enclosure, launch monitor, GSPro software with 2,000+ courses, a laptop display, hitting mat, and on-site support for the duration of your event.",
+  },
+  {
+    question: "Do you provide golf clubs?",
+    answer: "We provide kids clubs upon request. For adults, we recommend guests bring their own clubs for the most comfortable and authentic experience.",
+  },
+  {
+    question: "What areas do you serve?",
+    answer: "We serve all of Southern California, including San Diego, Orange County, Los Angeles, and the Inland Empire. Contact us if you're outside these areas — we're happy to discuss options.",
+  },
+  {
+    question: "Can I use the simulator indoors?",
+    answer: "Yes, as long as the indoor space meets the minimum height (12 ft) and floor area (18×18 ft) requirements with a flat, level surface.",
+  },
+  {
+    question: "What happens if it rains?",
+    answer: "The simulator is designed for outdoor use but does need a dry environment. If rain is expected, we recommend having a covered area or tent, or we can reschedule at no extra charge.",
+  },
+  {
+    question: "How do I book?",
+    answer: "Simply fill out our inquiry form on this page or contact us directly. We'll respond within 24 hours to confirm availability, discuss details, and lock in your date.",
+  },
+];
+
+function FAQSection() {
+  return (
+    <section id="faq" className="py-16 sm:py-24 bg-[#050505]" data-testid="section-faq">
+      <div className="max-w-3xl mx-auto px-5 sm:px-6 lg:px-8">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.08 } },
+          }}
+        >
+          <motion.div variants={maskUp} className="text-center mb-10 sm:mb-14">
+            <span className="text-[11px] sm:text-xs font-semibold text-primary tracking-[0.25em] uppercase">
+              Common Questions
+            </span>
+            <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-bold text-white font-display">
+              Frequently Asked Questions
+            </h2>
+          </motion.div>
+
+          <motion.div variants={maskUp}>
+            <Accordion type="single" collapsible className="space-y-3">
+              {faqItems.map((item, index) => (
+                <AccordionItem
+                  key={index}
+                  value={`faq-${index}`}
+                  className="border border-white/[0.06] rounded-xl bg-white/[0.02] px-5 sm:px-6 backdrop-blur-sm"
+                  data-testid={`faq-item-${index}`}
+                >
+                  <AccordionTrigger className="text-left text-white/90 text-[15px] sm:text-base font-medium py-5 hover:no-underline hover:text-white">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-white/50 text-[14px] sm:text-[15px] leading-relaxed pb-5">
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
 function Footer() {
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -952,6 +1041,7 @@ function Footer() {
                 { label: "About Us", id: "about" },
                 { label: "Experience", id: "tech" },
                 { label: "Packages", id: "packages" },
+                { label: "FAQ", id: "faq" },
                 { label: "Book Event", id: "booking" },
               ].map((link) => (
                 <button
@@ -1020,6 +1110,7 @@ export default function Home() {
       <TechSection />
       <PricingSection />
       <BookingSection />
+      <FAQSection />
       <Footer />
     </div>
   );
