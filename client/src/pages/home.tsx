@@ -44,9 +44,9 @@ import { Link } from "wouter";
 import { useRef, useState, useEffect } from "react";
 import { format } from "date-fns";
 import logoImage from "@assets/Logo_1771044908308.png";
-import simFrontImage from "@assets/one_more_swing_web_3_1772081755924.jpg";
-import simAngleImage from "@assets/one_more_swing_web_2_1772081755925.jpg";
-import simSideImage from "@assets/one_more_swing_web_1_1772081755925.jpg";
+import simFrontImage from "@assets/Generated_Image_February_26,_2026_-_4_52PM_1772153667428.png";
+import simAngleImage from "@assets/Generated_Image_February_26,_2026_-_4_45PM_1772153667428.png";
+import simSideImage from "@assets/Generated_Image_February_26,_2026_-_4_53PM_1772153667428.png";
 
 const maskUp = {
   hidden: { opacity: 0, y: 60, clipPath: "inset(100% 0 0 0)" },
