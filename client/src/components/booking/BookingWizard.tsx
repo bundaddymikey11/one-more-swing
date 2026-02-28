@@ -21,7 +21,11 @@ const steps = [{ id: 1, title: "Package", icon: Sparkles }, { id: 2, title: "Dat
 const timeSlots = ["8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM"];
 const eventTypes = [{ value: "corporate", label: "Corporate Event" }, { value: "birthday", label: "Birthday Party" }, { value: "wedding", label: "Wedding" }, { value: "other", label: "Other Celebration" }];
 
-export function BookingWizard() {
+interface BookingWizardProps {
+  onClose?: () => void;
+}
+
+export function BookingWizard({ onClose }: BookingWizardProps) {
   const [step, setStep] = useState(1);
   const { toast } = useToast();
   const [selectedPackage, setSelectedPackage] = useState<"executive" | "allday" | null>(null);
@@ -33,7 +37,13 @@ export function BookingWizard() {
       const res = await apiRequest("POST", "/api/bookings", finalData);
       return res.json();
     },
-    onSuccess: () => { toast({ title: "Request Received", description: "We'll be in touch shortly." }); setStep(1); form.reset(); setSelectedPackage(null); },
+    onSuccess: () => { 
+      toast({ title: "Request Received", description: "We'll be in touch shortly." }); 
+      setStep(1); 
+      form.reset(); 
+      setSelectedPackage(null);
+      if (onClose) onClose();
+    },
     onError: () => { toast({ title: "Error", description: "Please try again.", variant: "destructive" }); },
   });
 
@@ -46,8 +56,8 @@ export function BookingWizard() {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto py-8">
-      <div className="mb-16 px-4 relative flex justify-between">
+    <div className="w-full mx-auto py-4">
+      <div className="mb-12 px-2 relative flex justify-between max-w-2xl mx-auto">
         <div className="absolute top-1/2 left-0 w-full h-0.5 bg-white/10 -z-10" />
         <div className="absolute top-1/2 left-0 h-0.5 bg-primary -z-10 transition-all duration-500" style={{ width: `${((step - 1) / 3) * 100}%` }} />
         {steps.map((s) => (
@@ -57,9 +67,9 @@ export function BookingWizard() {
           </div>
         ))}
       </div>
-      <div className="grid lg:grid-cols-3 gap-10">
-        <div className="lg:col-span-2">
-          <Card className="glass-panel p-8 md:p-12 min-h-[550px] flex flex-col justify-center">
+      <div className="flex justify-center">
+        <div className="w-full">
+          <Card className="glass-panel p-8 md:p-12 min-h-[500px] flex flex-col justify-center border-none shadow-none bg-transparent">
             <Form {...form}>
               <form onSubmit={form.handleSubmit((d) => mutation.mutate(d))} className="space-y-8">
                 <AnimatePresence mode="wait">
@@ -67,7 +77,7 @@ export function BookingWizard() {
                     <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
                       <div className="text-center md:text-left"><h2 className="text-4xl font-serif mb-3">Select Experience</h2><p className="text-white/50 text-lg">Choose the package that best fits your event.</p></div>
                       <div className="grid sm:grid-cols-2 gap-6">
-                        {[{ id: "executive", title: "Executive", price: "$225/hr", feats: ["3-hour minimum", "Full Setup"] }, { id: "allday", title: "All Day", price: "Custom", feats: ["Full Coverage", "Branding"] }].map((pkg) => (
+                        {[{ id: "executive", title: "Executive", price: "$225/hr", feats: ["3-hour minimum booking", "Full simulator enclosure", "On-site technical host"] }, { id: "allday", title: "All Day", price: "Custom", feats: ["Perfect for weddings & tournaments", "Includes branding options", "Extended hours"] }].map((pkg) => (
                           <div key={pkg.id} onClick={() => setSelectedPackage(pkg.id as any)} className={`cursor-pointer p-8 rounded-2xl border transition-all duration-300 ${selectedPackage === pkg.id ? "border-primary bg-primary/10 shadow-[0_0_30px_rgba(34,197,94,0.1)]" : "border-white/10 hover:border-white/20 bg-white/5"}`}>
                             <div className="flex justify-between items-start mb-6"><h3 className="text-2xl font-bold">{pkg.title}</h3><span className="text-primary font-bold text-lg">{pkg.price}</span></div>
                             <ul className="space-y-3 text-sm text-white/60">{pkg.feats.map(f => <li key={f} className="flex items-center gap-2">• {f}</li>)}</ul>
@@ -81,9 +91,9 @@ export function BookingWizard() {
                       <div className="text-center md:text-left"><h2 className="text-4xl font-serif mb-3">Event Logistics</h2></div>
                       <div className="grid md:grid-cols-2 gap-8">
                         <FormField control={form.control} name="eventDate" render={({ field }) => (<FormItem className="flex flex-col"><FormLabel className="text-white/80">Date</FormLabel><Popover><PopoverTrigger asChild><FormControl><Button variant={"outline"} className={`w-full pl-4 h-12 text-left font-normal glass-input ${!field.value && "text-muted-foreground"}`}>{field.value ? format(new Date(field.value), "PPP") : <span>Pick a date</span>}<CalendarIcon className="ml-auto h-4 w-4 opacity-50" /></Button></FormControl></PopoverTrigger><PopoverContent className="w-auto p-0" align="start"><Calendar mode="single" selected={field.value ? new Date(field.value) : undefined} onSelect={(date) => field.onChange(date?.toISOString())} disabled={(date) => date < new Date() || date < new Date("1900-01-01")} initialFocus /></PopoverContent></Popover><FormMessage /></FormItem>)} />
-                        <FormField control={form.control} name="startTime" render={({ field }) => (<FormItem><FormLabel className="text-white/80">Start Time</FormLabel><Select onValueChange={field.onChange} defaultValue={field.value || undefined}><FormControl><SelectTrigger className="glass-input h-12 pl-4"><SelectValue placeholder="Select time" /></SelectTrigger></FormControl><SelectContent>{timeSlots.map((time) => <SelectItem key={time} value={time}>{time}</SelectItem>)}</SelectContent></Select><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="startTime" render={({ field }) => (<FormItem><FormLabel className="text-white/80">Start Time</FormLabel><Select onValueChange={field.onChange} defaultValue={field.value || undefined}><FormControl><SelectTrigger className="glass-input h-12 pl-4"><SelectValue placeholder="Select time" /></SelectTrigger></FormControl><SelectContent className="z-[3000]">{timeSlots.map((time) => <SelectItem key={time} value={time}>{time}</SelectItem>)}</SelectContent></Select><FormMessage /></FormItem>)} />
                       </div>
-                      <FormField control={form.control} name="eventType" render={({ field }) => (<FormItem><FormLabel className="text-white/80">Event Type</FormLabel><Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger className="glass-input h-12 pl-4"><SelectValue placeholder="Select type" /></SelectTrigger></FormControl><SelectContent>{eventTypes.map((type) => <SelectItem key={type.value} value={type.value}>{type.label}</SelectItem>)}</SelectContent></Select><FormMessage /></FormItem>)} />
+                      <FormField control={form.control} name="eventType" render={({ field }) => (<FormItem><FormLabel className="text-white/80">Event Type</FormLabel><Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger className="glass-input h-12 pl-4"><SelectValue placeholder="Select type" /></SelectTrigger></FormControl><SelectContent className="z-[3000]">{eventTypes.map((type) => <SelectItem key={type.value} value={type.value}>{type.label}</SelectItem>)}</SelectContent></Select><FormMessage /></FormItem>)} />
                     </motion.div>
                   )}
                   {step === 3 && (
