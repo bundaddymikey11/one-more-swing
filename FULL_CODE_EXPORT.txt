@@ -1,0 +1,3410 @@
+
+========================================
+FILE: client/index.html
+========================================
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
+    <meta name="theme-color" content="#050505" />
+    <title>One More Swing | Premium Mobile Golf Simulator · Southern California</title>
+    <meta name="description" content="Premium mobile golf simulator rental for corporate events, weddings, and private parties across Southern California. Book your immersive golf experience today." />
+    <meta property="og:title" content="One More Swing | Premium Mobile Golf Simulator · Southern California" />
+    <meta property="og:description" content="Premium mobile golf simulator rental for corporate events, weddings, and private parties across Southern California. Book your immersive golf experience today." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/images/hero-socal.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="One More Swing | Premium Mobile Golf Simulator" />
+    <meta name="twitter:description" content="Premium mobile golf simulator rental for corporate events, weddings, and private parties across Southern California." />
+    <meta name="twitter:image" content="/images/hero-socal.png" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      #site-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #050505;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+      }
+      #site-loader.loader-hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .loader-stage {
+        position: relative;
+        width: 160px;
+        height: 60px;
+      }
+      .loader-hole {
+        position: absolute;
+        bottom: 6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 28px;
+        height: 10px;
+        border-radius: 50%;
+        background: radial-gradient(ellipse at center, #000 0%, #0a0a0a 50%, transparent 100%);
+        box-shadow: 0 0 6px 2px rgba(0,0,0,0.6);
+      }
+      .loader-ball {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 35%, #fff 0%, #e8e8e8 40%, #c0c0c0 100%);
+        box-shadow: 1px 2px 4px rgba(0,0,0,0.4), inset -1px -1px 2px rgba(0,0,0,0.1);
+        animation: ball-roll 1.7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      }
+      .loader-ball::after {
+        content: "";
+        position: absolute;
+        top: 4px;
+        left: 5px;
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: rgba(0,0,0,0.08);
+        box-shadow: 4px 3px 0 rgba(0,0,0,0.06), -2px 5px 0 rgba(0,0,0,0.05);
+      }
+      .loader-text {
+        margin-top: 28px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.25);
+      }
+      @keyframes ball-roll {
+        0% {
+          left: 0;
+          bottom: 10px;
+          transform: rotate(0deg) scale(1);
+          opacity: 1;
+        }
+        55% {
+          left: calc(50% - 9px);
+          bottom: 10px;
+          transform: rotate(360deg) scale(1);
+          opacity: 1;
+        }
+        72% {
+          left: calc(50% - 9px);
+          bottom: 4px;
+          transform: rotate(420deg) scale(0.7);
+          opacity: 0.6;
+        }
+        82% {
+          left: calc(50% - 9px);
+          bottom: -4px;
+          transform: rotate(450deg) scale(0.35);
+          opacity: 0;
+        }
+        83%, 100% {
+          left: 0;
+          bottom: 10px;
+          transform: rotate(0deg) scale(0);
+          opacity: 0;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .loader-ball {
+          animation: none;
+          left: calc(50% - 9px);
+          opacity: 1;
+        }
+        .loader-text::after {
+          content: "";
+          display: inline-block;
+          width: 12px;
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="site-loader" aria-label="Loading">
+      <div class="loader-stage">
+        <div class="loader-hole"></div>
+        <div class="loader-ball"></div>
+      </div>
+      <div class="loader-text">Just one more swing…</div>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
+
+========================================
+FILE: client/src/App.tsx
+========================================
+import { Switch, Route } from "wouter";
+import { queryClient } from "./lib/queryClient";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { useEffect } from "react";
+import Lenis from "lenis";
+import Home from "@/pages/home";
+import Contact from "@/pages/contact";
+import NotFound from "@/pages/not-found";
+
+function Router() {
+  return (
+    <Switch>
+      <Route path="/" component={Home} />
+      <Route path="/contact" component={Contact} />
+      <Route component={NotFound} />
+    </Switch>
+  );
+}
+
+function App() {
+  useEffect(() => {
+    document.documentElement.classList.add("dark");
+
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      touchMultiplier: 2,
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+
+    const handleFocusIn = (e: FocusEvent) => {
+      if (!isTouchDevice) return;
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT"
+      ) {
+        lenis.stop();
+        requestAnimationFrame(() => {
+          target.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+      }
+    };
+
+    const handleFocusOut = (e: FocusEvent) => {
+      if (!isTouchDevice) return;
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT"
+      ) {
+        lenis.start();
+      }
+    };
+
+    document.addEventListener("focusin", handleFocusIn);
+    document.addEventListener("focusout", handleFocusOut);
+
+    return () => {
+      document.removeEventListener("focusin", handleFocusIn);
+      document.removeEventListener("focusout", handleFocusOut);
+      lenis.destroy();
+    };
+  }, []);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Router />
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
+
+export default App;
+
+
+========================================
+FILE: client/src/hooks/use-mobile.tsx
+========================================
+import * as React from "react"
+
+const MOBILE_BREAKPOINT = 768
+
+export function useIsMobile() {
+  const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined)
+
+  React.useEffect(() => {
+    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
+    const onChange = () => {
+      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
+    }
+    mql.addEventListener("change", onChange)
+    setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
+    return () => mql.removeEventListener("change", onChange)
+  }, [])
+
+  return !!isMobile
+}
+
+
+========================================
+FILE: client/src/hooks/use-toast.ts
+========================================
+import * as React from "react"
+
+import type {
+  ToastActionElement,
+  ToastProps,
+} from "@/components/ui/toast"
+
+const TOAST_LIMIT = 1
+const TOAST_REMOVE_DELAY = 1000000
+
+type ToasterToast = ToastProps & {
+  id: string
+  title?: React.ReactNode
+  description?: React.ReactNode
+  action?: ToastActionElement
+}
+
+const actionTypes = {
+  ADD_TOAST: "ADD_TOAST",
+  UPDATE_TOAST: "UPDATE_TOAST",
+  DISMISS_TOAST: "DISMISS_TOAST",
+  REMOVE_TOAST: "REMOVE_TOAST",
+} as const
+
+let count = 0
+
+function genId() {
+  count = (count + 1) % Number.MAX_SAFE_INTEGER
+  return count.toString()
+}
+
+type ActionType = typeof actionTypes
+
+type Action =
+  | {
+      type: ActionType["ADD_TOAST"]
+      toast: ToasterToast
+    }
+  | {
+      type: ActionType["UPDATE_TOAST"]
+      toast: Partial<ToasterToast>
+    }
+  | {
+      type: ActionType["DISMISS_TOAST"]
+      toastId?: ToasterToast["id"]
+    }
+  | {
+      type: ActionType["REMOVE_TOAST"]
+      toastId?: ToasterToast["id"]
+    }
+
+interface State {
+  toasts: ToasterToast[]
+}
+
+const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>()
+
+const addToRemoveQueue = (toastId: string) => {
+  if (toastTimeouts.has(toastId)) {
+    return
+  }
+
+  const timeout = setTimeout(() => {
+    toastTimeouts.delete(toastId)
+    dispatch({
+      type: "REMOVE_TOAST",
+      toastId: toastId,
+    })
+  }, TOAST_REMOVE_DELAY)
+
+  toastTimeouts.set(toastId, timeout)
+}
+
+export const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case "ADD_TOAST":
+      return {
+        ...state,
+        toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),
+      }
+
+    case "UPDATE_TOAST":
+      return {
+        ...state,
+        toasts: state.toasts.map((t) =>
+          t.id === action.toast.id ? { ...t, ...action.toast } : t
+        ),
+      }
+
+    case "DISMISS_TOAST": {
+      const { toastId } = action
+
+      // ! Side effects ! - This could be extracted into a dismissToast() action,
+      // but I'll keep it here for simplicity
+      if (toastId) {
+        addToRemoveQueue(toastId)
+      } else {
+        state.toasts.forEach((toast) => {
+          addToRemoveQueue(toast.id)
+        })
+      }
+
+      return {
+        ...state,
+        toasts: state.toasts.map((t) =>
+          t.id === toastId || toastId === undefined
+            ? {
+                ...t,
+                open: false,
+              }
+            : t
+        ),
+      }
+    }
+    case "REMOVE_TOAST":
+      if (action.toastId === undefined) {
+        return {
+          ...state,
+          toasts: [],
+        }
+      }
+      return {
+        ...state,
+        toasts: state.toasts.filter((t) => t.id !== action.toastId),
+      }
+  }
+}
+
+const listeners: Array<(state: State) => void> = []
+
+let memoryState: State = { toasts: [] }
+
+function dispatch(action: Action) {
+  memoryState = reducer(memoryState, action)
+  listeners.forEach((listener) => {
+    listener(memoryState)
+  })
+}
+
+type Toast = Omit<ToasterToast, "id">
+
+function toast({ ...props }: Toast) {
+  const id = genId()
+
+  const update = (props: ToasterToast) =>
+    dispatch({
+      type: "UPDATE_TOAST",
+      toast: { ...props, id },
+    })
+  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id })
+
+  dispatch({
+    type: "ADD_TOAST",
+    toast: {
+      ...props,
+      id,
+      open: true,
+      onOpenChange: (open) => {
+        if (!open) dismiss()
+      },
+    },
+  })
+
+  return {
+    id: id,
+    dismiss,
+    update,
+  }
+}
+
+function useToast() {
+  const [state, setState] = React.useState<State>(memoryState)
+
+  React.useEffect(() => {
+    listeners.push(setState)
+    return () => {
+      const index = listeners.indexOf(setState)
+      if (index > -1) {
+        listeners.splice(index, 1)
+      }
+    }
+  }, [state])
+
+  return {
+    ...state,
+    toast,
+    dismiss: (toastId?: string) => dispatch({ type: "DISMISS_TOAST", toastId }),
+  }
+}
+
+export { useToast, toast }
+
+
+========================================
+FILE: client/src/index.css
+========================================
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* LIGHT MODE */
+:root {
+  --button-outline: rgba(0,0,0, .10);
+  --badge-outline: rgba(0,0,0, .05);
+  --opaque-button-border-intensity: -8;
+  --elevate-1: rgba(0,0,0, .03);
+  --elevate-2: rgba(0,0,0, .08);
+  --background: 0 0% 100%;
+  --foreground: 0 0% 5%;
+  --border: 0 0% 92%;
+  --card: 0 0% 98%;
+  --card-foreground: 0 0% 5%;
+  --card-border: 0 0% 94%;
+  --sidebar: 0 0% 96%;
+  --sidebar-foreground: 0 0% 8%;
+  --sidebar-border: 0 0% 92%;
+  --sidebar-primary: 142 76% 36%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 0 0% 90%;
+  --sidebar-accent-foreground: 0 0% 10%;
+  --sidebar-ring: 142 76% 36%;
+  --popover: 0 0% 95%;
+  --popover-foreground: 0 0% 8%;
+  --popover-border: 0 0% 90%;
+  --primary: 130 55% 42%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 88%;
+  --secondary-foreground: 0 0% 10%;
+  --muted: 0 0% 90%;
+  --muted-foreground: 0 0% 40%;
+  --accent: 130 8% 92%;
+  --accent-foreground: 0 0% 10%;
+  --destructive: 0 84% 42%;
+  --destructive-foreground: 0 0% 98%;
+  --input: 0 0% 75%;
+  --ring: 130 55% 42%;
+  --chart-1: 130 55% 30%;
+  --chart-2: 130 45% 25%;
+  --chart-3: 160 45% 28%;
+  --chart-4: 180 50% 30%;
+  --chart-5: 200 55% 32%;
+  --font-sans: 'Montserrat', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius: .5rem;
+  --shadow-2xs: 0px 2px 0px 0px hsl(0 0% 0% / 0.00);
+  --shadow-xs: 0px 2px 0px 0px hsl(0 0% 0% / 0.00);
+  --shadow-sm: 0px 2px 0px 0px hsl(0 0% 0% / 0.00), 0px 1px 2px -1px hsl(0 0% 0% / 0.00);
+  --shadow: 0px 2px 0px 0px hsl(0 0% 0% / 0.00), 0px 1px 2px -1px hsl(0 0% 0% / 0.00);
+  --shadow-md: 0px 2px 0px 0px hsl(0 0% 0% / 0.00), 0px 2px 4px -1px hsl(0 0% 0% / 0.00);
+  --shadow-lg: 0px 2px 0px 0px hsl(0 0% 0% / 0.00), 0px 4px 6px -1px hsl(0 0% 0% / 0.00);
+  --shadow-xl: 0px 2px 0px 0px hsl(0 0% 0% / 0.00), 0px 8px 10px -1px hsl(0 0% 0% / 0.00);
+  --shadow-2xl: 0px 2px 0px 0px hsl(0 0% 0% / 0.00);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+
+/* Fallback for older browsers */
+  --sidebar-primary-border: hsl(var(--sidebar-primary));
+  --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Fallback for older browsers */
+  --sidebar-accent-border: hsl(var(--sidebar-accent));
+  --sidebar-accent-border: hsl(from hsl(var(--sidebar-accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Fallback for older browsers */
+  --primary-border: hsl(var(--primary));
+  --primary-border: hsl(from hsl(var(--primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Fallback for older browsers */
+  --secondary-border: hsl(var(--secondary));
+  --secondary-border: hsl(from hsl(var(--secondary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Fallback for older browsers */
+  --muted-border: hsl(var(--muted));
+  --muted-border: hsl(from hsl(var(--muted)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Fallback for older browsers */
+  --accent-border: hsl(var(--accent));
+  --accent-border: hsl(from hsl(var(--accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Fallback for older browsers */
+  --destructive-border: hsl(var(--destructive));
+  --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+}
+
+.dark {
+  --button-outline: rgba(255,255,255, .10);
+  --badge-outline: rgba(255,255,255, .05);
+  --opaque-button-border-intensity: 9;
+  --elevate-1: rgba(255,255,255, .04);
+  --elevate-2: rgba(255,255,255, .09);
+  --background: 0 0% 2%;
+  --foreground: 0 0% 92%;
+  --border: 0 0% 10%;
+  --card: 0 0% 5%;
+  --card-foreground: 0 0% 92%;
+  --card-border: 0 0% 10%;
+  --sidebar: 0 0% 4%;
+  --sidebar-foreground: 0 0% 92%;
+  --sidebar-border: 0 0% 10%;
+  --sidebar-primary: 130 55% 42%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 0 0% 10%;
+  --sidebar-accent-foreground: 0 0% 92%;
+  --sidebar-ring: 130 55% 42%;
+  --popover: 0 0% 6%;
+  --popover-foreground: 0 0% 92%;
+  --popover-border: 0 0% 12%;
+  --primary: 130 55% 42%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 10%;
+  --secondary-foreground: 0 0% 85%;
+  --muted: 0 0% 8%;
+  --muted-foreground: 0 0% 55%;
+  --accent: 130 10% 10%;
+  --accent-foreground: 0 0% 90%;
+  --destructive: 0 84% 35%;
+  --destructive-foreground: 0 0% 98%;
+  --input: 0 0% 18%;
+  --ring: 130 55% 42%;
+  --chart-1: 142 76% 60%;
+  --chart-2: 142 60% 65%;
+  --chart-3: 160 45% 62%;
+  --chart-4: 180 50% 60%;
+  --chart-5: 200 55% 58%;
+  --shadow-2xs: 0px 2px 0px 0px hsl(0 0% 0% / 0.00);
+  --shadow-xs: 0px 2px 0px 0px hsl(0 0% 0% / 0.00);
+  --shadow-sm: 0px 2px 0px 0px hsl(0 0% 0% / 0.00), 0px 1px 2px -1px hsl(0 0% 0% / 0.00);
+  --shadow: 0px 2px 0px 0px hsl(0 0% 0% / 0.00), 0px 1px 2px -1px hsl(0 0% 0% / 0.00);
+  --shadow-md: 0px 2px 0px 0px hsl(0 0% 0% / 0.00), 0px 2px 4px -1px hsl(0 0% 0% / 0.00);
+  --shadow-lg: 0px 2px 0px 0px hsl(0 0% 0% / 0.00), 0px 4px 6px -1px hsl(0 0% 0% / 0.00);
+  --shadow-xl: 0px 2px 0px 0px hsl(0 0% 0% / 0.00), 0px 8px 10px -1px hsl(0 0% 0% / 0.00);
+  --shadow-2xl: 0px 2px 0px 0px hsl(0 0% 0% / 0.00);
+
+/* Fallback for older browsers */
+  --sidebar-primary-border: hsl(var(--sidebar-primary));
+  --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Fallback for older browsers */
+  --sidebar-accent-border: hsl(var(--sidebar-accent));
+  --sidebar-accent-border: hsl(from hsl(var(--sidebar-accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Fallback for older browsers */
+  --primary-border: hsl(var(--primary));
+  --primary-border: hsl(from hsl(var(--primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Fallback for older browsers */
+  --secondary-border: hsl(var(--secondary));
+  --secondary-border: hsl(from hsl(var(--secondary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Fallback for older browsers */
+  --muted-border: hsl(var(--muted));
+  --muted-border: hsl(from hsl(var(--muted)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Fallback for older browsers */
+  --accent-border: hsl(var(--accent));
+  --accent-border: hsl(from hsl(var(--accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Fallback for older browsers */
+  --destructive-border: hsl(var(--destructive));
+  --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html,
+  body {
+    @apply font-sans antialiased bg-background text-foreground overflow-x-hidden;
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+    scroll-margin-top: 120px;
+    scroll-margin-bottom: 40px;
+  }
+
+  @media (pointer: coarse) {
+    button,
+    a,
+    input,
+    select,
+    textarea,
+    [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+
+  input,
+  textarea {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  p {
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  section[id] {
+    scroll-margin-top: 140px;
+  }
+}
+
+.film-grain {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200%;
+  background: transparent url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E") repeat;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.5;
+  animation: grain 8s steps(10) infinite;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  20% { transform: translate(-15%, 5%); }
+  30% { transform: translate(7%, -25%); }
+  40% { transform: translate(-5%, 25%); }
+  50% { transform: translate(-15%, 10%); }
+  60% { transform: translate(15%, 0%); }
+  70% { transform: translate(0%, 15%); }
+  80% { transform: translate(3%, 35%); }
+  90% { transform: translate(-10%, 10%); }
+}
+
+.mask-up {
+  clip-path: inset(0 0 100% 0);
+  animation: maskReveal 0.9s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+@keyframes maskReveal {
+  to { clip-path: inset(0 0 0% 0); }
+}
+
+.btn-glow {
+  box-shadow: 0 0 20px hsl(var(--primary) / 0.25), 0 0 40px hsl(var(--primary) / 0.1);
+  transition: box-shadow 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+}
+.btn-glow:hover {
+  box-shadow: 0 0 30px hsl(var(--primary) / 0.4), 0 0 60px hsl(var(--primary) / 0.15);
+}
+
+button:active,
+[role="button"]:active {
+  transform: scale(0.96) !important;
+  transition: transform 0.1s ease !important;
+}
+
+.pricing-card {
+  background: #0a0a0a;
+  border: 1px solid hsl(var(--primary) / 0.10);
+  backdrop-filter: blur(20px);
+  transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+.pricing-card:hover {
+  transform: scale(1.02);
+  border-color: hsl(var(--primary) / 0.25);
+  box-shadow: 0 0 40px hsl(var(--primary) / 0.06);
+}
+
+
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/**
+ * Using the elevate system.
+ * Automatic contrast adjustment.
+ *
+ * <element className="hover-elevate" />
+ * <element className="active-elevate-2" />
+ *
+ * // Using the tailwind utility when a data attribute is "on"
+ * <element className="toggle-elevate data-[state=on]:toggle-elevated" />
+ * // Or manually controlling the toggle state
+ * <element className="toggle-elevate toggle-elevated" />
+ *
+ * Elevation systems have to handle many states.
+ * - not-hovered, vs. hovered vs. active  (three mutually exclusive states)
+ * - toggled or not
+ * - focused or not (this is not handled with these utilities)
+ *
+ * Even without handling focused or not, this is six possible combinations that
+ * need to be distinguished from eachother visually.
+ */
+@layer utilities {
+
+  /* Hide ugly search cancel button in Chrome until we can style it properly */
+  input[type="search"]::-webkit-search-cancel-button {
+    @apply hidden;
+  }
+
+  /* Placeholder styling for contentEditable div */
+  [contenteditable][data-placeholder]:empty::before {
+    content: attr(data-placeholder);
+    color: hsl(var(--muted-foreground));
+    pointer-events: none;
+  }
+
+  /* .no-default-hover-elevate/no-default-active-elevate is an escape hatch so consumers of
+   * buttons/badges can remove the automatic brightness adjustment on interactions
+   * and program their own. */
+  .no-default-hover-elevate {}
+
+  .no-default-active-elevate {}
+
+
+  /**
+   * Toggleable backgrounds go behind the content. Hoverable/active goes on top.
+   * This way they can stack/compound. Both will overlap the parent's borders!
+   * So borders will be automatically adjusted both on toggle, and hover/active,
+   * and they will be compounded.
+   */
+  .toggle-elevate::before,
+  .toggle-elevate-2::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0px;
+    /*border-radius: inherit;   match rounded corners */
+    border-radius: inherit;
+    z-index: -1;
+    /* sits behind content but above backdrop */
+  }
+
+  .toggle-elevate.toggle-elevated::before {
+    background-color: var(--elevate-2);
+  }
+
+  /* If there's a 1px border, adjust the inset so that it covers that parent's border */
+  .border.toggle-elevate::before {
+    inset: -1px;
+  }
+
+  /* Does not work on elements with overflow:hidden! */
+  .hover-elevate:not(.no-default-hover-elevate),
+  .active-elevate:not(.no-default-active-elevate),
+  .hover-elevate-2:not(.no-default-hover-elevate),
+  .active-elevate-2:not(.no-default-active-elevate) {
+    position: relative;
+    z-index: 0;
+  }
+
+  .hover-elevate:not(.no-default-hover-elevate)::after,
+  .active-elevate:not(.no-default-active-elevate)::after,
+  .hover-elevate-2:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:not(.no-default-active-elevate)::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0px;
+    /*border-radius: inherit;   match rounded corners */
+    border-radius: inherit;
+    z-index: 999;
+    /* sits in front of content */
+  }
+
+  .hover-elevate:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate:active:not(.no-default-active-elevate)::after {
+    background-color: var(--elevate-1);
+  }
+
+  .hover-elevate-2:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:active:not(.no-default-active-elevate)::after {
+    background-color: var(--elevate-2);
+  }
+
+  /* If there's a 1px border, adjust the inset so that it covers that parent's border */
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate:not(.no-active-interaction-elevate)::after,
+  .border.hover-elevate-2:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate-2:not(.no-active-interaction-elevate)::after,
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
+    inset: -1px;
+  }
+}
+
+.btn-ball-loader {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ball-loader .btn-ball {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff 0%, #e8e8e8 40%, #c0c0c0 100%);
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+  animation: btn-ball-roll 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform: translateY(-50%);
+}
+
+.btn-ball-loader .btn-hole {
+  position: absolute;
+  top: 50%;
+  right: 24px;
+  width: 18px;
+  height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+  transform: translateY(-50%);
+}
+
+@keyframes btn-ball-roll {
+  0% {
+    left: 16px;
+    opacity: 1;
+    transform: translateY(-50%) rotate(0deg) scale(1);
+  }
+  55% {
+    left: calc(100% - 40px);
+    opacity: 1;
+    transform: translateY(-50%) rotate(360deg) scale(1);
+  }
+  72% {
+    left: calc(100% - 38px);
+    opacity: 0.6;
+    transform: translateY(-30%) rotate(420deg) scale(0.6);
+  }
+  82% {
+    left: calc(100% - 36px);
+    opacity: 0;
+    transform: translateY(-10%) rotate(450deg) scale(0.25);
+  }
+  83%, 100% {
+    left: 16px;
+    opacity: 0;
+    transform: translateY(-50%) rotate(0deg) scale(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .film-grain {
+    display: none;
+  }
+}
+
+*:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (max-width: 767px) {
+  .pricing-card:hover {
+    transform: none;
+  }
+}
+
+
+========================================
+FILE: client/src/lib/queryClient.ts
+========================================
+import { QueryClient, QueryFunction } from "@tanstack/react-query";
+
+async function throwIfResNotOk(res: Response) {
+  if (!res.ok) {
+    const text = (await res.text()) || res.statusText;
+    throw new Error(`${res.status}: ${text}`);
+  }
+}
+
+export async function apiRequest(
+  method: string,
+  url: string,
+  data?: unknown | undefined,
+): Promise<Response> {
+  const res = await fetch(url, {
+    method,
+    headers: data ? { "Content-Type": "application/json" } : {},
+    body: data ? JSON.stringify(data) : undefined,
+    credentials: "include",
+  });
+
+  await throwIfResNotOk(res);
+  return res;
+}
+
+type UnauthorizedBehavior = "returnNull" | "throw";
+export const getQueryFn: <T>(options: {
+  on401: UnauthorizedBehavior;
+}) => QueryFunction<T> =
+  ({ on401: unauthorizedBehavior }) =>
+  async ({ queryKey }) => {
+    const res = await fetch(queryKey.join("/") as string, {
+      credentials: "include",
+    });
+
+    if (unauthorizedBehavior === "returnNull" && res.status === 401) {
+      return null;
+    }
+
+    await throwIfResNotOk(res);
+    return await res.json();
+  };
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      queryFn: getQueryFn({ on401: "throw" }),
+      refetchInterval: false,
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      retry: false,
+    },
+    mutations: {
+      retry: false,
+    },
+  },
+});
+
+
+========================================
+FILE: client/src/lib/utils.ts
+========================================
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+
+========================================
+FILE: client/src/main.tsx
+========================================
+import { createRoot } from "react-dom/client";
+import App from "./App";
+import "./index.css";
+
+function dismissLoader() {
+  const loader = document.getElementById("site-loader");
+  if (!loader) return;
+  loader.classList.add("loader-hidden");
+  loader.addEventListener("transitionend", () => {
+    loader.remove();
+  }, { once: true });
+}
+
+createRoot(document.getElementById("root")!).render(<App />);
+
+requestAnimationFrame(() => {
+  requestAnimationFrame(() => {
+    dismissLoader();
+  });
+});
+
+
+========================================
+FILE: client/src/pages/contact.tsx
+========================================
+import { motion } from "framer-motion";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { insertBookingSchema, type InsertBooking } from "@shared/schema";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card } from "@/components/ui/card";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Phone,
+  Mail,
+  Send,
+  CalendarIcon,
+  Clock,
+} from "lucide-react";
+import { Link } from "wouter";
+import { useState, useEffect } from "react";
+import { format } from "date-fns";
+
+const maskUp = {
+  hidden: { opacity: 0, y: 60, clipPath: "inset(100% 0 0 0)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    clipPath: "inset(0% 0 0 0)",
+    transition: { duration: 1, ease: [0.77, 0, 0.175, 1] },
+  },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.25, 0.1, 0.25, 1] } },
+};
+
+const staggerSlow = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.25, delayChildren: 0.2 },
+  },
+};
+
+const timeSlots = [
+  "5:00 AM", "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM",
+  "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM",
+  "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM", "11:00 PM",
+];
+
+function ContactHeader() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <motion.header
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className={`fixed top-0 left-0 right-0 z-[999] transition-all duration-500 ${
+        scrolled ? "bg-[#000000]/95 backdrop-blur-md border-b border-white/5" : "bg-transparent"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between gap-4 h-14 sm:h-20">
+          <nav className="hidden md:flex items-center gap-8" data-testid="nav-contact-desktop">
+            {[
+              { label: "Home", href: "/" },
+              { label: "About", href: "/#about" },
+              { label: "Packages", href: "/#packages" },
+              { label: "Contact", href: "/contact" },
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-[11px] font-medium text-white/50 tracking-[0.2em] uppercase hover-elevate px-2 py-1 rounded-md"
+                data-testid={`link-contact-nav-${item.label.toLowerCase()}`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          <Link href="/#booking">
+            <Button
+              className="bg-primary text-primary-foreground border border-primary-border shrink-0 btn-glow min-h-[44px] sm:h-auto"
+              data-testid="button-contact-header-book"
+            >
+              <span className="hidden sm:inline">Inquire Now</span>
+              <span className="sm:hidden text-sm">Inquire</span>
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </motion.header>
+  );
+}
+
+export default function Contact() {
+  const { toast } = useToast();
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+  const [calendarOpen, setCalendarOpen] = useState(false);
+
+  const form = useForm<InsertBooking>({
+    resolver: zodResolver(insertBookingSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      eventDate: "",
+      eventType: "other",
+      startTime: "",
+      location: "",
+      message: "",
+    },
+  });
+
+  const mutation = useMutation({
+    mutationFn: async (data: InsertBooking) => {
+      const res = await apiRequest("POST", "/api/bookings", data);
+      return res.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Message Sent",
+        description: "We'll get back to you within 24 hours.",
+      });
+      form.reset();
+      setSelectedDate(undefined);
+    },
+    onError: () => {
+      toast({
+        title: "Something went wrong",
+        description: "Please try again or contact us directly.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const onSubmit = (data: InsertBooking) => {
+    mutation.mutate(data);
+  };
+
+  return (
+    <div className="min-h-dvh bg-[#050505] overflow-x-hidden safe-area-bottom">
+      <div className="film-grain" />
+      <ContactHeader />
+
+      <section className="pt-24 sm:pt-36 pb-12 sm:pb-20">
+        <div className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={staggerSlow}
+          >
+            <motion.div variants={maskUp} className="text-center mb-8 sm:mb-14">
+              <span className="text-primary font-semibold text-[10px] tracking-[0.35em] uppercase block mb-3">
+                Reach Out
+              </span>
+              <h1
+                className="font-serif font-bold text-white"
+                style={{
+                  fontSize: "clamp(2rem, 6vw, 4rem)",
+                  letterSpacing: "-0.05em",
+                  lineHeight: 0.9,
+                }}
+              >
+                Get in Touch
+              </h1>
+              <p className="text-white/40 max-w-xl mx-auto mt-4 text-sm sm:text-base" style={{ lineHeight: 1.8 }}>
+                Have a question about our services? Ready to book your event?
+                Fill out the form below or give us a call.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 lg:gap-8">
+              <motion.div variants={maskUp} className="lg:col-span-2 space-y-4">
+                <Card className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-7 rounded-lg" data-testid="card-contact-info">
+                  <h2 className="font-serif text-xl font-bold text-white mb-6" style={{ letterSpacing: "-0.03em" }}>
+                    Contact Information
+                  </h2>
+
+                  <div className="space-y-5">
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                        <Phone className="w-4 h-4 text-primary" />
+                      </div>
+                      <div>
+                        <span className="text-primary font-semibold text-[10px] tracking-[0.25em] uppercase block mb-1">
+                          Call or Text
+                        </span>
+                        <a
+                          href="tel:+17602169598"
+                          className="text-white font-semibold text-[15px] sm:text-base hover-elevate px-1 py-1 rounded-md -ml-1 inline-flex items-center min-h-[44px]"
+                          data-testid="link-phone"
+                        >
+                          760-216-9598
+                        </a>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                        <Mail className="w-4 h-4 text-primary" />
+                      </div>
+                      <div>
+                        <span className="text-primary font-semibold text-[10px] tracking-[0.25em] uppercase block mb-1">
+                          Email Us
+                        </span>
+                        <a
+                          href="mailto:info@onemoreswing.golf"
+                          className="text-white font-semibold text-[15px] sm:text-base hover-elevate px-1 py-1 rounded-md -ml-1 inline-flex items-center min-h-[44px]"
+                          data-testid="link-email"
+                        >
+                          info@onemoreswing.golf
+                        </a>
+                      </div>
+                    </div>
+
+                  </div>
+                </Card>
+              </motion.div>
+
+              <motion.div variants={fadeUp} className="lg:col-span-3">
+                <Card className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-8 rounded-lg" data-testid="card-contact-form">
+                  <h2 className="font-serif text-xl font-bold text-white mb-6" style={{ letterSpacing: "-0.03em" }}>
+                    Send a Message
+                  </h2>
+
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                      <div className="grid sm:grid-cols-2 gap-5">
+                        <FormField
+                          control={form.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Name</FormLabel>
+                              <FormControl>
+                                <Input
+                                  placeholder="Your Name"
+                                  className="bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/20 focus:border-primary/40"
+                                  data-testid="input-contact-name"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Email</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="email"
+                                  placeholder="your@email.com"
+                                  className="bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/20 focus:border-primary/40"
+                                  data-testid="input-contact-email"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <FormField
+                        control={form.control}
+                        name="location"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Phone Number</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="(555) 555-5555"
+                                className="bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/20 focus:border-primary/40"
+                                data-testid="input-contact-phone"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <div className="grid sm:grid-cols-2 gap-5">
+                        <FormField
+                          control={form.control}
+                          name="eventDate"
+                          render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                              <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Preferred Date</FormLabel>
+                              <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                                <PopoverTrigger asChild>
+                                  <FormControl>
+                                    <Button
+                                      type="button"
+                                      variant="outline"
+                                      className={`w-full justify-start text-left font-normal bg-white/[0.03] border-white/[0.08] hover:bg-white/[0.05] h-9 ${
+                                        !field.value ? "text-white/20" : "text-white"
+                                      }`}
+                                      data-testid="input-contact-date"
+                                    >
+                                      <CalendarIcon className="mr-2 h-4 w-4 text-white/40" />
+                                      {selectedDate ? format(selectedDate, "MMMM d, yyyy") : "Pick a date"}
+                                    </Button>
+                                  </FormControl>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0 bg-[#0a0a0a] border-white/10" align="start">
+                                  <Calendar
+                                    mode="single"
+                                    selected={selectedDate}
+                                    onSelect={(date) => {
+                                      setSelectedDate(date);
+                                      if (date) {
+                                        field.onChange(format(date, "yyyy-MM-dd"));
+                                      }
+                                      setCalendarOpen(false);
+                                    }}
+                                    disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                                    initialFocus
+                                  />
+                                </PopoverContent>
+                              </Popover>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="startTime"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Start Time</FormLabel>
+                              <Select onValueChange={field.onChange} value={field.value || ""}>
+                                <FormControl>
+                                  <SelectTrigger
+                                    className="bg-white/[0.03] border-white/[0.08] text-white"
+                                    data-testid="select-contact-start-time"
+                                  >
+                                    <div className="flex items-center gap-2">
+                                      <Clock className="h-4 w-4 text-white/40" />
+                                      <SelectValue placeholder="Select time" />
+                                    </div>
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {timeSlots.map((time) => (
+                                    <SelectItem key={time} value={time}>
+                                      {time}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <FormField
+                        control={form.control}
+                        name="message"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Message or Question</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                placeholder="How can we help you?"
+                                rows={4}
+                                className="bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/20 focus:border-primary/40 resize-none"
+                                data-testid="input-contact-message"
+                                {...field}
+                                value={field.value ?? ""}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <Button
+                        type="submit"
+                        className={`w-full bg-primary text-primary-foreground border border-primary-border min-h-[48px] text-base btn-glow ${mutation.isPending ? "btn-ball-loader" : ""}`}
+                        disabled={mutation.isPending}
+                        data-testid="button-contact-submit"
+                      >
+                        {mutation.isPending ? (
+                          <span role="status" aria-live="polite">
+                            <span className="btn-ball" aria-hidden="true" />
+                            <span className="btn-hole" aria-hidden="true" />
+                            Sending...
+                          </span>
+                        ) : (
+                          <>
+                            Send Message
+                            <Send className="ml-2 w-4 h-4" aria-hidden="true" />
+                          </>
+                        )}
+                      </Button>
+                    </form>
+                  </Form>
+                </Card>
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <footer className="bg-[#020202] border-t border-white/[0.04] py-8 sm:py-10">
+        <div className="max-w-6xl mx-auto px-5 sm:px-6 text-center">
+          <p className="text-white/20 text-[11px] tracking-wider">
+            &copy; {new Date().getFullYear()} One More Swing. All rights reserved.
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+
+========================================
+FILE: client/src/pages/home.tsx
+========================================
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { insertBookingSchema, type InsertBooking } from "@shared/schema";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card } from "@/components/ui/card";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
+  Target,
+  Monitor,
+  ShieldCheck,
+  Trophy,
+  Phone,
+  Star,
+  ArrowRight,
+  ChevronDown,
+  Mail,
+  Instagram,
+  CalendarIcon,
+  Clock,
+} from "lucide-react";
+import { Link } from "wouter";
+import { useRef, useState, useEffect } from "react";
+import { format } from "date-fns";
+import logoImage from "@assets/Logo_1771044908308.png";
+import simFrontImage from "@assets/Generated_Image_February_26,_2026_-_4_52PM_1772153667428.png";
+import simAngleImage from "@assets/Generated_Image_February_26,_2026_-_4_45PM_1772153667428.png";
+import simSideImage from "@assets/Generated_Image_February_26,_2026_-_4_53PM_1772153667428.png";
+
+const maskUp = {
+  hidden: { opacity: 0, y: 60, clipPath: "inset(100% 0 0 0)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    clipPath: "inset(0% 0 0 0)",
+    transition: { duration: 1, ease: [0.77, 0, 0.175, 1] },
+  },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.25, 0.1, 0.25, 1] } },
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 },
+  },
+};
+
+const staggerSlow = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.25, delayChildren: 0.2 },
+  },
+};
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.9, ease: [0.25, 0.1, 0.25, 1] } },
+};
+
+const timeSlots = [
+  "5:00 AM", "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM",
+  "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM",
+  "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM", "11:00 PM",
+];
+
+function AnnouncementBar() {
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <motion.div
+      initial={{ clipPath: "inset(100% 0 0 0)" }}
+      animate={{ clipPath: "inset(0% 0 0 0)" }}
+      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+      className="bg-primary/90 backdrop-blur-sm py-3 sm:py-2.5 text-center cursor-pointer min-h-[44px] flex items-center justify-center"
+      data-testid="banner-scarcity"
+      onClick={() => scrollTo("packages")}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === "Enter") scrollTo("packages"); }}
+    >
+      <p className="text-white text-[10px] sm:text-[11px] font-semibold tracking-[0.15em] sm:tracking-[0.2em] uppercase px-5 sm:px-4 leading-relaxed">
+        Be Among the First to Host One More Swing at Your Next Event
+      </p>
+    </motion.div>
+  );
+}
+
+function Header() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <motion.header
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className={`fixed top-0 left-0 right-0 z-[999] transition-all duration-500 ${
+        scrolled ? "bg-[#000000]/95 backdrop-blur-md border-b border-white/5" : "bg-transparent"
+      }`}
+    >
+      <AnnouncementBar />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between gap-4 h-[56px] sm:h-20">
+          <nav className="hidden md:flex items-center gap-8" data-testid="nav-desktop">
+            {[
+              { label: "About", id: "about" },
+              { label: "Experience", id: "tech" },
+              { label: "Packages", id: "packages" },
+              { label: "FAQ", id: "faq" },
+              { label: "Book", id: "booking" },
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollTo(item.id)}
+                className="text-[11px] font-medium text-white/50 tracking-[0.2em] uppercase hover-elevate px-2 py-1 rounded-md"
+                data-testid={`link-nav-${item.id}`}
+              >
+                {item.label}
+              </button>
+            ))}
+            <Link
+              href="/contact"
+              className="text-[11px] font-medium text-white/50 tracking-[0.2em] uppercase hover-elevate px-2 py-1 rounded-md"
+              data-testid="link-nav-contact"
+            >
+              Contact
+            </Link>
+          </nav>
+
+          <Button
+            onClick={() => scrollTo("booking")}
+            className="bg-primary text-primary-foreground border border-primary-border shrink-0 btn-glow min-h-[44px] sm:h-auto"
+            data-testid="button-header-book"
+          >
+            <span className="hidden sm:inline">Inquire Now</span>
+            <span className="sm:hidden text-sm">Inquire</span>
+          </Button>
+        </div>
+      </div>
+    </motion.header>
+  );
+}
+
+function HeroSection() {
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+  return (
+    <section id="hero" ref={heroRef} className="relative min-h-dvh flex items-center justify-center overflow-hidden" style={{ position: "relative" }}>
+      <motion.div className="absolute inset-0" style={{ y: heroY }}>
+        <img
+          src="/images/hero-socal.png"
+          alt="Southern California luxury golf lifestyle"
+          className="w-full h-[120%] object-cover"
+          data-testid="img-hero"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/70 via-[#050505]/40 to-[#050505]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/50 to-transparent" />
+      </motion.div>
+
+      <motion.div style={{ opacity: heroOpacity }} className="relative z-10 max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 text-center pt-24 sm:pt-20">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={staggerSlow}
+          className="space-y-5 sm:space-y-8"
+        >
+          <motion.div variants={maskUp}>
+            <span className="inline-block text-primary font-semibold text-[10px] sm:text-xs tracking-[0.3em] sm:tracking-[0.35em] uppercase">
+              Mobile Golf Simulator Rental
+            </span>
+          </motion.div>
+
+          <motion.div variants={maskUp} className="flex justify-center">
+            <h1 className="sr-only">One More Swing — Premium Mobile Golf Simulator Rental</h1>
+            <img
+              src={logoImage}
+              alt="One More Swing"
+              className="h-28 sm:h-48 lg:h-56 w-auto object-contain"
+              data-testid="img-hero-logo"
+            />
+          </motion.div>
+
+          <motion.p
+            variants={maskUp}
+            className="text-white/60 max-w-[34ch] sm:max-w-2xl mx-auto text-[15px] sm:text-base"
+            style={{
+              lineHeight: 1.8,
+              letterSpacing: "0.02em",
+            }}
+          >
+            Most event entertainment is a distraction.
+            <br className="hidden sm:block" />
+            One More Swing is a <span className="text-primary font-bold">destination</span>.
+          </motion.p>
+
+          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2">
+            <Button
+              size="lg"
+              onClick={() => scrollTo("booking")}
+              className="w-full sm:w-auto min-h-[48px] sm:h-auto bg-primary text-primary-foreground border border-primary-border text-base px-10 btn-glow"
+              data-testid="button-hero-book"
+            >
+              Inquire Now
+              <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={() => scrollTo("packages")}
+              className="w-full sm:w-auto min-h-[48px] sm:h-auto text-base px-10 bg-white/5 backdrop-blur-sm border-white/15 text-white"
+              data-testid="button-hero-packages"
+            >
+              View Packages
+            </Button>
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2, duration: 1 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        >
+          <button
+            onClick={() => scrollTo("about")}
+            aria-label="Scroll to About section"
+            className="text-white/30 animate-bounce min-w-[44px] min-h-[44px] flex items-center justify-center"
+            data-testid="button-scroll-down"
+          >
+            <ChevronDown className="w-6 h-6" />
+          </button>
+        </motion.div>
+      </motion.div>
+    </section>
+  );
+}
+
+function AboutSection() {
+  return (
+    <section id="about" className="py-12 sm:py-20 lg:py-28 bg-[#050505]">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+          variants={staggerSlow}
+          className="grid lg:grid-cols-12 gap-8 lg:gap-8 items-center"
+        >
+          <motion.div variants={maskUp} className="lg:col-span-5 space-y-5 sm:space-y-6 text-center lg:text-left">
+            <div className="space-y-3">
+              <span className="text-primary font-semibold text-sm tracking-[0.25em] uppercase block">
+                Our Story
+              </span>
+              <h2
+                className="font-serif font-bold text-white"
+                style={{
+                  fontSize: "clamp(1.75rem, 5vw, 3.5rem)",
+                  letterSpacing: "-0.05em",
+                  lineHeight: 0.95,
+                }}
+              >
+                About
+                <br />
+                One More Swing
+              </h2>
+            </div>
+            <p className="text-white/50 text-[14px] sm:text-base" style={{ lineHeight: 1.7, marginBottom: "1.75rem" }}>
+              What started as a simple idea, bringing people together through the love of golf, is now becoming a reality. At One More Swing, we believe some of the best moments happen between swings: the laughs after a missed shot, the friendly competition, the "just one more try" that turns into an unforgettable memory.
+            </p>
+            <p className="text-white/50 text-[14px] sm:text-base" style={{ lineHeight: 1.7, marginBottom: "1.25rem" }}>
+              Based in Southern California, One More Swing delivers a fully immersive golf simulator setup designed for:
+            </p>
+            <div className="flex justify-center lg:justify-start">
+              <ul className="space-y-2 list-none p-0 m-0 inline-flex flex-col items-start">
+                {[
+                  "Corporate gatherings",
+                  "Private parties",
+                  "Community celebrations",
+                  "Any special occasion you want to elevate",
+                ].map((item, i) => (
+                  <li key={i} className="text-white/50 text-[14px] sm:text-base flex items-center gap-3" style={{ lineHeight: 1.7 }}>
+                    <span className="block w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <p className="text-white/50 text-[14px] sm:text-base" style={{ lineHeight: 1.7, marginBottom: "1.25rem" }}>
+              Whether your guests are seasoned golfers or picking up a club for the very first time, our setup is designed to be welcoming, professional, and most importantly, fun.
+            </p>
+            <p className="text-white/50 text-[14px] sm:text-base" style={{ lineHeight: 1.7, marginBottom: 0 }}>
+              From the first swing to the last cheer, One More Swing creates moments people will talk about long after the event ends. Sometimes all it takes is one more swing.
+            </p>
+          </motion.div>
+
+          <motion.div variants={scaleIn} className="lg:col-span-7 relative">
+            <div className="relative rounded-md overflow-hidden border border-white/[0.08] lg:ml-12 lg:-mr-8">
+              <img
+                src={simFrontImage}
+                alt="One More Swing mobile golf simulator setup"
+                className="w-full aspect-[4/3] object-cover"
+                loading="lazy"
+                data-testid="img-about"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/70 via-transparent to-transparent" />
+            </div>
+            <div className="grid grid-cols-2 gap-3 mt-3 lg:ml-12 lg:-mr-8">
+              <div className="relative rounded-md overflow-hidden border border-white/[0.08]">
+                <img
+                  src={simAngleImage}
+                  alt="Golf simulator angle view"
+                  className="w-full aspect-[4/3] object-cover"
+                  loading="lazy"
+                  data-testid="img-about-angle"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/50 via-transparent to-transparent" />
+              </div>
+              <div className="relative rounded-md overflow-hidden border border-white/[0.08]">
+                <img
+                  src={simSideImage}
+                  alt="Golf simulator side view"
+                  className="w-full aspect-[4/3] object-cover"
+                  loading="lazy"
+                  data-testid="img-about-side"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/50 via-transparent to-transparent" />
+              </div>
+            </div>
+            <div className="absolute -bottom-6 -left-6 w-28 h-28 sm:w-40 sm:h-40 border border-primary/8 rounded-md hidden lg:block" />
+            <div className="absolute -top-4 -right-4 w-20 h-20 border border-white/5 rounded-md hidden lg:block" />
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+const techFeatures = [
+  {
+    icon: Target,
+    title: "Home Tee Hero Software",
+    description: "Garmin's virtual golf course software that lets you play real, mapped-out courses in a video game style environment.",
+  },
+  {
+    icon: Monitor,
+    title: "GSPro Premium Software",
+    description: "Hyper-realistic 4K course play across 2,000+ courses. GSPro's library is entirely user-created and includes both real-world recreations and fantasy designs.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Performance Bay",
+    description: "A 15x15x11 ft hitting bay for maximum safety and style. Allowing you to swing securely and freely.",
+  },
+  {
+    icon: Trophy,
+    title: "Equipment",
+    description: "Kids clubs available upon request.",
+  },
+];
+
+function TechSection() {
+  return (
+    <section id="tech" className="py-12 sm:py-20 lg:py-28 bg-[#030303]">
+      <div className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={staggerSlow}
+          className="text-center mb-8 sm:mb-16"
+        >
+          <motion.h2
+            variants={maskUp}
+            className="font-serif font-bold text-white mt-4"
+            style={{
+              fontSize: "clamp(1.75rem, 5vw, 3.5rem)",
+              letterSpacing: "-0.05em",
+              lineHeight: 0.95,
+            }}
+          >
+            The Experience
+          </motion.h2>
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={staggerContainer}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"
+        >
+          {techFeatures.map((feature, index) => (
+            <motion.div key={index} variants={maskUp}>
+              <Card
+                className="group relative bg-white/[0.02] border-white/[0.06] p-5 sm:p-7 h-full hover-elevate rounded-lg text-center"
+                data-testid={`card-tech-${index}`}
+              >
+                <div className="w-10 h-10 rounded-md bg-primary/8 border border-white/[0.06] flex items-center justify-center mb-4 mx-auto">
+                  <feature.icon className="w-4 h-4 text-primary" />
+                </div>
+                <h3 className="font-semibold text-white text-sm mb-2 tracking-tight">
+                  {feature.title}
+                </h3>
+                <p className="text-white/40 text-[13px] whitespace-pre-line" style={{ lineHeight: 1.7, marginBottom: 0 }}>
+                  {feature.description}
+                </p>
+              </Card>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function PricingSection() {
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <section id="packages" className="py-12 sm:py-20 lg:py-28 bg-[#030303]">
+      <div className="max-w-5xl mx-auto px-5 sm:px-6 lg:px-8">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={staggerSlow}
+          className="text-center mb-8 sm:mb-16"
+        >
+          <motion.span variants={maskUp} className="text-primary font-semibold text-[10px] tracking-[0.35em] uppercase block">
+            Tailored For You
+          </motion.span>
+          <motion.h2
+            variants={maskUp}
+            className="font-serif font-bold text-white mt-3"
+            style={{
+              fontSize: "clamp(1.75rem, 5vw, 3.5rem)",
+              letterSpacing: "-0.05em",
+              lineHeight: 0.95,
+            }}
+          >
+            Packages & Pricing
+          </motion.h2>
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={staggerContainer}
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6"
+        >
+          <motion.div variants={maskUp}>
+            <div
+              className="relative pricing-card rounded-lg p-5 sm:p-8 h-full"
+              data-testid="card-package-executive"
+            >
+              <div className="space-y-4 sm:space-y-5">
+                <div className="space-y-2">
+                  <span className="text-[10px] font-semibold text-primary tracking-[0.25em] uppercase">
+                    Executive
+                  </span>
+                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-white" style={{ letterSpacing: "-0.03em" }}>
+                    Hourly Rental
+                  </h3>
+                </div>
+
+                <div className="space-y-1.5">
+                  <div className="flex items-baseline gap-2 sm:gap-3">
+                    <span className="text-lg sm:text-2xl font-bold text-white/20 tracking-tight line-through">$250</span>
+                    <span className="text-3xl sm:text-5xl font-bold text-white tracking-tight">$225</span>
+                    <span className="text-white/30 text-xs uppercase tracking-wider">/hour</span>
+                  </div>
+                  <span className="text-[10px] font-semibold text-primary tracking-[0.15em] uppercase block">
+                    First 5 bookings only
+                  </span>
+                </div>
+
+                <div className="w-full h-px bg-white/[0.06]" />
+
+                <ul className="space-y-2.5">
+                  {[
+                    "3-hour minimum",
+                    "Choose between Home Tee Hero or GSPro Software",
+                    "On-site setup & management",
+                    "All necessary equipment included",
+                    "Additional Hours: $200 per extra hour if available",
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <Star className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
+                      <span className="text-white/60 text-[13px] sm:text-sm" style={{ lineHeight: 1.7 }}>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Button
+                  onClick={() => scrollTo("booking")}
+                  className="w-full min-h-[48px] sm:h-auto bg-primary text-primary-foreground border border-primary-border btn-glow text-base"
+                  data-testid="button-book-executive"
+                >
+                  Book Now
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div variants={maskUp}>
+            <div
+              className="relative pricing-card rounded-lg p-5 sm:p-8 h-full flex flex-col justify-center"
+              data-testid="card-package-allday"
+            >
+              <div className="space-y-4 sm:space-y-5">
+                <div className="space-y-2">
+                  <span className="text-[10px] font-semibold text-primary tracking-[0.25em] uppercase">
+                    All Day
+                  </span>
+                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-white" style={{ letterSpacing: "-0.03em" }}>
+                    Full Event Coverage
+                  </h3>
+                </div>
+
+                <Button
+                  onClick={() => scrollTo("booking")}
+                  variant="outline"
+                  className="w-full min-h-[48px] sm:h-auto border-primary/20 text-primary bg-primary/5 text-base"
+                  data-testid="button-book-allday"
+                >
+                  Get a Quote
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+
+function BookingSection() {
+  const { toast } = useToast();
+  const [customEventType, setCustomEventType] = useState("");
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+  const [calendarOpen, setCalendarOpen] = useState(false);
+
+  const form = useForm<InsertBooking>({
+    resolver: zodResolver(insertBookingSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      eventDate: "",
+      eventType: "",
+      startTime: "",
+      location: "",
+      message: "",
+    },
+  });
+
+  const watchedEventType = form.watch("eventType");
+
+  const mutation = useMutation({
+    mutationFn: async (data: InsertBooking) => {
+      const submitData = { ...data };
+      if (submitData.eventType === "other_special_occasion" && customEventType) {
+        submitData.eventType = `Other Special Occasion: ${customEventType}`;
+      }
+      const res = await apiRequest("POST", "/api/bookings", submitData);
+      return res.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Booking Request Sent",
+        description: "We'll be in touch within 24 hours to confirm your event details.",
+      });
+      form.reset();
+      setCustomEventType("");
+      setSelectedDate(undefined);
+    },
+    onError: () => {
+      toast({
+        title: "Something went wrong",
+        description: "Please try again or contact us directly.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const onSubmit = (data: InsertBooking) => {
+    mutation.mutate(data);
+  };
+
+  return (
+    <section id="booking" className="py-12 sm:py-20 lg:py-28 bg-[#030303]">
+      <div className="max-w-3xl mx-auto px-5 sm:px-6 lg:px-8">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={staggerSlow}
+        >
+          <motion.div variants={maskUp} className="text-center mb-8 sm:mb-14">
+            <div className="inline-block mb-4">
+              <span
+                className="text-[9px] sm:text-[10px] font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase bg-primary/8 text-primary px-3 sm:px-4 py-2 rounded-md border border-white/[0.06] leading-relaxed inline-block"
+                data-testid="badge-urgency"
+              >
+                Be Among the First to Host One More Swing at Your Next Event
+              </span>
+            </div>
+
+            <motion.div
+              variants={maskUp}
+              className="mb-5 sm:mb-6"
+              data-testid="badge-slots"
+            >
+              <div className="inline-flex items-center gap-2 sm:gap-3 bg-white/[0.03] border border-white/[0.08] rounded-md px-4 sm:px-5 py-2.5">
+                <span className="font-mono text-primary text-lg sm:text-xl font-bold tracking-[0.1em]" data-testid="text-slots-counter">
+                  04<span className="text-white/20 mx-0.5">/</span>05
+                </span>
+                <span className="text-white/40 text-[10px] tracking-[0.15em] sm:tracking-[0.2em] uppercase font-medium">
+                  Slots Remaining
+                </span>
+              </div>
+            </motion.div>
+
+            <div>
+              <span className="text-primary font-semibold text-[10px] tracking-[0.35em] uppercase">
+                Reserve Your Date
+              </span>
+            </div>
+            <h2
+              className="font-serif font-bold text-white mt-3"
+              style={{
+                fontSize: "clamp(1.75rem, 5vw, 3.5rem)",
+                letterSpacing: "-0.05em",
+                lineHeight: 0.95,
+              }}
+            >
+              Book Your Event
+            </h2>
+            <p className="text-white/40 max-w-lg mx-auto mt-4 text-sm sm:text-base" style={{ lineHeight: 1.8 }}>
+              Tell us about your event and we'll craft the perfect experience
+            </p>
+          </motion.div>
+
+          <motion.div variants={scaleIn}>
+            <Card
+              className="bg-white/[0.02] border-white/[0.06] p-5 sm:p-8 lg:p-10 rounded-lg"
+              data-testid="card-booking-form"
+            >
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Full Name</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="John Smith"
+                              className="bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/20 focus:border-primary/40"
+                              data-testid="input-name"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Email Address</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="email"
+                              placeholder="john@example.com"
+                              className="bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/20 focus:border-primary/40"
+                              data-testid="input-email"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <FormField
+                      control={form.control}
+                      name="eventDate"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                          <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Event Date</FormLabel>
+                          <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  className={`w-full justify-start text-left font-normal bg-white/[0.03] border-white/[0.08] hover:bg-white/[0.05] h-9 ${
+                                    !field.value ? "text-white/20" : "text-white"
+                                  }`}
+                                  data-testid="input-date"
+                                >
+                                  <CalendarIcon className="mr-2 h-4 w-4 text-white/40" />
+                                  {selectedDate ? format(selectedDate, "MMMM d, yyyy") : "Pick a date"}
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0 bg-[#0a0a0a] border-white/10" align="start">
+                              <Calendar
+                                mode="single"
+                                selected={selectedDate}
+                                onSelect={(date) => {
+                                  setSelectedDate(date);
+                                  if (date) {
+                                    field.onChange(format(date, "yyyy-MM-dd"));
+                                  }
+                                  setCalendarOpen(false);
+                                }}
+                                disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="startTime"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Start Time</FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value || ""}>
+                            <FormControl>
+                              <SelectTrigger
+                                className="bg-white/[0.03] border-white/[0.08] text-white"
+                                data-testid="select-start-time"
+                              >
+                                <div className="flex items-center gap-2">
+                                  <Clock className="h-4 w-4 text-white/40" />
+                                  <SelectValue placeholder="Select time" />
+                                </div>
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {timeSlots.map((time) => (
+                                <SelectItem key={time} value={time} data-testid={`option-time-${time.replace(/\s/g, "-").toLowerCase()}`}>
+                                  {time}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <FormField
+                    control={form.control}
+                    name="eventType"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Event Type</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger
+                              className="bg-white/[0.03] border-white/[0.08] text-white"
+                              data-testid="select-event-type"
+                            >
+                              <SelectValue placeholder="Select event type" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="corporate" data-testid="option-corporate">Corporate</SelectItem>
+                            <SelectItem value="birthday" data-testid="option-birthday">Birthday</SelectItem>
+                            <SelectItem value="wedding" data-testid="option-wedding">Wedding</SelectItem>
+                            <SelectItem value="grand_opening" data-testid="option-grand-opening">Grand Opening</SelectItem>
+                            <SelectItem value="community_celebration" data-testid="option-community">Community Celebration</SelectItem>
+                            <SelectItem value="other_special_occasion" data-testid="option-other">Other Special Occasion</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {watchedEventType === "other_special_occasion" && (
+                    <div>
+                      <label className="text-white/60 text-xs uppercase tracking-[0.1em] block mb-2">
+                        Describe Your Event
+                      </label>
+                      <Input
+                        placeholder="Tell us about your special occasion"
+                        className="bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/20 focus:border-primary/40"
+                        data-testid="input-custom-event-type"
+                        value={customEventType}
+                        onChange={(e) => setCustomEventType(e.target.value)}
+                      />
+                    </div>
+                  )}
+
+                  <FormField
+                    control={form.control}
+                    name="location"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">
+                          Location <span className="text-white/20">(City or Zip Code)</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="e.g., Los Angeles, CA or 90210"
+                            className="bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/20 focus:border-primary/40"
+                            data-testid="input-location"
+                            {...field}
+                            value={field.value || ""}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">
+                          Additional Details <span className="text-white/20">(optional)</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Tell us about your event, expected number of guests, location, etc."
+                            rows={4}
+                            className="bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/20 focus:border-primary/40 resize-none"
+                            data-testid="textarea-message"
+                            {...field}
+                            value={field.value || ""}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <Button
+                    type="submit"
+                    disabled={mutation.isPending}
+                    className={`w-full min-h-[48px] sm:h-auto bg-primary text-primary-foreground border border-primary-border text-base btn-glow ${mutation.isPending ? "btn-ball-loader" : ""}`}
+                    size="lg"
+                    data-testid="button-submit-booking"
+                  >
+                    {mutation.isPending ? (
+                      <span role="status" aria-live="polite">
+                        <span className="btn-ball" aria-hidden="true" />
+                        <span className="btn-hole" aria-hidden="true" />
+                        Sending...
+                      </span>
+                    ) : (
+                      <>
+                        Send Inquiry
+                        <ArrowRight className="ml-2 w-4 h-4" aria-hidden="true" />
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </Form>
+            </Card>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+const faqItems = [
+  {
+    question: "What types of events do you service?",
+    answer: "We specialize in corporate events, birthdays, private parties, community celebrations, weddings, and grand openings. If you have a reason to gather, we have a reason to swing.",
+  },
+  {
+    question: "Do guests need golf experience?",
+    answer: "Not at all! Whether someone is a seasoned golfer or picking up a club for the first time, our setup is designed to be fun, welcoming, and easy to enjoy.",
+  },
+  {
+    question: "How much space is required for setup?",
+    answer: "We require a flat surface, minimum of 18x18x12 ft space, and access to a standard power source. We're happy to review your location in advance.",
+  },
+  {
+    question: "Can I use my own golf clubs?",
+    answer: "Yes, you're welcome to bring your own clubs! We provide standard left- & right-handed clubs with rental, along with kids' clubs upon request.",
+  },
+  {
+    question: "How far in advance should we book?",
+    answer: "We recommend booking at least 2 weeks in advance to ensure availability and allow time for proper planning.",
+  },
+  {
+    question: "How do I book One More Swing for my event?",
+    answer: "Contact us at info@onemoreswing.golf with your event date, location, and a few details about what you're planning, and we'll confirm availability and walk you through the next steps.",
+  },
+];
+
+function FAQSection() {
+  return (
+    <section id="faq" className="py-16 sm:py-24 bg-[#050505]" data-testid="section-faq">
+      <div className="max-w-3xl mx-auto px-5 sm:px-6 lg:px-8">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.08 } },
+          }}
+        >
+          <motion.div variants={maskUp} className="text-center mb-10 sm:mb-14">
+            <span className="text-[11px] sm:text-xs font-semibold text-primary tracking-[0.25em] uppercase">
+              Common Questions
+            </span>
+            <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-bold text-white font-display">
+              Frequently Asked Questions
+            </h2>
+          </motion.div>
+
+          <motion.div variants={maskUp}>
+            <Accordion type="single" collapsible className="space-y-3">
+              {faqItems.map((item, index) => (
+                <AccordionItem
+                  key={index}
+                  value={`faq-${index}`}
+                  className="border border-white/[0.06] rounded-xl bg-white/[0.02] px-5 sm:px-6 backdrop-blur-sm"
+                  data-testid={`faq-item-${index}`}
+                >
+                  <AccordionTrigger className="text-left text-white/90 text-[15px] sm:text-base font-medium py-5 hover:no-underline hover:text-white">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-white/50 text-[14px] sm:text-[15px] leading-relaxed pb-5">
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <footer className="bg-[#020202] border-t border-white/[0.04] py-10 sm:py-16">
+      <div className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12">
+          <div className="space-y-4">
+            <h4 className="text-[10px] font-semibold text-white/40 tracking-[0.25em] uppercase">
+              Quick Links
+            </h4>
+            <div className="flex flex-col gap-1">
+              {[
+                { label: "About Us", id: "about" },
+                { label: "Experience", id: "tech" },
+                { label: "Packages", id: "packages" },
+                { label: "FAQ", id: "faq" },
+                { label: "Book Event", id: "booking" },
+              ].map((link) => (
+                <button
+                  key={link.id}
+                  onClick={() => scrollTo(link.id)}
+                  className="text-white/30 text-[13px] text-left hover-elevate px-2 py-2 sm:py-1 rounded-md min-h-[44px] sm:min-h-0 flex items-center"
+                  data-testid={`link-footer-${link.id}`}
+                >
+                  {link.label}
+                </button>
+              ))}
+              <Link
+                href="/contact"
+                className="text-white/30 text-[13px] text-left hover-elevate px-2 py-2 sm:py-1 rounded-md min-h-[44px] sm:min-h-0 flex items-center"
+                data-testid="link-footer-contact"
+              >
+                Contact
+              </Link>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="text-[10px] font-semibold text-white/40 tracking-[0.25em] uppercase">
+              Get In Touch
+            </h4>
+            <div className="flex flex-col gap-2 sm:gap-3">
+              <a href="mailto:info@onemoreswing.golf" className="flex items-center gap-3 min-h-[44px] sm:min-h-0" data-testid="text-email">
+                <Mail className="w-3.5 h-3.5 text-primary shrink-0" />
+                <span className="text-white/30 text-[13px]">info@onemoreswing.golf</span>
+              </a>
+              <a href="tel:+17602169598" className="flex items-center gap-3 min-h-[44px] sm:min-h-0" data-testid="text-phone">
+                <Phone className="w-3.5 h-3.5 text-primary shrink-0" />
+                <span className="text-white/30 text-[13px]">760-216-9598</span>
+              </a>
+              <a
+                href="https://www.instagram.com/onemoreswing_/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 min-h-[44px] sm:min-h-0"
+                data-testid="link-instagram"
+              >
+                <Instagram className="w-3.5 h-3.5 text-primary shrink-0" />
+                <span className="text-white/30 text-[13px]">@onemoreswing_</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-white/[0.04] mt-8 sm:mt-10 pt-6 sm:pt-8 text-center">
+          <p className="text-white/20 text-[11px] tracking-wider">
+            &copy; {new Date().getFullYear()} One More Swing. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+export default function Home() {
+  return (
+    <div className="min-h-dvh bg-[#050505] overflow-x-hidden safe-area-bottom">
+      <div className="film-grain" />
+      <Header />
+      <HeroSection />
+      <AboutSection />
+      <TechSection />
+      <PricingSection />
+      <BookingSection />
+      <FAQSection />
+      <Footer />
+    </div>
+  );
+}
+
+
+========================================
+FILE: client/src/pages/not-found.tsx
+========================================
+import { Link } from "wouter";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+export default function NotFound() {
+  return (
+    <div className="min-h-dvh w-full flex items-center justify-center bg-[#050505] px-5">
+      <div className="text-center space-y-6 max-w-md">
+        <span className="text-primary font-semibold text-[10px] tracking-[0.35em] uppercase block" data-testid="text-404-label">
+          Page Not Found
+        </span>
+        <h1
+          className="font-serif font-bold text-white"
+          style={{ fontSize: "clamp(3rem, 10vw, 6rem)", letterSpacing: "-0.05em", lineHeight: 0.9 }}
+          data-testid="text-404-heading"
+        >
+          404
+        </h1>
+        <p className="text-white/40 text-sm sm:text-base" data-testid="text-404-description">
+          The page you're looking for doesn't exist or has been moved.
+        </p>
+        <Button
+          asChild
+          className="bg-primary text-primary-foreground border border-primary-border btn-glow min-h-[48px] text-base px-8"
+          data-testid="button-404-home"
+        >
+          <Link href="/">
+            <ArrowLeft className="mr-2 w-4 h-4" />
+            Back to Home
+          </Link>
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+
+========================================
+FILE: components.json
+========================================
+{
+    "$schema": "https://ui.shadcn.com/schema.json",
+    "style": "new-york",
+    "rsc": false,
+    "tsx": true,
+    "tailwind": {
+      "config": "tailwind.config.ts",
+      "css": "client/src/index.css",
+      "baseColor": "neutral",
+      "cssVariables": true,
+      "prefix": ""
+    },
+    "aliases": {
+      "components": "@/components",
+      "utils": "@/lib/utils",
+      "ui": "@/components/ui",
+      "lib": "@/lib",
+      "hooks": "@/hooks"
+    }
+}
+
+========================================
+FILE: drizzle.config.ts
+========================================
+import { defineConfig } from "drizzle-kit";
+
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL, ensure the database is provisioned");
+}
+
+export default defineConfig({
+  out: "./migrations",
+  schema: "./shared/schema.ts",
+  dialect: "postgresql",
+  dbCredentials: {
+    url: process.env.DATABASE_URL,
+  },
+});
+
+
+========================================
+FILE: package.json
+========================================
+{
+  "name": "rest-express",
+  "version": "1.0.0",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "NODE_ENV=development tsx server/index.ts",
+    "build": "tsx script/build.ts",
+    "start": "NODE_ENV=production node dist/index.cjs",
+    "check": "tsc",
+    "db:push": "drizzle-kit push"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.10.0",
+    "@jridgewell/trace-mapping": "^0.3.25",
+    "@radix-ui/react-accordion": "^1.2.4",
+    "@radix-ui/react-alert-dialog": "^1.1.7",
+    "@radix-ui/react-aspect-ratio": "^1.1.3",
+    "@radix-ui/react-avatar": "^1.1.4",
+    "@radix-ui/react-checkbox": "^1.1.5",
+    "@radix-ui/react-collapsible": "^1.1.4",
+    "@radix-ui/react-context-menu": "^2.2.7",
+    "@radix-ui/react-dialog": "^1.1.7",
+    "@radix-ui/react-dropdown-menu": "^2.1.7",
+    "@radix-ui/react-hover-card": "^1.1.7",
+    "@radix-ui/react-label": "^2.1.3",
+    "@radix-ui/react-menubar": "^1.1.7",
+    "@radix-ui/react-navigation-menu": "^1.2.6",
+    "@radix-ui/react-popover": "^1.1.7",
+    "@radix-ui/react-progress": "^1.1.3",
+    "@radix-ui/react-radio-group": "^1.2.4",
+    "@radix-ui/react-scroll-area": "^1.2.4",
+    "@radix-ui/react-select": "^2.1.7",
+    "@radix-ui/react-separator": "^1.1.3",
+    "@radix-ui/react-slider": "^1.2.4",
+    "@radix-ui/react-slot": "^1.2.0",
+    "@radix-ui/react-switch": "^1.1.4",
+    "@radix-ui/react-tabs": "^1.1.4",
+    "@radix-ui/react-toast": "^1.2.7",
+    "@radix-ui/react-toggle": "^1.1.3",
+    "@radix-ui/react-toggle-group": "^1.1.3",
+    "@radix-ui/react-tooltip": "^1.2.0",
+    "@tanstack/react-query": "^5.60.5",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
+    "connect-pg-simple": "^10.0.0",
+    "date-fns": "^3.6.0",
+    "drizzle-orm": "^0.39.3",
+    "drizzle-zod": "^0.7.0",
+    "embla-carousel-react": "^8.6.0",
+    "express": "^5.0.1",
+    "express-session": "^1.18.1",
+    "framer-motion": "^11.13.1",
+    "input-otp": "^1.4.2",
+    "lenis": "^1.3.17",
+    "lucide-react": "^0.453.0",
+    "memorystore": "^1.6.7",
+    "minimatch": "^10.2.1",
+    "next-themes": "^0.4.6",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "pg": "^8.16.3",
+    "react": "^18.3.1",
+    "react-day-picker": "^8.10.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.55.0",
+    "react-icons": "^5.4.0",
+    "react-resizable-panels": "^2.1.7",
+    "recharts": "^2.15.2",
+    "rollup": "^2.80.0",
+    "tailwind-merge": "^2.6.0",
+    "tailwindcss-animate": "^1.0.7",
+    "tw-animate-css": "^1.2.5",
+    "vaul": "^1.1.2",
+    "wouter": "^3.3.5",
+    "ws": "^8.18.0",
+    "zod": "^3.24.2",
+    "zod-validation-error": "^3.4.0"
+  },
+  "devDependencies": {
+    "@replit/vite-plugin-cartographer": "^0.4.4",
+    "@replit/vite-plugin-dev-banner": "^0.1.1",
+    "@replit/vite-plugin-runtime-error-modal": "^0.0.3",
+    "@tailwindcss/typography": "^0.5.15",
+    "@tailwindcss/vite": "^4.1.18",
+    "@types/connect-pg-simple": "^7.0.3",
+    "@types/express": "^5.0.0",
+    "@types/express-session": "^1.18.0",
+    "@types/node": "20.19.27",
+    "@types/passport": "^1.0.16",
+    "@types/passport-local": "^1.0.38",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "@types/ws": "^8.5.13",
+    "@vitejs/plugin-react": "^4.7.0",
+    "autoprefixer": "^10.4.20",
+    "drizzle-kit": "^0.31.8",
+    "esbuild": "^0.25.0",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.20.5",
+    "typescript": "5.6.3",
+    "vite": "^7.3.1"
+  },
+  "overrides": {
+    "drizzle-kit": {
+      "@esbuild-kit/esm-loader": "npm:tsx@^4.20.4"
+    }
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.8"
+  }
+}
+
+
+========================================
+FILE: postcss.config.js
+========================================
+export default {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
+
+
+========================================
+FILE: script/build.ts
+========================================
+import { build as esbuild } from "esbuild";
+import { build as viteBuild } from "vite";
+import { rm, readFile } from "fs/promises";
+
+// server deps to bundle to reduce openat(2) syscalls
+// which helps cold start times
+const allowlist = [
+  "@google/generative-ai",
+  "axios",
+  "connect-pg-simple",
+  "cors",
+  "date-fns",
+  "drizzle-orm",
+  "drizzle-zod",
+  "express",
+  "express-rate-limit",
+  "express-session",
+  "jsonwebtoken",
+  "memorystore",
+  "multer",
+  "nanoid",
+  "nodemailer",
+  "openai",
+  "passport",
+  "passport-local",
+  "pg",
+  "stripe",
+  "uuid",
+  "ws",
+  "xlsx",
+  "zod",
+  "zod-validation-error",
+];
+
+async function buildAll() {
+  await rm("dist", { recursive: true, force: true });
+
+  console.log("building client...");
+  await viteBuild();
+
+  console.log("building server...");
+  const pkg = JSON.parse(await readFile("package.json", "utf-8"));
+  const allDeps = [
+    ...Object.keys(pkg.dependencies || {}),
+    ...Object.keys(pkg.devDependencies || {}),
+  ];
+  const externals = allDeps.filter((dep) => !allowlist.includes(dep));
+
+  await esbuild({
+    entryPoints: ["server/index.ts"],
+    platform: "node",
+    bundle: true,
+    format: "cjs",
+    outfile: "dist/index.cjs",
+    define: {
+      "process.env.NODE_ENV": '"production"',
+    },
+    minify: true,
+    external: externals,
+    logLevel: "info",
+  });
+}
+
+buildAll().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+
+
+========================================
+FILE: server/db.ts
+========================================
+import { drizzle } from "drizzle-orm/node-postgres";
+import pg from "pg";
+import * as schema from "@shared/schema";
+
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL must be set.");
+}
+
+export const pool = new pg.Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+export const db = drizzle(pool, { schema });
+
+
+========================================
+FILE: server/index.ts
+========================================
+import express, { type Request, Response, NextFunction } from "express";
+import { registerRoutes } from "./routes";
+import { serveStatic } from "./static";
+import { createServer } from "http";
+
+const app = express();
+const httpServer = createServer(app);
+
+declare module "http" {
+  interface IncomingMessage {
+    rawBody: unknown;
+  }
+}
+
+app.use(
+  express.json({
+    verify: (req, _res, buf) => {
+      req.rawBody = buf;
+    },
+  }),
+);
+
+app.use(express.urlencoded({ extended: false }));
+
+export function log(message: string, source = "express") {
+  const formattedTime = new Date().toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+
+  console.log(`${formattedTime} [${source}] ${message}`);
+}
+
+app.use((req, res, next) => {
+  const start = Date.now();
+  const path = req.path;
+  let capturedJsonResponse: Record<string, any> | undefined = undefined;
+
+  const originalResJson = res.json;
+  res.json = function (bodyJson, ...args) {
+    capturedJsonResponse = bodyJson;
+    return originalResJson.apply(res, [bodyJson, ...args]);
+  };
+
+  res.on("finish", () => {
+    const duration = Date.now() - start;
+    if (path.startsWith("/api")) {
+      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
+      if (capturedJsonResponse) {
+        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
+      }
+
+      log(logLine);
+    }
+  });
+
+  next();
+});
+
+(async () => {
+  await registerRoutes(httpServer, app);
+
+  app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
+    const status = err.status || err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+
+    console.error("Internal Server Error:", err);
+
+    if (res.headersSent) {
+      return next(err);
+    }
+
+    return res.status(status).json({ message });
+  });
+
+  // importantly only setup vite in development and after
+  // setting up all the other routes so the catch-all route
+  // doesn't interfere with the other routes
+  if (process.env.NODE_ENV === "production") {
+    serveStatic(app);
+  } else {
+    const { setupVite } = await import("./vite");
+    await setupVite(httpServer, app);
+  }
+
+  // ALWAYS serve the app on the port specified in the environment variable PORT
+  // Other ports are firewalled. Default to 5000 if not specified.
+  // this serves both the API and the client.
+  // It is the only port that is not firewalled.
+  const port = parseInt(process.env.PORT || "5000", 10);
+  httpServer.listen(
+    {
+      port,
+      host: "0.0.0.0",
+      reusePort: true,
+    },
+    () => {
+      log(`serving on port ${port}`);
+    },
+  );
+})();
+
+
+========================================
+FILE: server/routes.ts
+========================================
+import type { Express } from "express";
+import { createServer, type Server } from "http";
+import { storage } from "./storage";
+import { insertBookingSchema } from "@shared/schema";
+import { ZodError } from "zod";
+import { fromZodError } from "zod-validation-error";
+
+export async function registerRoutes(
+  httpServer: Server,
+  app: Express
+): Promise<Server> {
+  app.post("/api/bookings", async (req, res) => {
+    try {
+      const data = insertBookingSchema.parse(req.body);
+      const booking = await storage.createBooking(data);
+      res.status(201).json(booking);
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const validationError = fromZodError(error);
+        res.status(400).json({ message: validationError.message });
+      } else {
+        res.status(500).json({ message: "Failed to create booking" });
+      }
+    }
+  });
+
+  app.get("/api/bookings", async (_req, res) => {
+    try {
+      const bookings = await storage.getBookings();
+      res.json(bookings);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch bookings" });
+    }
+  });
+
+  return httpServer;
+}
+
+
+========================================
+FILE: server/static.ts
+========================================
+import express, { type Express } from "express";
+import fs from "fs";
+import path from "path";
+
+export function serveStatic(app: Express) {
+  const distPath = path.resolve(__dirname, "public");
+  if (!fs.existsSync(distPath)) {
+    throw new Error(
+      `Could not find the build directory: ${distPath}, make sure to build the client first`,
+    );
+  }
+
+  app.use(express.static(distPath));
+
+  // fall through to index.html if the file doesn't exist
+  app.use("/{*path}", (_req, res) => {
+    res.sendFile(path.resolve(distPath, "index.html"));
+  });
+}
+
+
+========================================
+FILE: server/storage.ts
+========================================
+import { bookings, type Booking, type InsertBooking } from "@shared/schema";
+import { db } from "./db";
+
+export interface IStorage {
+  createBooking(booking: InsertBooking): Promise<Booking>;
+  getBookings(): Promise<Booking[]>;
+}
+
+export class DatabaseStorage implements IStorage {
+  async createBooking(booking: InsertBooking): Promise<Booking> {
+    const [result] = await db.insert(bookings).values(booking).returning();
+    return result;
+  }
+
+  async getBookings(): Promise<Booking[]> {
+    return db.select().from(bookings);
+  }
+}
+
+export const storage = new DatabaseStorage();
+
+
+========================================
+FILE: server/vite.ts
+========================================
+import { type Express } from "express";
+import { createServer as createViteServer, createLogger } from "vite";
+import { type Server } from "http";
+import viteConfig from "../vite.config";
+import fs from "fs";
+import path from "path";
+import { nanoid } from "nanoid";
+
+const viteLogger = createLogger();
+
+export async function setupVite(server: Server, app: Express) {
+  const serverOptions = {
+    middlewareMode: true,
+    hmr: { server, path: "/vite-hmr" },
+    allowedHosts: true as const,
+  };
+
+  const vite = await createViteServer({
+    ...viteConfig,
+    configFile: false,
+    customLogger: {
+      ...viteLogger,
+      error: (msg, options) => {
+        viteLogger.error(msg, options);
+        process.exit(1);
+      },
+    },
+    server: serverOptions,
+    appType: "custom",
+  });
+
+  app.use(vite.middlewares);
+
+  app.use("/{*path}", async (req, res, next) => {
+    const url = req.originalUrl;
+
+    try {
+      const clientTemplate = path.resolve(
+        import.meta.dirname,
+        "..",
+        "client",
+        "index.html",
+      );
+
+      // always reload the index.html file from disk incase it changes
+      let template = await fs.promises.readFile(clientTemplate, "utf-8");
+      template = template.replace(
+        `src="/src/main.tsx"`,
+        `src="/src/main.tsx?v=${nanoid()}"`,
+      );
+      const page = await vite.transformIndexHtml(url, template);
+      res.status(200).set({ "Content-Type": "text/html" }).end(page);
+    } catch (e) {
+      vite.ssrFixStacktrace(e as Error);
+      next(e);
+    }
+  });
+}
+
+
+========================================
+FILE: shared/schema.ts
+========================================
+import { sql } from "drizzle-orm";
+import { pgTable, text, varchar } from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
+import { z } from "zod";
+
+export const bookings = pgTable("bookings", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  eventDate: text("event_date").notNull(),
+  eventType: text("event_type").notNull(),
+  startTime: text("start_time"),
+  location: text("location"),
+  message: text("message"),
+});
+
+export const insertBookingSchema = createInsertSchema(bookings).omit({
+  id: true,
+}).extend({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email"),
+  eventDate: z.string().min(1, "Please select an event date"),
+  eventType: z.string().min(1, "Please select an event type"),
+  startTime: z.string().optional(),
+  location: z.string().optional(),
+});
+
+export type InsertBooking = z.infer<typeof insertBookingSchema>;
+export type Booking = typeof bookings.$inferSelect;
+
+
+========================================
+FILE: tailwind.config.ts
+========================================
+import type { Config } from "tailwindcss";
+
+export default {
+  darkMode: ["class"],
+  content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
+  theme: {
+    extend: {
+      borderRadius: {
+        lg: ".5625rem", /* 9px */
+        md: ".375rem", /* 6px */
+        sm: ".1875rem", /* 3px */
+      },
+      colors: {
+        // Flat / base colors (regular buttons)
+        background: "hsl(var(--background) / <alpha-value>)",
+        foreground: "hsl(var(--foreground) / <alpha-value>)",
+        border: "hsl(var(--border) / <alpha-value>)",
+        input: "hsl(var(--input) / <alpha-value>)",
+        card: {
+          DEFAULT: "hsl(var(--card) / <alpha-value>)",
+          foreground: "hsl(var(--card-foreground) / <alpha-value>)",
+          border: "hsl(var(--card-border) / <alpha-value>)",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover) / <alpha-value>)",
+          foreground: "hsl(var(--popover-foreground) / <alpha-value>)",
+          border: "hsl(var(--popover-border) / <alpha-value>)",
+        },
+        primary: {
+          DEFAULT: "hsl(var(--primary) / <alpha-value>)",
+          foreground: "hsl(var(--primary-foreground) / <alpha-value>)",
+          border: "var(--primary-border)",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary) / <alpha-value>)",
+          foreground: "hsl(var(--secondary-foreground) / <alpha-value>)",
+          border: "var(--secondary-border)",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted) / <alpha-value>)",
+          foreground: "hsl(var(--muted-foreground) / <alpha-value>)",
+          border: "var(--muted-border)",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent) / <alpha-value>)",
+          foreground: "hsl(var(--accent-foreground) / <alpha-value>)",
+          border: "var(--accent-border)",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive) / <alpha-value>)",
+          foreground: "hsl(var(--destructive-foreground) / <alpha-value>)",
+          border: "var(--destructive-border)",
+        },
+        ring: "hsl(var(--ring) / <alpha-value>)",
+        chart: {
+          "1": "hsl(var(--chart-1) / <alpha-value>)",
+          "2": "hsl(var(--chart-2) / <alpha-value>)",
+          "3": "hsl(var(--chart-3) / <alpha-value>)",
+          "4": "hsl(var(--chart-4) / <alpha-value>)",
+          "5": "hsl(var(--chart-5) / <alpha-value>)",
+        },
+        sidebar: {
+          ring: "hsl(var(--sidebar-ring) / <alpha-value>)",
+          DEFAULT: "hsl(var(--sidebar) / <alpha-value>)",
+          foreground: "hsl(var(--sidebar-foreground) / <alpha-value>)",
+          border: "hsl(var(--sidebar-border) / <alpha-value>)",
+        },
+        "sidebar-primary": {
+          DEFAULT: "hsl(var(--sidebar-primary) / <alpha-value>)",
+          foreground: "hsl(var(--sidebar-primary-foreground) / <alpha-value>)",
+          border: "var(--sidebar-primary-border)",
+        },
+        "sidebar-accent": {
+          DEFAULT: "hsl(var(--sidebar-accent) / <alpha-value>)",
+          foreground: "hsl(var(--sidebar-accent-foreground) / <alpha-value>)",
+          border: "var(--sidebar-accent-border)"
+        },
+        status: {
+          online: "rgb(34 197 94)",
+          away: "rgb(245 158 11)",
+          busy: "rgb(239 68 68)",
+          offline: "rgb(156 163 175)",
+        },
+      },
+      fontFamily: {
+        sans: ["var(--font-sans)"],
+        serif: ["var(--font-serif)"],
+        mono: ["var(--font-mono)"],
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
+    },
+  },
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+} satisfies Config;
+
+
+========================================
+FILE: tsconfig.json
+========================================
+{
+  "include": ["client/src/**/*", "shared/**/*", "server/**/*"],
+  "exclude": ["node_modules", "build", "dist", "**/*.test.ts"],
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "./node_modules/typescript/tsbuildinfo",
+    "noEmit": true,
+    "module": "ESNext",
+    "strict": true,
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "types": ["node", "vite/client"],
+    "paths": {
+      "@/*": ["./client/src/*"],
+      "@shared/*": ["./shared/*"]
+    }
+  }
+}
+
+
+========================================
+FILE: vite.config.ts
+========================================
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
+import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+
+export default defineConfig({
+  plugins: [
+    react(),
+    runtimeErrorOverlay(),
+    ...(process.env.NODE_ENV !== "production" &&
+    process.env.REPL_ID !== undefined
+      ? [
+          await import("@replit/vite-plugin-cartographer").then((m) =>
+            m.cartographer(),
+          ),
+          await import("@replit/vite-plugin-dev-banner").then((m) =>
+            m.devBanner(),
+          ),
+        ]
+      : []),
+  ],
+  resolve: {
+    alias: {
+      "@": path.resolve(import.meta.dirname, "client", "src"),
+      "@shared": path.resolve(import.meta.dirname, "shared"),
+      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+    },
+  },
+  root: path.resolve(import.meta.dirname, "client"),
+  build: {
+    outDir: path.resolve(import.meta.dirname, "dist/public"),
+    emptyOutDir: true,
+  },
+  server: {
+    fs: {
+      strict: true,
+      deny: ["**/.*"],
+    },
+  },
+});
+
