@@ -690,12 +690,6 @@ function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
   return (
     <footer className="bg-[#020202] border-t border-white/[0.04] pt-16 pb-10 sm:pt-24 sm:pb-16" data-testid="footer">
       <div className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
-        {/* Zone A: FAQ Transition */}
-        <div className="mb-16 sm:mb-20">
-          <div className="max-w-3xl mx-auto">
-          </div>
-        </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
           {/* Zone C: Get In Touch (Primary) */}
           <div className="order-1 lg:order-2 space-y-6 sm:space-y-8">

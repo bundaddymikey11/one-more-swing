@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
-import { ChevronRight, ChevronLeft, Calendar as CalendarIcon, CheckCircle2, CreditCard, User, Sparkles } from "lucide-react";
+import { ChevronRight, ChevronLeft, Calendar as CalendarIcon, CheckCircle2, CreditCard, User, Sparkles, Star } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
@@ -75,14 +75,80 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
                 <AnimatePresence mode="wait">
                   {step === 1 && (
                     <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
-                      <div className="text-center md:text-left"><h2 className="text-4xl font-serif mb-3">Select Experience</h2><p className="text-white/50 text-lg">Choose the package that best fits your event.</p></div>
-                      <div className="grid sm:grid-cols-2 gap-6">
-                        {[{ id: "executive", title: "Executive", price: "$225/hr", feats: ["3-hour minimum booking", "Full simulator enclosure", "On-site technical host"] }, { id: "allday", title: "All Day", price: "Custom", feats: ["Perfect for weddings & tournaments", "Includes branding options", "Extended hours"] }].map((pkg) => (
-                          <div key={pkg.id} onClick={() => setSelectedPackage(pkg.id as any)} className={`cursor-pointer p-8 rounded-2xl border transition-all duration-300 ${selectedPackage === pkg.id ? "border-primary bg-primary/10 shadow-[0_0_30px_rgba(34,197,94,0.1)]" : "border-white/10 hover:border-white/20 bg-white/5"}`}>
-                            <div className="flex justify-between items-start mb-6"><h3 className="text-2xl font-bold">{pkg.title}</h3><span className="text-primary font-bold text-lg">{pkg.price}</span></div>
-                            <ul className="space-y-3 text-sm text-white/60">{pkg.feats.map(f => <li key={f} className="flex items-center gap-2">• {f}</li>)}</ul>
+                      <div className="text-center md:text-left">
+                        <span className="text-primary font-semibold text-[10px] tracking-[0.35em] uppercase block mb-2">Tailored For You</span>
+                        <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white" style={{ letterSpacing: "-0.04em" }}>Packages &amp; Pricing</h2>
+                        <p className="text-white/50 text-sm mt-2">Choose the package that best fits your event.</p>
+                      </div>
+                      <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
+                        <div
+                          onClick={() => setSelectedPackage("executive")}
+                          className={`relative cursor-pointer pricing-card rounded-lg p-5 sm:p-8 h-full transition-all duration-300 ring-2 ${selectedPackage === "executive" ? "ring-primary shadow-[0_0_30px_rgba(34,197,94,0.15)]" : "ring-transparent hover:ring-white/10"}`}
+                          data-testid="pkg-executive"
+                        >
+                          <div className="space-y-4 sm:space-y-5">
+                            <div className="space-y-2">
+                              <span className="text-[10px] font-semibold text-primary tracking-[0.25em] uppercase">Executive</span>
+                              <h3 className="font-serif text-2xl sm:text-3xl font-bold text-white" style={{ letterSpacing: "-0.03em" }}>Hourly Rental</h3>
+                            </div>
+                            <div className="space-y-1.5">
+                              <div className="flex items-baseline gap-2 sm:gap-3">
+                                <span className="text-lg sm:text-2xl font-bold text-white/20 tracking-tight line-through">$250</span>
+                                <span className="text-3xl sm:text-5xl font-bold text-white tracking-tight">$225</span>
+                                <span className="text-white/30 text-xs uppercase tracking-wider">/hour</span>
+                              </div>
+                              <span className="text-[10px] font-semibold text-primary tracking-[0.15em] uppercase block">First 5 bookings only</span>
+                            </div>
+                            <div className="w-full h-px bg-white/[0.06]" />
+                            <ul className="space-y-2.5">
+                              {[
+                                "3-hour minimum",
+                                "Choose between Home Tee Hero or GSPro Software",
+                                "On-site setup & management",
+                                "All necessary equipment included",
+                                "Additional Hours: $200 per extra hour if available",
+                              ].map((item, i) => (
+                                <li key={i} className="flex items-start gap-3">
+                                  <Star className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
+                                  <span className="text-white/60 text-[13px] sm:text-sm" style={{ lineHeight: 1.7 }}>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                            <div className={`w-full py-2.5 rounded-md text-center text-sm font-semibold transition-all ${selectedPackage === "executive" ? "bg-primary text-black" : "bg-white/5 text-white/60 border border-white/10"}`}>
+                              {selectedPackage === "executive" ? "Selected ✓" : "Select Package"}
+                            </div>
                           </div>
-                        ))}
+                        </div>
+
+                        <div
+                          onClick={() => setSelectedPackage("allday")}
+                          className={`relative cursor-pointer pricing-card rounded-lg p-5 sm:p-8 h-full flex flex-col justify-center transition-all duration-300 ring-2 ${selectedPackage === "allday" ? "ring-primary shadow-[0_0_30px_rgba(34,197,94,0.15)]" : "ring-transparent hover:ring-white/10"}`}
+                          data-testid="pkg-allday"
+                        >
+                          <div className="space-y-4 sm:space-y-5">
+                            <div className="space-y-2">
+                              <span className="text-[10px] font-semibold text-primary tracking-[0.25em] uppercase">All Day</span>
+                              <h3 className="font-serif text-2xl sm:text-3xl font-bold text-white" style={{ letterSpacing: "-0.03em" }}>Full Event Coverage</h3>
+                            </div>
+                            <div className="w-full h-px bg-white/[0.06]" />
+                            <ul className="space-y-2.5">
+                              {[
+                                "Perfect for full-day events & tournaments",
+                                "Custom pricing based on event duration",
+                                "Includes all equipment & on-site support",
+                                "Branding & customization options available",
+                              ].map((item, i) => (
+                                <li key={i} className="flex items-start gap-3">
+                                  <Star className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
+                                  <span className="text-white/60 text-[13px] sm:text-sm" style={{ lineHeight: 1.7 }}>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                            <div className={`w-full py-2.5 rounded-md text-center text-sm font-semibold border transition-all ${selectedPackage === "allday" ? "bg-primary text-black border-primary" : "border-primary/20 text-primary bg-primary/5 hover:bg-primary/10"}`}>
+                              {selectedPackage === "allday" ? "Selected ✓" : "Get a Quote"}
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </motion.div>
                   )}
