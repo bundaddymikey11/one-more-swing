@@ -745,7 +745,7 @@ function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
             <h4 className="text-[10px] font-semibold tracking-[0.25em] uppercase text-center text-[#35b24a]">
               Quick Links
             </h4>
-            <nav className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-8 gap-y-2">
+            <nav className="flex flex-col">
               {[
                 { label: "About Us", id: "about" },
                 { label: "Experience", id: "tech" },
