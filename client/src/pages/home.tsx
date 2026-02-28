@@ -745,7 +745,7 @@ function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
             <h4 className="text-[10px] font-semibold tracking-[0.25em] uppercase text-center text-[#35b24a]">
               Quick Links
             </h4>
-            <nav className="flex flex-col">
+            <nav className="flex flex-col items-center">
               {[
                 { label: "About Us", id: "about" },
                 { label: "Experience", id: "tech" },
@@ -755,7 +755,7 @@ function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
                 <button
                   key={link.id}
                   onClick={() => scrollTo(link.id)}
-                  className="text-white/30 text-[13px] text-left hover:text-white hover:translate-x-1 transition-all duration-300 py-2 flex items-center"
+                  className="text-white/30 text-[13px] text-center hover:text-white transition-all duration-300 py-2 w-full"
                   data-testid={`link-footer-${link.id}`}
                 >
                   {link.label}
@@ -763,7 +763,7 @@ function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
               ))}
               <button
                 onClick={onOpenBooking}
-                className="text-white/30 text-[13px] text-left hover:text-white hover:translate-x-1 transition-all duration-300 py-2 flex items-center"
+                className="text-white/30 text-[13px] text-center hover:text-white transition-all duration-300 py-2 w-full"
                 data-testid="link-footer-booking"
               >
                 Book Event
