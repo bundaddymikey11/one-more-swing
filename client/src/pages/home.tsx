@@ -191,13 +191,6 @@ function Header({ onOpenBooking }: { onOpenBooking: () => void }) {
             >
               Book
             </button>
-            <Link
-              href="/contact"
-              className="text-[11px] font-medium text-white/50 tracking-[0.2em] uppercase hover-elevate px-2 py-1 rounded-md"
-              data-testid="link-nav-contact"
-            >
-              Contact
-            </Link>
           </nav>
         </div>
       </div>
@@ -725,13 +718,6 @@ function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
               >
                 Book Event
               </button>
-              <Link
-                href="/contact"
-                className="text-white/30 text-[13px] text-left hover-elevate px-2 py-2 sm:py-1 rounded-md min-h-[44px] sm:min-h-0 flex items-center"
-                data-testid="link-footer-contact"
-              >
-                Contact
-              </Link>
             </div>
           </div>
 
