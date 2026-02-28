@@ -789,24 +789,12 @@ export default function Home() {
 
   useEffect(() => {
     if (bookingOpen) {
-      const scrollY = window.scrollY;
       document.body.style.overflow = "hidden";
-      document.body.style.position = "fixed";
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = "100%";
     } else {
-      const scrollY = document.body.style.top;
       document.body.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.width = "";
-      window.scrollTo(0, parseInt(scrollY || "0") * -1);
     }
     return () => {
       document.body.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.width = "";
     };
   }, [bookingOpen]);
 
@@ -822,9 +810,9 @@ export default function Home() {
       <Footer onOpenBooking={openBooking} />
 
       <Dialog open={bookingOpen} onOpenChange={setBookingOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-[#0a0a0a] border-white/[0.08] p-0" data-testid="modal-booking">
+        <DialogContent className="max-w-4xl h-[90dvh] flex flex-col bg-[#0a0a0a] border-white/[0.08] p-0" data-testid="modal-booking">
           <DialogTitle className="sr-only">Book Your Event</DialogTitle>
-          <div className="p-6 sm:p-10">
+          <div className="flex-1 overflow-y-auto overscroll-contain p-6 sm:p-10">
             <div className="text-center mb-8 space-y-3">
               <span className="text-primary font-semibold text-xs tracking-[0.3em] uppercase block">
                 Reserve Your Date
