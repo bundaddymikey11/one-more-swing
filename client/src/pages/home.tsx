@@ -693,19 +693,6 @@ function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
         {/* Zone A: FAQ Transition */}
         <div className="mb-16 sm:mb-20">
           <div className="max-w-3xl mx-auto">
-            <Accordion type="single" collapsible className="w-full">
-              <AccordionItem 
-                value="footer-faq" 
-                className="border border-white/[0.06] rounded-xl bg-white/[0.02] px-5 sm:px-6 backdrop-blur-sm"
-              >
-                <AccordionTrigger className="text-left text-white/90 text-[15px] sm:text-base font-medium py-5 hover:no-underline hover:text-white">
-                  How do I book One More Swing for my event?
-                </AccordionTrigger>
-                <AccordionContent className="text-white/50 text-[14px] sm:text-[15px] leading-relaxed pb-5">
-                  Contact us at info@onemoreswing.golf with your event date, location, and a few details about what you're planning, and we'll confirm availability and walk you through the next steps.
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
           </div>
         </div>
 
