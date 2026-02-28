@@ -33,6 +33,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   Target,
   Monitor,
   ShieldCheck,
@@ -122,7 +127,7 @@ function AnnouncementBar() {
 
 import { MobileNav } from "@/components/layout/MobileNav";
 
-function Header() {
+function Header({ onOpenBooking }: { onOpenBooking: () => void }) {
   const [scrolled, setScrolled] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
@@ -164,7 +169,6 @@ function Header() {
               { label: "Experience", id: "tech" },
               { label: "Packages", id: "packages" },
               { label: "FAQ", id: "faq" },
-              { label: "Book", id: "booking" },
             ].map((item) => (
               <button
                 key={item.id}
@@ -175,6 +179,13 @@ function Header() {
                 {item.label}
               </button>
             ))}
+            <button
+              onClick={onOpenBooking}
+              className="text-[11px] font-medium text-white/50 tracking-[0.2em] uppercase hover-elevate px-2 py-1 rounded-md"
+              data-testid="link-nav-booking"
+            >
+              Book
+            </button>
             <Link
               href="/contact"
               className="text-[11px] font-medium text-white/50 tracking-[0.2em] uppercase hover-elevate px-2 py-1 rounded-md"
@@ -185,7 +196,7 @@ function Header() {
           </nav>
 
           <Button
-            onClick={() => scrollTo("booking")}
+            onClick={onOpenBooking}
             className="bg-primary text-primary-foreground border border-primary-border shrink-0 btn-glow min-h-[44px] sm:h-auto"
             data-testid="button-header-book"
           >
@@ -197,13 +208,13 @@ function Header() {
       <MobileNav 
         isOpen={isMobileNavOpen} 
         onClose={() => setIsMobileNavOpen(false)} 
-        onOpenBooking={() => scrollTo("booking")}
+        onOpenBooking={onOpenBooking}
       />
     </motion.header>
   );
 }
 
-function HeroSection() {
+function HeroSection({ onOpenBooking }: { onOpenBooking: () => void }) {
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
@@ -268,7 +279,7 @@ function HeroSection() {
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2">
             <Button
               size="lg"
-              onClick={() => scrollTo("booking")}
+              onClick={onOpenBooking}
               className="w-full sm:w-auto min-h-[48px] sm:h-auto bg-primary text-primary-foreground border border-primary-border text-base px-10 btn-glow"
               data-testid="button-hero-book"
             >
@@ -483,10 +494,7 @@ function TechSection() {
   );
 }
 
-function PricingSection() {
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
+function PricingSection({ onOpenBooking }: { onOpenBooking: () => void }) {
 
   return (
     <section id="packages" className="py-12 sm:py-20 lg:py-28 bg-[#030303]">
@@ -565,7 +573,7 @@ function PricingSection() {
                 </ul>
 
                 <Button
-                  onClick={() => scrollTo("booking")}
+                  onClick={onOpenBooking}
                   className="w-full min-h-[48px] sm:h-auto bg-primary text-primary-foreground border border-primary-border btn-glow text-base"
                   data-testid="button-book-executive"
                 >
@@ -591,7 +599,7 @@ function PricingSection() {
                 </div>
 
                 <Button
-                  onClick={() => scrollTo("booking")}
+                  onClick={onOpenBooking}
                   variant="outline"
                   className="w-full min-h-[48px] sm:h-auto border-primary/20 text-primary bg-primary/5 text-base"
                   data-testid="button-book-allday"
@@ -717,7 +725,7 @@ function FAQSection() {
   );
 }
 
-function Footer() {
+function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
@@ -736,7 +744,6 @@ function Footer() {
                 { label: "Experience", id: "tech" },
                 { label: "Packages", id: "packages" },
                 { label: "FAQ", id: "faq" },
-                { label: "Book Event", id: "booking" },
               ].map((link) => (
                 <button
                   key={link.id}
@@ -747,6 +754,13 @@ function Footer() {
                   {link.label}
                 </button>
               ))}
+              <button
+                onClick={onOpenBooking}
+                className="text-white/30 text-[13px] text-left hover-elevate px-2 py-2 sm:py-1 rounded-md min-h-[44px] sm:min-h-0 flex items-center"
+                data-testid="link-footer-booking"
+              >
+                Book Event
+              </button>
               <Link
                 href="/contact"
                 className="text-white/30 text-[13px] text-left hover-elevate px-2 py-2 sm:py-1 rounded-md min-h-[44px] sm:min-h-0 flex items-center"
@@ -795,17 +809,36 @@ function Footer() {
 }
 
 export default function Home() {
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const openBooking = () => setBookingOpen(true);
+
   return (
     <div className="min-h-dvh bg-[#050505] overflow-x-hidden safe-area-bottom">
       <div className="film-grain" />
-      <Header />
-      <HeroSection />
+      <Header onOpenBooking={openBooking} />
+      <HeroSection onOpenBooking={openBooking} />
       <AboutSection />
       <TechSection />
-      <PricingSection />
-      <BookingSection />
+      <PricingSection onOpenBooking={openBooking} />
       <FAQSection />
-      <Footer />
+      <Footer onOpenBooking={openBooking} />
+
+      <Dialog open={bookingOpen} onOpenChange={setBookingOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-[#0a0a0a] border-white/[0.08] p-0" data-testid="modal-booking">
+          <DialogTitle className="sr-only">Book Your Event</DialogTitle>
+          <div className="p-6 sm:p-10">
+            <div className="text-center mb-8 space-y-3">
+              <span className="text-primary font-semibold text-xs tracking-[0.3em] uppercase block">
+                Reserve Your Date
+              </span>
+              <h2 className="text-3xl md:text-4xl font-serif font-bold text-white tracking-tight">
+                Bring the course to <span className="text-gradient">your doorstep.</span>
+              </h2>
+            </div>
+            <BookingWizard />
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
