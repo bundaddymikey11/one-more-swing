@@ -270,12 +270,15 @@ function HeroSection({ onOpenBooking }: { onOpenBooking: () => void }) {
 
           <motion.div variants={maskUp} className="flex justify-center">
             <h1 className="sr-only">One More Swing — Premium Mobile Golf Simulator Rental</h1>
-            <img
-              src={logoImage}
-              alt="One More Swing"
-              className="h-28 sm:h-48 lg:h-56 w-auto object-contain"
-              data-testid="img-hero-logo"
-            />
+            <div className="relative group">
+              <img
+                src={logoImage}
+                alt="One More Swing"
+                className="h-28 sm:h-48 lg:h-56 w-28 sm:w-48 lg:w-56 object-cover rounded-full border-2 border-primary/20 p-1 bg-black/40 backdrop-blur-sm"
+                data-testid="img-hero-logo"
+              />
+              <div className="absolute inset-0 bg-primary/10 blur-2xl rounded-full -z-10 opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
+            </div>
           </motion.div>
 
           <motion.p
