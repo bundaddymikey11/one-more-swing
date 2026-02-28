@@ -174,7 +174,6 @@ function Header({ onOpenBooking }: { onOpenBooking: () => void }) {
                 className="w-10 h-10 sm:w-14 sm:h-14 object-contain transition-transform duration-500 group-hover:scale-110" 
                 data-testid="img-logo"
               />
-              <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
           </Link>
 
