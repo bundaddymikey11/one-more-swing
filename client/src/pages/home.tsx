@@ -166,11 +166,7 @@ function Header({ onOpenBooking }: { onOpenBooking: () => void }) {
             </div>
           </button>
 
-          <Link href="/" className="md:absolute md:left-1/2 md:-translate-x-1/2 flex items-center gap-2 group" data-testid="link-nav-logo">
-            <div className="relative">
-              <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            </div>
-          </Link>
+          <div className="hidden md:block flex-1" />
 
           <nav className="hidden md:flex items-center gap-8" data-testid="nav-desktop">
             {[
@@ -203,15 +199,6 @@ function Header({ onOpenBooking }: { onOpenBooking: () => void }) {
               Contact
             </Link>
           </nav>
-
-          <Button
-            onClick={onOpenBooking}
-            className="bg-primary text-primary-foreground border border-primary-border shrink-0 btn-glow min-h-[44px] sm:h-auto"
-            data-testid="button-header-book"
-          >
-            <span className="hidden sm:inline">Inquire Now</span>
-            <span className="sm:hidden text-sm">Inquire</span>
-          </Button>
         </div>
       </div>
       <MobileNav 
