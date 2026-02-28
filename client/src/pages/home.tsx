@@ -51,7 +51,7 @@ import { useRef, useState, useEffect } from "react";
 import { format } from "date-fns";
 import logoImage from "@assets/Logo_1771044908308.png";
 import simFrontImage from "@assets/Untitled_1772248722147.PNG";
-import simAngleImage from "@assets/Generated_Image_February_26,_2026_-_4_45PM_1772153667428.png";
+import simAngleImage from "@assets/Untitled-2_1772248840982.PNG";
 import simSideImage from "@assets/Generated_Image_February_26,_2026_-_4_53PM_1772153667428.png";
 
 const maskUp = {
