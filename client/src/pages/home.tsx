@@ -394,8 +394,6 @@ function AboutSection() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/50 via-transparent to-transparent" />
               </div>
             </div>
-            <div className="absolute -bottom-6 -left-6 w-28 h-28 sm:w-40 sm:h-40 border border-primary/8 rounded-md hidden lg:block" />
-            <div className="absolute -top-4 -right-4 w-20 h-20 border border-white/5 rounded-md hidden lg:block" />
           </motion.div>
         </motion.div>
       </div>
