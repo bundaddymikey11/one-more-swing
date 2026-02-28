@@ -194,7 +194,11 @@ function Header() {
           </Button>
         </div>
       </div>
-      <MobileNav isOpen={isMobileNavOpen} onClose={() => setIsMobileNavOpen(false)} />
+      <MobileNav 
+        isOpen={isMobileNavOpen} 
+        onClose={() => setIsMobileNavOpen(false)} 
+        onOpenBooking={() => scrollTo("booking")}
+      />
     </motion.header>
   );
 }
