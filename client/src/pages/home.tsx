@@ -120,8 +120,11 @@ function AnnouncementBar() {
   );
 }
 
+import { MobileNav } from "@/components/layout/MobileNav";
+
 function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -145,6 +148,16 @@ function Header() {
       <AnnouncementBar />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4 h-[56px] sm:h-20">
+          <button 
+            className="md:hidden p-2 text-white" 
+            onClick={() => setIsMobileNavOpen(true)}
+            aria-label="Open Menu"
+          >
+            <div className="w-6 h-0.5 bg-white mb-1.5" />
+            <div className="w-6 h-0.5 bg-white mb-1.5" />
+            <div className="w-6 h-0.5 bg-white" />
+          </button>
+
           <nav className="hidden md:flex items-center gap-8" data-testid="nav-desktop">
             {[
               { label: "About", id: "about" },
@@ -181,6 +194,7 @@ function Header() {
           </Button>
         </div>
       </div>
+      <MobileNav isOpen={isMobileNavOpen} onClose={() => setIsMobileNavOpen(false)} />
     </motion.header>
   );
 }
