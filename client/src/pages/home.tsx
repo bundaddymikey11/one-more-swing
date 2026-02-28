@@ -32,6 +32,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { BookingWizard } from "@/components/booking/BookingWizard";
 import {
   Dialog,
   DialogContent,
@@ -435,7 +436,7 @@ const techFeatures = [
   {
     icon: Trophy,
     title: "Equipment",
-    description: "Kids clubs available upon request.",
+    description: "Premium golf balls, clubs for right handed/left handed players, and kids clubs available upon request.",
   },
 ];
 
@@ -615,41 +616,6 @@ function PricingSection({ onOpenBooking }: { onOpenBooking: () => void }) {
   );
 }
 
-
-import { BookingWizard } from "@/components/booking/BookingWizard";
-
-function BookingSection() {
-  return (
-    <section id="booking" className="py-24 sm:py-32 bg-[#050505] relative overflow-hidden" data-testid="section-booking">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full pointer-events-none">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[120px]" />
-      </div>
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={staggerSlow}
-          className="space-y-16"
-        >
-          <div className="text-center max-w-3xl mx-auto space-y-4">
-            <motion.span variants={maskUp} className="text-primary font-semibold text-xs tracking-[0.3em] uppercase block">
-              Reserve Your Date
-            </motion.span>
-            <motion.h2 variants={maskUp} className="text-4xl md:text-6xl font-serif font-bold text-white tracking-tight">
-              Bring the course to <span className="text-gradient">your doorstep.</span>
-            </motion.h2>
-          </div>
-
-          <motion.div variants={fadeUp}>
-            <BookingWizard />
-          </motion.div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
 
 const faqItems = [
   {
