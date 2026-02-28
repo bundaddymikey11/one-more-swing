@@ -649,10 +649,7 @@ function FAQSection() {
           }}
         >
           <motion.div variants={maskUp} className="text-center mb-10 sm:mb-14">
-            <span className="text-[11px] sm:text-xs font-semibold text-primary tracking-[0.25em] uppercase">
-              Common Questions
-            </span>
-            <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-bold text-white font-display">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white font-display">
               Frequently Asked Questions
             </h2>
           </motion.div>
