@@ -742,7 +742,7 @@ function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
 
           {/* Zone B: Quick Links (Secondary) */}
           <div className="order-2 lg:order-1 space-y-6 sm:space-y-8 lg:pt-2">
-            <h4 className="text-[10px] font-semibold text-white/40 tracking-[0.25em] uppercase">
+            <h4 className="text-[10px] font-semibold tracking-[0.25em] uppercase text-center text-[#35b24a]">
               Quick Links
             </h4>
             <nav className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-8 gap-y-2">
