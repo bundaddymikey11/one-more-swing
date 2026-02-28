@@ -88,7 +88,7 @@ function AboutSection() {
 }
 
 function TechSection() {
-  const features = [{ icon: Target, title: "Precision Tracking", desc: "Home Tee Hero software maps real-world courses with pinpoint accuracy." }, { icon: Monitor, title: "4K Resolution", desc: "Immersive visuals on our GSPro premium software library of 2,000+ courses." }, { icon: ShieldCheck, title: "Safety First", desc: "Professional 15x15x11 ft enclosure ensures safety for players and guests." }, { icon: Trophy, title: "Pro Equipment", desc: "Top-tier clubs provided for all ages." }];
+  const features = [{ icon: Target, title: "Precision Tracking", desc: "Home Tee Hero software maps real-world courses with pinpoint accuracy." }, { icon: Monitor, title: "4K Resolution", desc: "Immersive visuals on our GSPro premium software library of 2,000+ courses." }, { icon: ShieldCheck, title: "Safety First", desc: "Professional 15x15x11 ft enclosure ensures safety for players and guests." }, { icon: Trophy, title: "Pro Equipment", desc: "Top-tier clubs provided for left and right-handed players of all ages." }];
   return (
     <section id="tech" className="py-40 bg-[#080808]">
       <div className="container-luxury">
@@ -153,13 +153,8 @@ function Footer() {
     <footer className="py-24 border-t border-white/5 bg-[#020202]">
       <div className="container-luxury">
         <div className="flex flex-col md:flex-row justify-between items-center gap-12">
-          <img src={logoImage} alt="OMS" className="h-10 opacity-50" />
-          <div className="flex items-center gap-10">
-            <a href="mailto:info@onemoreswing.golf" className="text-white/40 hover:text-primary transition-colors"><Mail className="w-6 h-6" /></a>
-            <a href="tel:+17602169598" className="text-white/40 hover:text-primary transition-colors"><Phone className="w-6 h-6" /></a>
-            <a href="#" className="text-white/40 hover:text-primary transition-colors"><Instagram className="w-6 h-6" /></a>
-          </div>
-          <p className="text-white/30 text-sm tracking-widest uppercase">© 2026 One More Swing. SoCal's Premier Mobile Golf.</p>
+          <div className="text-center md:text-left"><img src={logoImage} alt="OMS" className="h-10 mb-8 mx-auto md:mx-0 opacity-50 grayscale hover:grayscale-0 transition-all duration-500" /><p className="text-sm text-white/30 leading-loose">© {new Date().getFullYear()} One More Swing. <br/>Premium Golf Entertainment.</p></div>
+          <div className="flex gap-10"><a href="#" className="text-white/40 hover:text-primary transition-colors duration-300"><Instagram className="w-6 h-6" /></a><a href="mailto:info@onemoreswing.golf" className="text-white/40 hover:text-primary transition-colors duration-300"><Mail className="w-6 h-6" /></a></div>
         </div>
       </div>
     </footer>
@@ -168,31 +163,44 @@ function Footer() {
 
 export default function Home() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
-  useEffect(() => { if (isBookingOpen) document.body.style.overflow = "hidden"; else document.body.style.overflow = "unset"; }, [isBookingOpen]);
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white selection:bg-primary selection:text-black">
+    <div className="min-h-screen bg-background overflow-x-hidden selection:bg-primary/30">
+      <div className="film-grain" />
       <Header onOpenBooking={() => setIsBookingOpen(true)} />
-      <main>
-        <HeroSection onOpenBooking={() => setIsBookingOpen(true)} />
-        <AboutSection />
-        <TechSection />
-        <PricingSection onOpenBooking={() => setIsBookingOpen(true)} />
-        <FAQSection />
-      </main>
+      <HeroSection onOpenBooking={() => setIsBookingOpen(true)} />
+      <AboutSection />
+      <TechSection />
+      <PricingSection onOpenBooking={() => setIsBookingOpen(true)} />
+      <FAQSection />
       <Footer />
 
+      {/* Booking Modal */}
       <AnimatePresence>
         {isBookingOpen && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsBookingOpen(false)} className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl" />
-            <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 20 }} className="fixed inset-0 z-[101] flex items-center justify-center p-6 pointer-events-none">
-              <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto pointer-events-auto relative glass-panel p-8 md:p-16">
-                <button onClick={() => setIsBookingOpen(false)} className="absolute top-8 right-8 text-white/40 hover:text-white transition-colors"><X className="w-8 h-8" /></button>
-                <BookingWizard onClose={() => setIsBookingOpen(false)} />
-              </div>
+          <div className="fixed inset-0 z-[2000] flex items-center justify-center p-4 sm:p-6">
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+              onClick={() => setIsBookingOpen(false)}
+              className="absolute inset-0 bg-black/90 backdrop-blur-sm" 
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }} 
+              animate={{ opacity: 1, scale: 1, y: 0 }} 
+              exit={{ opacity: 0, scale: 0.95, y: 20 }} 
+              className="relative z-10 w-full max-w-5xl max-h-[95vh] overflow-y-auto custom-scrollbar bg-[#080808] border border-white/10 rounded-3xl shadow-2xl p-6 sm:p-12"
+            >
+              <button 
+                onClick={() => setIsBookingOpen(false)} 
+                className="absolute top-6 right-6 p-3 bg-white/5 hover:bg-white/10 rounded-full transition-colors z-50 text-white/50 hover:text-white"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <BookingWizard onClose={() => setIsBookingOpen(false)} />
             </motion.div>
-          </>
+          </div>
         )}
       </AnimatePresence>
     </div>
