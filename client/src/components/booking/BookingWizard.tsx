@@ -1,0 +1,123 @@
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { insertBookingSchema, type InsertBooking } from "@shared/schema";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import { ChevronRight, ChevronLeft, Calendar as CalendarIcon, CheckCircle2, CreditCard, User, Sparkles } from "lucide-react";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card } from "@/components/ui/card";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+
+const steps = [{ id: 1, title: "Package", icon: Sparkles }, { id: 2, title: "Date", icon: CalendarIcon }, { id: 3, title: "Details", icon: User }, { id: 4, title: "Review", icon: CheckCircle2 }];
+const timeSlots = ["8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM"];
+const eventTypes = [{ value: "corporate", label: "Corporate Event" }, { value: "birthday", label: "Birthday Party" }, { value: "wedding", label: "Wedding" }, { value: "other", label: "Other Celebration" }];
+
+export function BookingWizard() {
+  const [step, setStep] = useState(1);
+  const { toast } = useToast();
+  const [selectedPackage, setSelectedPackage] = useState<"executive" | "allday" | null>(null);
+  const form = useForm<InsertBooking>({ resolver: zodResolver(insertBookingSchema), defaultValues: { name: "", email: "", eventDate: "", eventType: "", startTime: "", location: "", message: "" } });
+
+  const mutation = useMutation({
+    mutationFn: async (data: InsertBooking) => {
+      const finalData = { ...data, message: `${data.message || ''}\n[Selected Package: ${selectedPackage}]` };
+      const res = await apiRequest("POST", "/api/bookings", finalData);
+      return res.json();
+    },
+    onSuccess: () => { toast({ title: "Request Received", description: "We'll be in touch shortly." }); setStep(1); form.reset(); setSelectedPackage(null); },
+    onError: () => { toast({ title: "Error", description: "Please try again.", variant: "destructive" }); },
+  });
+
+  const nextStep = async () => {
+    let isValid = false;
+    if (step === 1) { if (selectedPackage) isValid = true; else toast({ title: "Please select a package", variant: "destructive" }); }
+    else if (step === 2) isValid = await form.trigger(["eventDate", "startTime", "eventType"]);
+    else if (step === 3) isValid = await form.trigger(["name", "email", "location"]);
+    if (isValid) setStep((s) => s + 1);
+  };
+
+  return (
+    <div className="w-full max-w-5xl mx-auto py-8">
+      <div className="mb-16 px-4 relative flex justify-between">
+        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-white/10 -z-10" />
+        <div className="absolute top-1/2 left-0 h-0.5 bg-primary -z-10 transition-all duration-500" style={{ width: `${((step - 1) / 3) * 100}%` }} />
+        {steps.map((s) => (
+          <div key={s.id} className="flex flex-col items-center gap-4">
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${s.id <= step ? "bg-primary text-black shadow-[0_0_20px_rgba(34,197,94,0.4)]" : "bg-[#1a1a1a] text-white/40 border border-white/10"}`}><s.icon className="w-5 h-5" /></div>
+            <span className={`hidden sm:block text-xs uppercase tracking-widest font-semibold ${s.id <= step ? "text-white" : "text-white/30"}`}>{s.title}</span>
+          </div>
+        ))}
+      </div>
+      <div className="grid lg:grid-cols-3 gap-10">
+        <div className="lg:col-span-2">
+          <Card className="glass-panel p-8 md:p-12 min-h-[550px] flex flex-col justify-center">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit((d) => mutation.mutate(d))} className="space-y-8">
+                <AnimatePresence mode="wait">
+                  {step === 1 && (
+                    <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
+                      <div className="text-center md:text-left"><h2 className="text-4xl font-serif mb-3">Select Experience</h2><p className="text-white/50 text-lg">Choose the package that best fits your event.</p></div>
+                      <div className="grid sm:grid-cols-2 gap-6">
+                        {[{ id: "executive", title: "Executive", price: "$225/hr", feats: ["3-hour minimum", "Full Setup"] }, { id: "allday", title: "All Day", price: "Custom", feats: ["Full Coverage", "Branding"] }].map((pkg) => (
+                          <div key={pkg.id} onClick={() => setSelectedPackage(pkg.id as any)} className={`cursor-pointer p-8 rounded-2xl border transition-all duration-300 ${selectedPackage === pkg.id ? "border-primary bg-primary/10 shadow-[0_0_30px_rgba(34,197,94,0.1)]" : "border-white/10 hover:border-white/20 bg-white/5"}`}>
+                            <div className="flex justify-between items-start mb-6"><h3 className="text-2xl font-bold">{pkg.title}</h3><span className="text-primary font-bold text-lg">{pkg.price}</span></div>
+                            <ul className="space-y-3 text-sm text-white/60">{pkg.feats.map(f => <li key={f} className="flex items-center gap-2">• {f}</li>)}</ul>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                  {step === 2 && (
+                    <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
+                      <div className="text-center md:text-left"><h2 className="text-4xl font-serif mb-3">Event Logistics</h2></div>
+                      <div className="grid md:grid-cols-2 gap-8">
+                        <FormField control={form.control} name="eventDate" render={({ field }) => (<FormItem className="flex flex-col"><FormLabel className="text-white/80">Date</FormLabel><Popover><PopoverTrigger asChild><FormControl><Button variant={"outline"} className={`w-full pl-4 h-12 text-left font-normal glass-input ${!field.value && "text-muted-foreground"}`}>{field.value ? format(new Date(field.value), "PPP") : <span>Pick a date</span>}<CalendarIcon className="ml-auto h-4 w-4 opacity-50" /></Button></FormControl></PopoverTrigger><PopoverContent className="w-auto p-0" align="start"><Calendar mode="single" selected={field.value ? new Date(field.value) : undefined} onSelect={(date) => field.onChange(date?.toISOString())} disabled={(date) => date < new Date() || date < new Date("1900-01-01")} initialFocus /></PopoverContent></Popover><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="startTime" render={({ field }) => (<FormItem><FormLabel className="text-white/80">Start Time</FormLabel><Select onValueChange={field.onChange} defaultValue={field.value || undefined}><FormControl><SelectTrigger className="glass-input h-12 pl-4"><SelectValue placeholder="Select time" /></SelectTrigger></FormControl><SelectContent>{timeSlots.map((time) => <SelectItem key={time} value={time}>{time}</SelectItem>)}</SelectContent></Select><FormMessage /></FormItem>)} />
+                      </div>
+                      <FormField control={form.control} name="eventType" render={({ field }) => (<FormItem><FormLabel className="text-white/80">Event Type</FormLabel><Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger className="glass-input h-12 pl-4"><SelectValue placeholder="Select type" /></SelectTrigger></FormControl><SelectContent>{eventTypes.map((type) => <SelectItem key={type.value} value={type.value}>{type.label}</SelectItem>)}</SelectContent></Select><FormMessage /></FormItem>)} />
+                    </motion.div>
+                  )}
+                  {step === 3 && (
+                    <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
+                      <div className="text-center md:text-left"><h2 className="text-4xl font-serif mb-3">Contact Details</h2></div>
+                      <div className="grid md:grid-cols-2 gap-8">
+                        <FormField control={form.control} name="name" render={({ field }) => <FormItem><FormLabel className="text-white/80">Name</FormLabel><FormControl><Input placeholder="John Doe" {...field} className="glass-input h-12 px-4" /></FormControl><FormMessage /></FormItem>} />
+                        <FormField control={form.control} name="email" render={({ field }) => <FormItem><FormLabel className="text-white/80">Email</FormLabel><FormControl><Input placeholder="john@example.com" {...field} className="glass-input h-12 px-4" /></FormControl><FormMessage /></FormItem>} />
+                      </div>
+                      <FormField control={form.control} name="location" render={({ field }) => <FormItem><FormLabel className="text-white/80">Location</FormLabel><FormControl><Input placeholder="City, Zip, or Venue" {...field} className="glass-input h-12 px-4" /></FormControl><FormMessage /></FormItem>} />
+                      <FormField control={form.control} name="message" render={({ field }) => <FormItem><FormLabel className="text-white/80">Requests</FormLabel><FormControl><Textarea placeholder="Any specifics?" className="glass-input resize-none p-4 min-h-[120px]" {...field} /></FormControl><FormMessage /></FormItem>} />
+                    </motion.div>
+                  )}
+                  {step === 4 && (
+                    <motion.div key="step4" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
+                      <div className="text-center md:text-left"><h2 className="text-4xl font-serif mb-3">Review</h2><p className="text-white/50 text-lg">Verify your details.</p></div>
+                      <div className="p-8 rounded-2xl bg-white/5 border border-white/10 space-y-6">
+                        <div className="flex justify-between border-b border-white/10 pb-4"><span className="text-white/60">Package</span><span className="font-semibold uppercase text-primary tracking-wide">{selectedPackage}</span></div>
+                        <div className="flex justify-between border-b border-white/10 pb-4"><span className="text-white/60">Date</span><span className="font-semibold text-right">{form.getValues("eventDate") ? format(new Date(form.getValues("eventDate")), "MMM d") : "N/A"} @ {form.getValues("startTime")}</span></div>
+                        <div className="flex justify-between"><span className="text-white/60">Location</span><span className="font-semibold text-right">{form.getValues("location")}</span></div>
+                      </div>
+                      <div className="bg-primary/5 border border-primary/20 rounded-xl p-6 flex items-start gap-4"><CreditCard className="w-6 h-6 text-primary mt-0.5" /><div className="text-base"><p className="font-semibold text-white">No payment required today</p></div></div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <div className="flex justify-between pt-8 mt-8 border-t border-white/10">
+                  {step > 1 ? <Button type="button" variant="ghost" onClick={() => setStep(s => s - 1)} className="text-white/60 hover:text-white"><ChevronLeft className="w-5 h-5 mr-2" />Back</Button> : <div />}
+                  {step < 4 ? <Button type="button" onClick={nextStep} className="luxury-button px-10 h-14 text-lg rounded-full">Next Step<ChevronRight className="w-5 h-5 ml-2" /></Button> : <Button type="submit" disabled={mutation.isPending} className="luxury-button px-10 w-full md:w-auto text-lg h-14 rounded-full">{mutation.isPending ? "Processing..." : "Submit Request"}</Button>}
+                </div>
+              </form>
+            </Form>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
