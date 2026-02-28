@@ -688,14 +688,86 @@ function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
   };
 
   return (
-    <footer className="bg-[#020202] border-t border-white/[0.04] py-10 sm:py-16">
+    <footer className="bg-[#020202] border-t border-white/[0.04] pt-16 pb-10 sm:pt-24 sm:pb-16" data-testid="footer">
       <div className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12">
-          <div className="space-y-4">
+        {/* Zone A: FAQ Transition */}
+        <div className="mb-16 sm:mb-20">
+          <div className="max-w-3xl mx-auto">
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem 
+                value="footer-faq" 
+                className="border border-white/[0.06] rounded-xl bg-white/[0.02] px-5 sm:px-6 backdrop-blur-sm"
+              >
+                <AccordionTrigger className="text-left text-white/90 text-[15px] sm:text-base font-medium py-5 hover:no-underline hover:text-white">
+                  How do I book One More Swing for my event?
+                </AccordionTrigger>
+                <AccordionContent className="text-white/50 text-[14px] sm:text-[15px] leading-relaxed pb-5">
+                  Contact us at info@onemoreswing.golf with your event date, location, and a few details about what you're planning, and we'll confirm availability and walk you through the next steps.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
+          {/* Zone C: Get In Touch (Primary) */}
+          <div className="order-1 lg:order-2 space-y-6 sm:space-y-8">
+            <h4 className="text-[11px] font-bold text-primary tracking-[0.3em] uppercase">
+              Get In Touch
+            </h4>
+            <address className="not-italic flex flex-col gap-3 sm:gap-4">
+              <a 
+                href="mailto:info@onemoreswing.golf" 
+                className="group flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] hover:border-primary/30 transition-all duration-300 min-h-[64px]"
+                data-testid="footer-contact-email"
+              >
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 transition-transform group-hover:scale-110">
+                  <Mail className="w-5 h-5 text-primary" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[10px] text-white/30 uppercase tracking-widest font-bold">Email Us</span>
+                  <span className="text-white/90 text-base sm:text-lg font-medium">info@onemoreswing.golf</span>
+                </div>
+              </a>
+
+              <a 
+                href="tel:+17602169598" 
+                className="group flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] hover:border-primary/30 transition-all duration-300 min-h-[64px]"
+                data-testid="footer-contact-phone"
+              >
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 transition-transform group-hover:scale-110">
+                  <Phone className="w-5 h-5 text-primary" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[10px] text-white/30 uppercase tracking-widest font-bold">Call Us</span>
+                  <span className="text-white/90 text-base sm:text-lg font-medium">760-216-9598</span>
+                </div>
+              </a>
+
+              <a 
+                href="https://www.instagram.com/onemoreswing_/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] hover:border-primary/30 transition-all duration-300 min-h-[64px]"
+                data-testid="footer-contact-instagram"
+              >
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 transition-transform group-hover:scale-110">
+                  <Instagram className="w-5 h-5 text-primary" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[10px] text-white/30 uppercase tracking-widest font-bold">Follow Us</span>
+                  <span className="text-white/90 text-base sm:text-lg font-medium">@onemoreswing_</span>
+                </div>
+              </a>
+            </address>
+          </div>
+
+          {/* Zone B: Quick Links (Secondary) */}
+          <div className="order-2 lg:order-1 space-y-6 sm:space-y-8 lg:pt-2">
             <h4 className="text-[10px] font-semibold text-white/40 tracking-[0.25em] uppercase">
               Quick Links
             </h4>
-            <div className="flex flex-col gap-1">
+            <nav className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-x-8 gap-y-2">
               {[
                 { label: "About Us", id: "about" },
                 { label: "Experience", id: "tech" },
@@ -705,7 +777,7 @@ function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
                 <button
                   key={link.id}
                   onClick={() => scrollTo(link.id)}
-                  className="text-white/30 text-[13px] text-left hover-elevate px-2 py-2 sm:py-1 rounded-md min-h-[44px] sm:min-h-0 flex items-center"
+                  className="text-white/30 text-[13px] text-left hover:text-white hover:translate-x-1 transition-all duration-300 py-2 flex items-center"
                   data-testid={`link-footer-${link.id}`}
                 >
                   {link.label}
@@ -713,43 +785,18 @@ function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
               ))}
               <button
                 onClick={onOpenBooking}
-                className="text-white/30 text-[13px] text-left hover-elevate px-2 py-2 sm:py-1 rounded-md min-h-[44px] sm:min-h-0 flex items-center"
+                className="text-white/30 text-[13px] text-left hover:text-white hover:translate-x-1 transition-all duration-300 py-2 flex items-center"
                 data-testid="link-footer-booking"
               >
                 Book Event
               </button>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <h4 className="text-[10px] font-semibold text-white/40 tracking-[0.25em] uppercase">
-              Get In Touch
-            </h4>
-            <div className="flex flex-col gap-2 sm:gap-3">
-              <a href="mailto:info@onemoreswing.golf" className="flex items-center gap-3 min-h-[44px] sm:min-h-0" data-testid="text-email">
-                <Mail className="w-3.5 h-3.5 text-primary shrink-0" />
-                <span className="text-white/30 text-[13px]">info@onemoreswing.golf</span>
-              </a>
-              <a href="tel:+17602169598" className="flex items-center gap-3 min-h-[44px] sm:min-h-0" data-testid="text-phone">
-                <Phone className="w-3.5 h-3.5 text-primary shrink-0" />
-                <span className="text-white/30 text-[13px]">760-216-9598</span>
-              </a>
-              <a
-                href="https://www.instagram.com/onemoreswing_/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 min-h-[44px] sm:min-h-0"
-                data-testid="link-instagram"
-              >
-                <Instagram className="w-3.5 h-3.5 text-primary shrink-0" />
-                <span className="text-white/30 text-[13px]">@onemoreswing_</span>
-              </a>
-            </div>
+            </nav>
           </div>
         </div>
 
-        <div className="border-t border-white/[0.04] mt-8 sm:mt-10 pt-6 sm:pt-8 text-center">
-          <p className="text-white/20 text-[11px] tracking-wider">
+        {/* Copyright */}
+        <div className="border-t border-white/[0.04] mt-16 sm:mt-24 pt-8 text-center">
+          <p className="text-white/10 text-[10px] sm:text-[11px] tracking-[0.15em] uppercase font-medium">
             &copy; {new Date().getFullYear()} One More Swing. All rights reserved.
           </p>
         </div>

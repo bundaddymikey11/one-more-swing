@@ -1,0 +1,44 @@
+You are a senior frontend engineer. Update my existing Replit project (do NOT create a new app). Goal: polish ONLY the footer section for mobile-first clarity and conversion. Keep the current colors, fonts, and dark theme—no redesign, no new palette.
+
+CONTEXT
+The footer currently contains:
+- An FAQ accordion item near the top (“How do I book One More Swing for my event?”)
+- A “QUICK LINKS” list (About Us, Experience, Packages, FAQ, Book Event, Contact)
+- A “GET IN TOUCH” section (email, phone, Instagram)
+- A copyright line
+
+REQUIREMENTS (FOOTER ONLY)
+1) Split the footer into 3 clearly separated zones with spacing + subtle dividers:
+   Zone A: FAQ/Accordion (transition into footer)
+   Zone B: Quick Links (secondary)
+   Zone C: Get in Touch (primary emphasis)
+
+2) Visual hierarchy rules:
+   - “Get in Touch” must be the most visually prominent (bigger text than quick links, more spacing, tap-friendly rows).
+   - Quick Links should be quieter (slightly lower opacity, smaller font, tighter spacing).
+   - FAQ section sits above both as the transition.
+   - Copyright is lowest emphasis.
+
+3) Interaction / usability:
+   - Email and phone should be clearly tappable with large hit areas (44px+ height).
+   - Entire row should be clickable for email/phone/social, not just the text.
+   - Add hover/active states (subtle opacity/translate) for links and contact rows.
+   - Ensure good contrast and accessibility on dark background.
+
+4) Layout:
+   - Mobile-first: single column with clean spacing.
+   - On tablet/desktop: Quick Links and Get in Touch can become 2 columns under the FAQ zone.
+   - Keep alignment consistent and avoid excessive empty space.
+
+5) Implementation details:
+   - Find the Footer component (or the section in the main page) and refactor it cleanly.
+   - Use semantic HTML: <footer>, <nav>, <address>.
+   - Use reusable classes or small components (FooterSection, FooterLinkRow).
+   - Do not change any copy/text.
+   - Do not touch other parts of the site.
+
+OUTPUT
+- Provide the exact files changed and the full updated code for each changed file.
+- If the project uses Tailwind, use Tailwind classes.
+- If it uses plain CSS, update the CSS file with footer-specific classes only (namespaced like .oms-footer__*).
+- Build clean with no lint errors.
