@@ -66,8 +66,8 @@ export function MobileNav({ isOpen, onClose, onOpenBooking }: MobileNavProps) {
                 <X className="w-8 h-8" />
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto py-16 px-10 flex flex-col gap-10">
-              <nav className="flex flex-col gap-8">
+            <div className="flex-1 min-h-0 overflow-y-auto py-10 px-10 flex flex-col">
+              <nav className="flex flex-col gap-6">
                 {menuItems.map((item, i) => (
                   <motion.button
                     key={item.id}
@@ -75,7 +75,7 @@ export function MobileNav({ isOpen, onClose, onOpenBooking }: MobileNavProps) {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05 + 0.1 }}
                     onClick={() => scrollTo(item.id)}
-                    className="text-4xl sm:text-5xl font-serif font-bold text-white/80 hover:text-primary text-left transition-colors"
+                    className="text-3xl sm:text-4xl font-serif font-bold text-white/80 hover:text-primary text-left transition-colors py-1"
                   >
                     {item.label}
                   </motion.button>
@@ -85,19 +85,19 @@ export function MobileNav({ isOpen, onClose, onOpenBooking }: MobileNavProps) {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3 }}
                   onClick={handleBookClick}
-                  className="text-4xl sm:text-5xl font-serif font-bold text-primary hover:text-white text-left transition-colors"
+                  className="text-3xl sm:text-4xl font-serif font-bold text-primary hover:text-white text-left transition-colors py-1"
                 >
                   Book Event
                 </motion.button>
               </nav>
-              <div className="mt-auto space-y-10">
+              <div className="mt-8 space-y-6 pb-6">
                 <div className="h-px w-full bg-white/10" />
-                <div className="grid grid-cols-2 gap-6">
-                  <a href="mailto:info@onemoreswing.golf" className="flex flex-col gap-3 p-6 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
-                    <Mail className="w-6 h-6 text-primary" /><span className="text-sm font-medium text-white/60 tracking-wide uppercase">Email Us</span>
+                <div className="grid grid-cols-2 gap-4">
+                  <a href="mailto:info@onemoreswing.golf" className="flex flex-col gap-2 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+                    <Mail className="w-5 h-5 text-primary" /><span className="text-xs font-medium text-white/60 tracking-wide uppercase">Email Us</span>
                   </a>
-                  <a href="tel:+17602169598" className="flex flex-col gap-3 p-6 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
-                    <Phone className="w-6 h-6 text-primary" /><span className="text-sm font-medium text-white/60 tracking-wide uppercase">Call Us</span>
+                  <a href="tel:+17602169598" className="flex flex-col gap-2 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+                    <Phone className="w-5 h-5 text-primary" /><span className="text-xs font-medium text-white/60 tracking-wide uppercase">Call Us</span>
                   </a>
                 </div>
               </div>
