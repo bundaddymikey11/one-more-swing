@@ -690,7 +690,7 @@ function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
           {/* Zone C: Get In Touch (Primary) */}
           <div className="order-1 lg:order-2 space-y-6 sm:space-y-8">
-            <h4 className="text-[11px] font-bold text-primary tracking-[0.3em] uppercase">
+            <h4 className="text-[11px] font-bold text-primary tracking-[0.3em] uppercase text-center">
               Get In Touch
             </h4>
             <address className="not-italic flex flex-col gap-3 sm:gap-4">
