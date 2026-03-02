@@ -33,6 +33,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { BookingWizard } from "@/components/booking/BookingWizard";
+import { MobileNav } from "@/components/layout/MobileNav";
 import {
   Dialog,
   DialogContent,
@@ -126,8 +127,6 @@ function AnnouncementBar() {
   );
 }
 
-import { MobileNav } from "@/components/layout/MobileNav";
-
 function Header({ onOpenBooking }: { onOpenBooking: () => void }) {
   const [scrolled, setScrolled] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
@@ -155,7 +154,7 @@ function Header({ onOpenBooking }: { onOpenBooking: () => void }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4 h-[56px] sm:h-20">
           <button 
-            className="md:hidden p-2 text-white" 
+            className="md:hidden p-2 text-white min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md hover:bg-white/5 transition-colors" 
             onClick={() => setIsMobileNavOpen(true)}
             aria-label="Open Menu"
           >
@@ -168,7 +167,7 @@ function Header({ onOpenBooking }: { onOpenBooking: () => void }) {
 
           <div className="hidden md:block flex-1" />
 
-          <nav className="hidden md:flex items-center gap-8" data-testid="nav-desktop">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8" data-testid="nav-desktop">
             {[
               { label: "About", id: "about" },
               { label: "Experience", id: "tech" },
@@ -178,7 +177,7 @@ function Header({ onOpenBooking }: { onOpenBooking: () => void }) {
               <button
                 key={item.id}
                 onClick={() => scrollTo(item.id)}
-                className="text-[11px] font-medium text-white/50 tracking-[0.2em] uppercase hover-elevate px-2 py-1 rounded-md"
+                className="text-[11px] font-medium text-white/50 tracking-[0.2em] uppercase hover-elevate px-3 py-2 rounded-md hover:text-white/90 transition-colors duration-300 min-h-[44px] flex items-center"
                 data-testid={`link-nav-${item.id}`}
               >
                 {item.label}
@@ -186,7 +185,7 @@ function Header({ onOpenBooking }: { onOpenBooking: () => void }) {
             ))}
             <button
               onClick={onOpenBooking}
-              className="text-[11px] font-medium text-white/50 tracking-[0.2em] uppercase hover-elevate px-2 py-1 rounded-md"
+              className="text-[11px] font-medium text-white/50 tracking-[0.2em] uppercase hover-elevate px-3 py-2 rounded-md hover:text-white/90 transition-colors duration-300 min-h-[44px] flex items-center"
               data-testid="link-nav-booking"
             >
               Book
@@ -223,6 +222,7 @@ function HeroSection({ onOpenBooking }: { onOpenBooking: () => void }) {
           src="/images/hero-socal.png"
           alt="Southern California luxury golf lifestyle"
           className="w-full h-[120%] object-cover"
+          loading="eager"
           data-testid="img-hero"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/70 via-[#050505]/40 to-[#050505]" />
@@ -339,10 +339,10 @@ function AboutSection() {
                 One More Swing
               </h2>
             </div>
-            <p className="text-white/50 text-[14px] sm:text-base" style={{ lineHeight: 1.7, marginBottom: "1.75rem" }}>
+            <p className="text-white/[0.55] text-[14px] sm:text-base" style={{ lineHeight: 1.7, marginBottom: "1.75rem" }}>
               What started as a simple idea, bringing people together through the love of golf, is now becoming a reality. At One More Swing, we believe some of the best moments happen between swings: the laughs after a missed shot, the friendly competition, the "just one more try" that turns into an unforgettable memory.
             </p>
-            <p className="text-white/50 text-[14px] sm:text-base" style={{ lineHeight: 1.7, marginBottom: "1.25rem" }}>
+            <p className="text-white/[0.55] text-[14px] sm:text-base" style={{ lineHeight: 1.7, marginBottom: "1.25rem" }}>
               Based in Southern California, One More Swing delivers a fully immersive golf simulator setup designed for:
             </p>
             <div className="flex justify-center lg:justify-start">
@@ -353,17 +353,17 @@ function AboutSection() {
                   "Community celebrations",
                   "Any special occasion you want to elevate",
                 ].map((item, i) => (
-                  <li key={i} className="text-white/50 text-[14px] sm:text-base flex items-center gap-3" style={{ lineHeight: 1.7 }}>
+                  <li key={i} className="text-white/[0.55] text-[14px] sm:text-base flex items-center gap-3" style={{ lineHeight: 1.7 }}>
                     <span className="block w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
                     {item}
                   </li>
                 ))}
               </ul>
             </div>
-            <p className="text-white/50 text-[14px] sm:text-base" style={{ lineHeight: 1.7, marginBottom: "1.25rem" }}>
+            <p className="text-white/[0.55] text-[14px] sm:text-base" style={{ lineHeight: 1.7, marginBottom: "1.25rem" }}>
               Whether your guests are seasoned golfers or picking up a club for the very first time, our setup is designed to be welcoming, professional, and most importantly, fun.
             </p>
-            <p className="text-white/50 text-[14px] sm:text-base" style={{ lineHeight: 1.7, marginBottom: 0 }}>
+            <p className="text-white/[0.55] text-[14px] sm:text-base" style={{ lineHeight: 1.7, marginBottom: 0 }}>
               From the first swing to the last cheer, One More Swing creates moments people will talk about long after the event ends. Sometimes all it takes is one more swing.
             </p>
           </motion.div>
@@ -474,7 +474,7 @@ function TechSection() {
                 <h3 className="font-semibold text-white text-sm mb-2 tracking-tight">
                   {feature.title}
                 </h3>
-                <p className="text-white/40 text-[13px] whitespace-pre-line" style={{ lineHeight: 1.7, marginBottom: 0 }}>
+                <p className="text-white/[0.45] text-[13px] whitespace-pre-line" style={{ lineHeight: 1.7, marginBottom: 0 }}>
                   {feature.description}
                 </p>
               </Card>
@@ -742,7 +742,7 @@ function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
 
           {/* Zone B: Quick Links (Secondary) */}
           <div className="order-2 lg:order-1 space-y-6 sm:space-y-8 lg:pt-2">
-            <h4 className="text-[10px] font-semibold tracking-[0.25em] uppercase text-center text-[#35b24a]">
+            <h4 className="text-[10px] font-semibold tracking-[0.25em] uppercase text-center text-primary">
               Quick Links
             </h4>
             <nav className="flex flex-col items-center">
@@ -755,7 +755,7 @@ function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
                 <button
                   key={link.id}
                   onClick={() => scrollTo(link.id)}
-                  className="text-white/30 text-[13px] text-center hover:text-white transition-all duration-300 py-2 w-full"
+                  className="text-white/30 text-[13px] text-center hover:text-white/80 transition-colors duration-300 py-2.5 w-full min-h-[44px] flex items-center justify-center"
                   data-testid={`link-footer-${link.id}`}
                 >
                   {link.label}
@@ -763,7 +763,7 @@ function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
               ))}
               <button
                 onClick={onOpenBooking}
-                className="text-white/30 text-[13px] text-center hover:text-white transition-all duration-300 py-2 w-full"
+                className="text-white/30 text-[13px] text-center hover:text-white/80 transition-colors duration-300 py-2.5 w-full min-h-[44px] flex items-center justify-center"
                 data-testid="link-footer-booking"
               >
                 Book Event

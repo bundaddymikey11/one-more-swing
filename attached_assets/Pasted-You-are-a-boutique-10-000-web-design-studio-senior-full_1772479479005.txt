@@ -1,0 +1,92 @@
+You are a boutique $10,000 web design studio + senior full-stack engineer working inside THIS existing Replit project.
+
+MISSION
+Polish and harden the existing One More Swing website so it looks premium and everything works.
+DO NOT change the site format, page structure, section order, or any of the existing words/copy.
+You may NOT rewrite any text.
+You may NOT remove sections.
+You may NOT add new sections.
+You may ONLY improve what already exists: design tokens, spacing, typography, components, responsiveness, accessibility, motion, performance, and reliability.
+
+NON-NEGOTIABLES
+- Keep all text exactly identical (character-for-character).
+- Keep layout structure and section order identical.
+- Keep routes identical.
+- Do not introduce heavy libraries unless already installed.
+- Ensure the app builds and runs after every set of changes.
+
+PHASE 0 — BASELINE + INVENTORY
+1) Detect stack/framework and styling approach (Tailwind/CSS Modules/styled-components/etc).
+2) Run the project locally in Replit and confirm it boots with no errors.
+3) Create /docs/POLISH_NOTES.md with:
+   - stack
+   - run commands
+   - key routes/pages
+   - where styles live
+   - any issues found
+
+PHASE 1 — DESIGN SYSTEM (NO COPY CHANGES)
+Implement or refine a consistent system:
+- Typography scale: define H1/H2/H3/body/small with consistent sizes across pages.
+- Improve letter-spacing, line-height, font smoothing, and font-weight usage.
+- Establish a spacing scale (e.g., 4/8/12/16/24/32/48/64) and apply consistently.
+- Ensure consistent max-width containers and section padding across breakpoints.
+- Improve color usage: keep current palette but refine contrast (especially body text).
+- Replace any harsh borders with subtle separators where appropriate (but do not change layout).
+- Ensure consistent corner radius and shadow system.
+
+PHASE 2 — HERO + NAV + FOOTER (VISUAL ONLY)
+Without changing any words or section order:
+- Improve visual hierarchy: spacing above/below headline, CTA alignment, line-height.
+- Improve button styling: hover/active/focus states, subtle lift, consistent padding.
+- Improve nav: spacing, hover states, active state, mobile menu behavior.
+- Improve footer: spacing, link styles, readability.
+
+PHASE 3 — PRICING + BOOKING FLOW (VISUAL + UX STATES ONLY)
+Keep all words identical.
+- Make pricing cards feel premium: refine shadows, spacing, alignment, bullet spacing.
+- Ensure featured/primary button looks clearly primary (without changing text).
+- Improve stepper/steps UI: consistent spacing, clearer active step styling, better mobile layout.
+- Add loading/disabled states for buttons where actions occur.
+- Validate forms: clean inline errors, focus states, keyboard navigation.
+- Ensure all form fields are properly labeled (accessibility) without changing visible copy.
+
+PHASE 4 — FAQ + ACCORDIONS (VISUAL ONLY)
+Keep all Q/A text identical.
+- Improve accordion interaction: smooth open/close animation, chevron rotation, spacing rhythm.
+- Improve readability: line-height, spacing between items, subtle separators.
+
+PHASE 5 — RESPONSIVE + A11Y PASS
+- Test at common widths: 375, 390, 428, 768, 1024, 1280+.
+- Fix overflow, cramped spacing, inconsistent padding.
+- Ensure tap targets are >= 44px on mobile.
+- Add focus rings for keyboard users (tasteful, on-brand).
+- Check contrast ratios; adjust ONLY colors/opacity, not words.
+
+PHASE 6 — PERFORMANCE + RELIABILITY
+- Optimize images if present (lazy load, proper sizing) without changing content.
+- Remove unused CSS/classes/components introduced by accident.
+- Ensure no console errors/warnings in normal navigation.
+- Add defensive error handling where network calls exist.
+- If payments exist: verify env vars are referenced safely and errors show gracefully.
+
+PHASE 7 — QA CHECKLIST (MUST COMPLETE)
+Create /docs/QA_CHECKLIST.md and verify each:
+- All pages load without errors
+- All buttons/links work
+- Mobile nav works
+- Forms validate cleanly
+- No layout shift on load
+- No horizontal scroll
+- Stripe (if present) can be tested in test mode (do not change copy)
+- Lighthouse-minded: avoid huge JS bundles, avoid blocking resources
+
+DELIVERABLE
+- A polished, premium-looking site that preserves the exact structure and exact wording.
+- /docs/POLISH_NOTES.md
+- /docs/QA_CHECKLIST.md
+- A summary of what changed and how to run/test in Replit.
+
+IMPORTANT
+If you are ever about to change any text or restructure layout, STOP and choose a visual-only alternative.
+Proceed now.

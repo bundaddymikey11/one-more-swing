@@ -124,6 +124,17 @@ attached_assets/  → Reference materials and design specs
 - **Theme color**: #050505 (matches dark background)
 - **Favicon**: PNG favicon at `/favicon.png`
 
+### Polish Pass (Phase 1-7) — March 2026
+- **Design System**: Added h3 base typography, global focus-visible rings, font smoothing (optimizeLegibility), improved body text contrast (white/65)
+- **CSS Utilities**: pricing-card hover elevation with box-shadow, glass-input focus rings, luxury-button disabled states
+- **Accordion**: Smoother animation timing (0.35s cubic-bezier easing)
+- **Nav**: 44px min tap targets, hover text color transitions, consistent spacing
+- **Booking Wizard**: ARIA roles (progressbar, radio), keyboard accessibility on package cards, active step scale indicator, formatted form layout, data-testid attributes on all form inputs
+- **MobileNav**: Escape key close, ARIA dialog/modal roles, consistent tap targets, data-testid attributes
+- **Footer**: CSS variable for green heading, 44px min link targets, centered layout
+- **Docs**: `/docs/POLISH_NOTES.md` (audit findings), `/docs/QA_CHECKLIST.md` (verification)
+- **Build**: Deployment configured with `NPM_CONFIG_PRODUCTION=false npm install && npm run build`
+
 ## External Dependencies
 
 - **PostgreSQL**: Required database, connection via `DATABASE_URL` environment variable
