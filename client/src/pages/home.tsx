@@ -38,6 +38,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import {
   Target,
@@ -56,6 +57,7 @@ import {
 import { Link } from "wouter";
 import { useRef, useState, useEffect } from "react";
 import { format } from "date-fns";
+import { scrollToSection } from "@/lib/scrollTo";
 import logoImage from "@assets/Logo_1771044908308.png";
 import simFrontImage from "@assets/Untitled_1772248722147.PNG";
 import simAngleImage from "@assets/Untitled-2_1772248840982.PNG";
@@ -104,10 +106,6 @@ const timeSlots = [
 ];
 
 function AnnouncementBar() {
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
     <motion.div
       initial={{ clipPath: "inset(100% 0 0 0)" }}
@@ -115,10 +113,10 @@ function AnnouncementBar() {
       transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
       className="w-full bg-primary/90 backdrop-blur-sm py-3 sm:py-2.5 text-center cursor-pointer min-h-[44px] flex items-center justify-center"
       data-testid="banner-scarcity"
-      onClick={() => scrollTo("packages")}
+      onClick={() => scrollToSection("packages")}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => { if (e.key === "Enter") scrollTo("packages"); }}
+      onKeyDown={(e) => { if (e.key === "Enter") scrollToSection("packages"); }}
     >
       <p className="text-white text-[10px] sm:text-[11px] font-semibold tracking-[0.15em] sm:tracking-[0.2em] uppercase px-5 sm:px-4 leading-relaxed">
         Be Among the First to Host One More Swing at Your Next Event
@@ -136,10 +134,6 @@ function Header({ onOpenBooking }: { onOpenBooking: () => void }) {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <motion.header
@@ -176,7 +170,7 @@ function Header({ onOpenBooking }: { onOpenBooking: () => void }) {
             ].map((item) => (
               <button
                 key={item.id}
-                onClick={() => scrollTo(item.id)}
+                onClick={() => scrollToSection(item.id)}
                 className="text-[11px] font-medium text-white/50 tracking-[0.2em] uppercase hover-elevate px-3 py-2 rounded-md hover:text-white/90 transition-colors duration-300 min-h-[44px] flex items-center"
                 data-testid={`link-nav-${item.id}`}
               >
@@ -203,10 +197,6 @@ function Header({ onOpenBooking }: { onOpenBooking: () => void }) {
 }
 
 function HeroSection({ onOpenBooking }: { onOpenBooking: () => void }) {
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
-
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -281,7 +271,7 @@ function HeroSection({ onOpenBooking }: { onOpenBooking: () => void }) {
             <Button
               size="lg"
               variant="outline"
-              onClick={() => scrollTo("packages")}
+              onClick={() => scrollToSection("packages")}
               className="w-full sm:w-auto min-h-[48px] sm:h-auto text-base px-10 bg-white/5 backdrop-blur-sm border-white/15 text-white"
               data-testid="button-hero-packages"
             >
@@ -297,7 +287,7 @@ function HeroSection({ onOpenBooking }: { onOpenBooking: () => void }) {
           className="absolute bottom-8 left-1/2 -translate-x-1/2"
         >
           <button
-            onClick={() => scrollTo("about")}
+            onClick={() => scrollToSection("about")}
             aria-label="Scroll to About section"
             className="text-white/30 animate-bounce min-w-[44px] min-h-[44px] flex items-center justify-center"
             data-testid="button-scroll-down"
@@ -680,10 +670,6 @@ function FAQSection() {
 }
 
 function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
     <footer className="bg-[#020202] border-t border-white/[0.04] pt-16 pb-10 sm:pt-24 sm:pb-16" data-testid="footer">
       <div className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
@@ -754,7 +740,7 @@ function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
               ].map((link) => (
                 <button
                   key={link.id}
-                  onClick={() => scrollTo(link.id)}
+                  onClick={() => scrollToSection(link.id)}
                   className="text-white/30 text-[13px] text-center hover:text-white/80 transition-colors duration-300 py-2.5 w-full min-h-[44px] flex items-center justify-center"
                   data-testid={`link-footer-${link.id}`}
                 >
@@ -788,6 +774,13 @@ export default function Home() {
   const openBooking = () => setBookingOpen(true);
 
   useEffect(() => {
+    const hash = window.location.hash.replace("#", "");
+    if (hash) {
+      setTimeout(() => scrollToSection(hash), 400);
+    }
+  }, []);
+
+  useEffect(() => {
     if (bookingOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -810,8 +803,9 @@ export default function Home() {
       <Footer onOpenBooking={openBooking} />
 
       <Dialog open={bookingOpen} onOpenChange={setBookingOpen}>
-        <DialogContent className="max-w-4xl h-[90dvh] flex flex-col bg-[#0a0a0a] border-white/[0.08] p-0" data-testid="modal-booking">
+        <DialogContent className="max-w-4xl h-[90dvh] flex flex-col bg-[#0a0a0a] border-white/[0.08] p-0" data-testid="modal-booking" aria-describedby="booking-description">
           <DialogTitle className="sr-only">Book Your Event</DialogTitle>
+          <DialogDescription id="booking-description" className="sr-only">Fill out the form to reserve your mobile golf simulator event.</DialogDescription>
           <div className="flex-1 overflow-y-auto overscroll-contain p-6 sm:p-10">
             <div className="text-center mb-8 space-y-3">
               <span className="text-primary font-semibold text-xs tracking-[0.3em] uppercase block">

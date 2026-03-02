@@ -52,6 +52,16 @@
     text-rendering: optimizeLegibility;
   }
 
+  section[id] {
+    scroll-margin-top: 120px;
+  }
+
+  @media (min-width: 640px) {
+    section[id] {
+      scroll-margin-top: 140px;
+    }
+  }
+
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/30 selection:text-white;
     font-family: 'Montserrat', sans-serif;

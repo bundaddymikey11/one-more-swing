@@ -1,0 +1,127 @@
+You are a senior front-end QA engineer and UX polish specialist.
+
+Objective:
+Audit the entire website and ensure ALL navigation, buttons, hyperlinks, and anchor links function perfectly and scroll to the correct visual location.
+
+Do NOT change wording, layout structure, branding, or overall design.
+Only fix functionality and polish behavior.
+
+━━━━━━━━━━━━━━━━━━━━━━
+PHASE 1 — LINK & BUTTON AUDIT
+━━━━━━━━━━━━━━━━━━━━━━
+
+1. Find and test every:
+   - <a> anchor link
+   - button with onClick handler
+   - navigation menu item
+   - footer link
+   - CTA button
+   - logo click-to-home link
+
+2. Confirm:
+   - Internal section links scroll to correct section top
+   - External links open properly
+   - No 404 errors
+   - No console errors
+   - No broken routes
+
+If broken, fix cleanly without redesigning.
+
+━━━━━━━━━━━━━━━━━━━━━━
+PHASE 2 — ANCHOR SCROLL FIX (CRITICAL)
+
+Some anchor links are scrolling halfway into sections instead of aligning correctly.
+
+Implement a universal smooth scroll correction:
+
+• If there is a fixed header/navbar:
+   - Calculate header height dynamically
+   - Offset scroll position properly
+
+Add a global scroll handler that ensures:
+   targetElement.getBoundingClientRect().top
+   accounts for fixed header height
+   and scrolls to exact section top.
+
+If using CSS:
+Add:
+html {
+  scroll-behavior: smooth;
+}
+
+If using JS:
+Implement a reusable function:
+
+function scrollToSection(id) {
+  const element = document.getElementById(id);
+  const headerOffset = document.querySelector("header")?.offsetHeight || 0;
+  const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+  const offsetPosition = elementPosition - headerOffset;
+
+  window.scrollTo({
+    top: offsetPosition,
+    behavior: "smooth"
+  });
+}
+
+Then refactor all anchor links to use this function.
+
+━━━━━━━━━━━━━━━━━━━━━━
+PHASE 3 — MOBILE VIEWPORT VALIDATION
+
+Test on:
+- iPhone width
+- Tablet width
+- Desktop width
+
+Ensure:
+• No anchor overscroll
+• No section cut-off
+• No content hidden under navbar
+• No jump glitches
+• No layout shift after scroll
+
+If layout shifts:
+Fix spacing, padding, or scroll margin.
+
+You may add:
+section {
+  scroll-margin-top: 100px;
+}
+
+Adjust dynamically if needed.
+
+━━━━━━━━━━━━━━━━━━━━━━
+PHASE 4 — ROUTE VALIDATION
+
+If using React Router or similar:
+Confirm:
+• All routes render correct component
+• No blank pages
+• Back button works
+• Logo click returns to home
+• Hash navigation works
+
+━━━━━━━━━━━━━━━━━━━━━━
+PHASE 5 — FINAL POLISH PASS
+
+Ensure:
+• Buttons have pointer cursor
+• Hover states work
+• No dead click zones
+• No duplicate IDs
+• No console warnings
+• No hydration mismatch (if SSR)
+• No broken images
+• No CLS layout shift
+
+Return:
+1. List of issues found
+2. Fixes applied
+3. Any improvements made
+4. Confirmation the site is production-ready
+
+Do not refactor unrelated components.
+Do not change wording.
+Do not redesign.
+Only improve functionality and polish.

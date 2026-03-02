@@ -113,7 +113,9 @@ attached_assets/  → Reference materials and design specs
 - **Lenis keyboard handling**: On touch devices, Lenis smooth scrolling is paused while form inputs are focused, then the input is scrolled into view. Lenis resumes on blur. Desktop focus behavior is unaffected.
 - **iOS appearance reset**: Inputs and textareas have `-webkit-appearance: none` to prevent iOS default styling
 - **Safe area insets**: Footer uses `env(safe-area-inset-bottom)` for notched devices
-- **Section scroll offsets**: `section[id]` elements have `scroll-margin-top: 140px` to account for fixed header + announcement bar
+- **Section scroll offsets**: `section[id]` elements have responsive `scroll-margin-top` (120px mobile / 140px desktop) to account for fixed header + announcement bar
+- **Shared scroll utility**: `client/src/lib/scrollTo.ts` — `scrollToSection(id)` dynamically calculates header height + 16px offset for accurate scroll positioning; used by all nav links, footer links, announcement bar, hero CTAs, and mobile nav
+- **Hash navigation**: Home component handles `window.location.hash` on mount to support cross-page hash links (e.g., `/contact` → `/#packages`)
 - **Accessibility**: sr-only h1 on homepage, aria-labels on icon buttons, aria-live on loading states, focus-visible outlines, prefers-reduced-motion support
 
 ## SEO & Social Sharing

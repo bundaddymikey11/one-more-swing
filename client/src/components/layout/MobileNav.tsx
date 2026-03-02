@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Instagram, Mail, Phone } from "lucide-react";
 import { useEffect } from "react";
+import { scrollToSection } from "@/lib/scrollTo";
 import logoImage from "@assets/Logo_1771044908308.png";
 
 interface MobileNavProps {
@@ -37,10 +38,10 @@ export function MobileNav({ isOpen, onClose, onOpenBooking }: MobileNavProps) {
     return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen, onClose]);
 
-  const scrollTo = (id: string) => {
+  const handleScrollTo = (id: string) => {
     onClose();
     setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      scrollToSection(id);
     }, 300);
   };
 
@@ -92,7 +93,7 @@ export function MobileNav({ isOpen, onClose, onOpenBooking }: MobileNavProps) {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05 + 0.1 }}
-                    onClick={() => scrollTo(item.id)}
+                    onClick={() => handleScrollTo(item.id)}
                     className="text-3xl sm:text-4xl font-serif font-bold text-white/80 hover:text-primary text-left transition-colors duration-300 py-2 min-h-[48px] flex items-center"
                     data-testid={`link-mobile-${item.id}`}
                   >

@@ -104,7 +104,7 @@ function ContactHeader() {
             ))}
           </nav>
 
-          <Link href="/#booking">
+          <Link href="/#packages">
             <Button
               className="bg-primary text-primary-foreground border border-primary-border shrink-0 btn-glow min-h-[44px] sm:h-auto"
               data-testid="button-contact-header-book"
