@@ -138,7 +138,7 @@ function Header({ onOpenBooking }: { onOpenBooking: () => void }) {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className={`fixed top-0 left-0 right-0 z-[999] transition-all duration-500 ${
+      className={`fixed top-0 left-0 w-full z-[999] transition-all duration-500 ${
         scrolled ? "bg-[#000000]/95 backdrop-blur-md border-b border-white/5" : "bg-transparent"
       }`}
     >
