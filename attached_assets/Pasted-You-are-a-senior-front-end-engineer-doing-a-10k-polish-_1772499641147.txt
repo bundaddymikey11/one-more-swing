@@ -1,0 +1,61 @@
+You are a senior front-end engineer doing a “$10k polish pass” on my existing site in Replit.
+
+NON-NEGOTIABLES
+- Do NOT change any copy/words.
+- Do NOT change overall page structure or sections.
+- Do NOT remove any content.
+- Only improve hero section layout/spacing/typography/responsiveness.
+- Keep current brand colors and overall vibe.
+- Ensure changes work on mobile first, then tablet/desktop.
+
+PRIMARY GOALS (HERO SECTION)
+1) Make the hero logo bigger (confident, premium) and keep it centered.
+   - Mobile logo size target: 140–160px wide
+   - Desktop logo size target: 180–220px wide
+   - Maintain aspect ratio, no distortion.
+
+2) Shift the entire hero stack upward (reduce “sagging” middle whitespace).
+   - Set hero container to align content toward the top (not vertically centered).
+   - Use consistent top padding so it still feels intentional under the announcement bar.
+
+3) Improve spacing rhythm in the hero (clean vertical cadence).
+   - Announcement bar stays slim.
+   - Logo → tagline spacing: ~16px
+   - Tagline → headline/copy spacing: ~16px
+   - Copy → CTA buttons spacing: ~28–32px
+   - Buttons stack gap: ~12–14px
+   - Keep CTA area within comfortable thumb reach on mobile.
+
+4) Improve readability over the background image WITHOUT changing the image.
+   - Add/adjust subtle overlay/gradient if needed (darken slightly behind text/CTAs).
+   - Make sure contrast is accessible and text is crisp.
+
+5) CTA buttons: keep existing labels and order, but make them feel premium.
+   - Button height: 52–56px
+   - Max width on mobile: 320px (or 90% with a max)
+   - Primary button more prominent; secondary outlined still clear.
+   - Keep hover/focus states clean.
+
+IMPLEMENTATION INSTRUCTIONS
+- Locate the hero component/section (top section with background image, logo, “MOBILE GOLF SIMULATOR RENTAL”, and the two CTA buttons).
+- Make changes using CSS/Tailwind/styled-components—whatever this project already uses. Do not introduce new frameworks.
+- Prefer small, safe edits:
+  - Adjust container layout: flex column, align center, justify-start.
+  - Set hero min-height around 88vh on mobile so the stack sits higher while still feeling full-screen.
+  - Add/adjust padding top ~72px and bottom ~48px (tune per existing header/announcement height).
+  - Constrain text container width (e.g., max-width ~320px on mobile) and center-align.
+
+QUALITY CHECKLIST (MUST DO)
+- Test these viewports: 360px, 390px, 414px, 768px, 1024px, 1280px.
+- No elements overlap.
+- Logo is visibly larger and not clipped.
+- Hero content is higher on the page than before.
+- Buttons are fully visible without awkward extra empty space below.
+- All links/buttons still work exactly as before (no changes to routes/handlers).
+- Lighthouse-style basics: no layout shift on load in the hero (avoid late-loading jumps).
+
+DELIVERABLE
+- Make the edits directly in the codebase.
+- Then summarize exactly what files were changed and the key CSS/layout changes applied.
+
+Proceed now.

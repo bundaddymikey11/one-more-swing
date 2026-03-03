@@ -204,7 +204,7 @@ function HeroSection({ onOpenBooking }: { onOpenBooking: () => void }) {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <section id="hero" ref={heroRef} className="relative min-h-dvh flex items-center justify-center overflow-hidden" style={{ position: "relative" }}>
+    <section id="hero" ref={heroRef} className="relative min-h-[88dvh] sm:min-h-dvh flex flex-col items-center justify-start overflow-hidden" style={{ position: "relative" }}>
       <motion.div className="absolute inset-0" style={{ y: heroY }}>
         <img
           src="/images/hero-socal.png"
@@ -213,16 +213,16 @@ function HeroSection({ onOpenBooking }: { onOpenBooking: () => void }) {
           loading="eager"
           data-testid="img-hero"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/70 via-[#050505]/40 to-[#050505]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/75 via-[#050505]/50 to-[#050505]" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/50 to-transparent" />
       </motion.div>
 
-      <motion.div style={{ opacity: heroOpacity }} className="relative z-10 max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 text-center pt-24 sm:pt-20">
+      <motion.div style={{ opacity: heroOpacity }} className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 text-center pt-[140px] sm:pt-[160px] lg:pt-[180px] pb-12">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={staggerSlow}
-          className="space-y-5 sm:space-y-8"
+          className="flex flex-col items-center gap-4 sm:gap-4"
         >
           <motion.div variants={maskUp}>
             <span className="inline-block text-primary font-semibold text-[10px] sm:text-xs tracking-[0.3em] sm:tracking-[0.35em] uppercase">
@@ -236,7 +236,7 @@ function HeroSection({ onOpenBooking }: { onOpenBooking: () => void }) {
               <img
                 src={logoImage}
                 alt="One More Swing"
-                className="h-28 sm:h-48 lg:h-56 w-28 sm:w-48 lg:w-56 object-cover rounded-full bg-black/40 backdrop-blur-sm"
+                className="h-[150px] sm:h-[200px] lg:h-[220px] w-[150px] sm:w-[200px] lg:w-[220px] object-cover rounded-full bg-black/40 backdrop-blur-sm"
                 data-testid="img-hero-logo"
               />
               <div className="absolute inset-0 bg-primary/10 blur-2xl rounded-full -z-10 opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
@@ -245,7 +245,7 @@ function HeroSection({ onOpenBooking }: { onOpenBooking: () => void }) {
 
           <motion.p
             variants={maskUp}
-            className="text-white/60 max-w-[34ch] sm:max-w-2xl mx-auto text-[15px] sm:text-base"
+            className="text-white/65 max-w-[320px] sm:max-w-2xl mx-auto text-[15px] sm:text-base"
             style={{
               lineHeight: 1.8,
               letterSpacing: "0.02em",
@@ -256,11 +256,11 @@ function HeroSection({ onOpenBooking }: { onOpenBooking: () => void }) {
             One More Swing is a <span className="text-primary font-bold">destination</span>.
           </motion.p>
 
-          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2">
+          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-4 sm:pt-5 w-full max-w-[320px] sm:max-w-none mx-auto">
             <Button
               size="lg"
               onClick={onOpenBooking}
-              className="w-full sm:w-auto min-h-[48px] sm:h-auto bg-primary text-primary-foreground border border-primary-border text-base px-10 btn-glow"
+              className="w-full sm:w-auto h-[52px] sm:h-[54px] bg-primary text-primary-foreground border border-primary-border text-base px-10 btn-glow"
               data-testid="button-hero-book"
             >
               Inquire Now
@@ -270,7 +270,7 @@ function HeroSection({ onOpenBooking }: { onOpenBooking: () => void }) {
               size="lg"
               variant="outline"
               onClick={() => scrollToSection("packages")}
-              className="w-full sm:w-auto min-h-[48px] sm:h-auto text-base px-10 bg-white/5 backdrop-blur-sm border-white/15 text-white"
+              className="w-full sm:w-auto h-[52px] sm:h-[54px] text-base px-10 bg-white/5 backdrop-blur-sm border-white/15 text-white"
               data-testid="button-hero-packages"
             >
               View Packages
