@@ -24,10 +24,21 @@ const steps = [
   { id: 4, title: "Review", icon: CheckCircle2 },
 ];
 
-const timeSlots = [
-  "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
-  "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM",
-  "6:00 PM", "7:00 PM", "8:00 PM",
+const TIME_SLOTS = [
+  { value: "08:00", label: "8:00 AM" },
+  { value: "09:00", label: "9:00 AM" },
+  { value: "10:00", label: "10:00 AM" },
+  { value: "11:00", label: "11:00 AM" },
+  { value: "12:00", label: "12:00 PM" },
+  { value: "13:00", label: "1:00 PM" },
+  { value: "14:00", label: "2:00 PM" },
+  { value: "15:00", label: "3:00 PM" },
+  { value: "16:00", label: "4:00 PM" },
+  { value: "17:00", label: "5:00 PM" },
+  { value: "18:00", label: "6:00 PM" },
+  { value: "19:00", label: "7:00 PM" },
+  { value: "20:00", label: "8:00 PM" },
+  { value: "21:00", label: "9:00 PM" },
 ];
 
 const eventTypes = [
@@ -226,63 +237,70 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
                       <div className="text-center md:text-left">
                         <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white mb-3" style={{ letterSpacing: "-0.04em" }}>Event Logistics</h2>
                       </div>
-                      <div className="grid md:grid-cols-2 gap-6 md:gap-8">
-                        <FormField
-                          control={form.control}
-                          name="eventDate"
-                          render={({ field }) => (
-                            <FormItem className="flex flex-col">
-                              <FormLabel className="text-white/80 text-sm mb-1.5">Date</FormLabel>
-                              <Popover>
-                                <PopoverTrigger asChild>
-                                  <FormControl>
-                                    <Button
-                                      variant="outline"
-                                      className={`w-full pl-4 h-12 text-left font-normal glass-input ${!field.value && "text-muted-foreground"}`}
-                                      data-testid="input-date"
-                                    >
-                                      {field.value ? format(new Date(field.value), "PPP") : <span>Pick a date</span>}
-                                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                    </Button>
-                                  </FormControl>
-                                </PopoverTrigger>
-                                <PopoverContent className="w-auto p-0" align="start">
-                                  <Calendar
-                                    mode="single"
-                                    selected={field.value ? new Date(field.value) : undefined}
-                                    onSelect={(date) => field.onChange(date?.toISOString())}
-                                    disabled={(date) => date < new Date() || date < new Date("1900-01-01")}
-                                    initialFocus
-                                  />
-                                </PopoverContent>
-                              </Popover>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name="startTime"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-white/80 text-sm mb-1.5">Start Time</FormLabel>
-                              <Select onValueChange={field.onChange} defaultValue={field.value || undefined}>
+                      <FormField
+                        control={form.control}
+                        name="eventDate"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-col">
+                            <FormLabel className="text-white/80 text-sm mb-1.5">Date</FormLabel>
+                            <Popover>
+                              <PopoverTrigger asChild>
                                 <FormControl>
-                                  <SelectTrigger className="glass-input h-12 pl-4" data-testid="select-time">
-                                    <SelectValue placeholder="Select time" />
-                                  </SelectTrigger>
+                                  <Button
+                                    variant="outline"
+                                    className={`w-full pl-4 h-12 text-left font-normal glass-input ${!field.value && "text-muted-foreground"}`}
+                                    data-testid="input-date"
+                                  >
+                                    {field.value ? format(new Date(field.value), "PPP") : <span>Pick a date</span>}
+                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                  </Button>
                                 </FormControl>
-                                <SelectContent className="z-[3000]">
-                                  {timeSlots.map((time) => (
-                                    <SelectItem key={time} value={time}>{time}</SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-auto p-0" align="start">
+                                <Calendar
+                                  mode="single"
+                                  selected={field.value ? new Date(field.value) : undefined}
+                                  onSelect={(date) => field.onChange(date?.toISOString())}
+                                  disabled={(date) => date < new Date() || date < new Date("1900-01-01")}
+                                  initialFocus
+                                />
+                              </PopoverContent>
+                            </Popover>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="startTime"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-white/80 text-sm mb-1.5">Preferred starting time</FormLabel>
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3" data-testid="time-slot-grid">
+                              {TIME_SLOTS.map((slot) => {
+                                const isSelected = field.value === slot.value;
+                                return (
+                                  <button
+                                    key={slot.value}
+                                    type="button"
+                                    onClick={() => field.onChange(slot.value)}
+                                    className={`min-h-[44px] rounded-lg text-sm font-medium transition-all duration-200 border ${
+                                      isSelected
+                                        ? "border-primary bg-primary/10 text-white shadow-[0_0_12px_rgba(34,197,94,0.2)]"
+                                        : "border-white/10 bg-white/[0.02] text-white/60 hover:border-primary/40 hover:bg-white/[0.04] hover:text-white/80"
+                                    }`}
+                                    data-testid={`time-slot-${slot.value}`}
+                                  >
+                                    {slot.label}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                       <FormField
                         control={form.control}
                         name="eventType"
@@ -384,7 +402,7 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
                         <div className="flex justify-between items-center border-b border-white/10 py-4">
                           <span className="text-white/60 text-sm">Date</span>
                           <span className="font-semibold text-right text-sm" data-testid="text-review-date">
-                            {form.getValues("eventDate") ? format(new Date(form.getValues("eventDate")), "MMM d") : "N/A"} @ {form.getValues("startTime")}
+                            {form.getValues("eventDate") ? format(new Date(form.getValues("eventDate")), "MMM d") : "N/A"} @ {TIME_SLOTS.find(s => s.value === form.getValues("startTime"))?.label || form.getValues("startTime")}
                           </span>
                         </div>
                         <div className="flex justify-between items-center py-4">

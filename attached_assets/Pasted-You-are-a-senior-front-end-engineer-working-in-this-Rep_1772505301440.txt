@@ -1,0 +1,84 @@
+You are a senior front-end engineer working in this Replit codebase (React/Vite with /src/main.tsx). 
+
+GOALS (Do all)
+A) Fix the booking flow routing/scroll behavior:
+- Currently, when the user interacts with Packages & Pricing, the HOME page behind it scrolls instead of the Packages/Pricing booking flow area.
+- Make the booking flow a dedicated route OR a controlled modal/overlay that locks background scroll.
+- Result: user scrolls ONLY the booking flow content, not the page behind it.
+
+B) Fix card border glow behavior:
+- Right now the pricing card border is glowing when NOT hovered, and the glow disappears on hover.
+- Reverse this behavior:
+  - Default (idle): no glow (or extremely subtle, nearly invisible).
+  - Hover: add a slight green border glow.
+  - Selected state: keep a slightly stronger green border glow than hover, and show “Selected ✓”.
+
+C) Booking flow steps:
+Implement a 3-step flow after selecting the package:
+Step 1: Date (Calendar)
+- Show a full calendar component (month view).
+- User selects a date.
+- After date selection, show preferred starting time cards:
+  - Start times: 8:00 AM through 9:00 PM
+  - The last available START time is 9:00 PM (inclusive).
+  - Time selection must be required.
+
+Step 2: Details (Form)
+Fields (required unless marked optional):
+- First Name (required)
+- Last Name (required)
+- Email (required; validate format)
+- Phone Number (required; validate)
+- Type of Event (required dropdown)
+- Event Length (required dropdown; include common options like 3 hours, 4 hours, 5 hours, Full day)
+- Desired Location for Enclosure (required dropdown or text input—use dropdown if existing options already exist)
+- Optional upload file to show space (optional file input)
+- Optional text box for a description of event (optional multiline)
+
+Step 3: Review (if it already exists, wire it; otherwise create a simple review summary)
+- Show selected package + date + time + details summary.
+- Provide “Back” and “Continue” buttons.
+
+UI RULES
+- Do not change any existing copy/words outside of adding the required new labels for fields/buttons/steps.
+- Keep the current visual style (dark theme + green accent).
+- Ensure mobile-first UX and clean spacing.
+
+IMPLEMENTATION DETAILS
+1) Scroll / background locking:
+- If booking flow is a modal/overlay, lock background scroll when it is open:
+  - Add/remove `overflow: hidden` on `document.body` while flow is active.
+  - Ensure touch scrolling works inside the flow container (`overflow-y: auto; -webkit-overflow-scrolling: touch;`).
+- If booking flow is a separate route, ensure the booking page wrapper is the scroll container and the background is not scrollable behind it.
+
+2) Hover glow:
+- Ensure hover styles use `:hover` (or Tailwind `hover:`) to ADD glow.
+- Ensure selected styles persist via state/class (e.g., `data-selected=true` or conditional class).
+- Remove any default always-on glow.
+
+3) Navigation / Next buttons:
+- When package is selected, enable “Continue” and navigate to Date step.
+- Require date + time before enabling “Continue” to Details.
+- Require required fields before enabling “Continue” to Review.
+
+4) State management:
+- Use a single booking state object:
+  - packageId/packageName
+  - date (ISO)
+  - time (e.g., "20:00")
+  - firstName, lastName, email, phone
+  - eventType, eventLength, enclosureLocation
+  - uploadedFile (optional)
+  - eventDescription (optional)
+- Preserve state while moving between steps.
+- Add “Back” buttons to move backward without losing selections.
+
+5) QA:
+- Confirm the home page no longer scrolls behind the booking flow on mobile.
+- Confirm hover glow appears only on hover.
+- Confirm selected glow persists.
+- Confirm date/time validation works.
+- Confirm form validation works.
+- Confirm no horizontal overflow introduced.
+
+Proceed with minimal safe edits. Identify the files you modify and keep changes scoped.
