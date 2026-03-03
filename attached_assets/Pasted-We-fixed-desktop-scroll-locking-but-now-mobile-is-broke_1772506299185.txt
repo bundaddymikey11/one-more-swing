@@ -1,0 +1,63 @@
+We fixed desktop scroll locking, but now mobile is broken.
+
+Goal:
+- Desktop: keep current behavior (background locked, no layout shift).
+- Mobile (iOS Safari + Android): overlay must scroll smoothly inside the booking panel, background must not scroll, no jumping.
+
+Implement a responsive, safe scroll-lock strategy:
+
+1) Detect mobile:
+const isMobile = window.matchMedia("(max-width: 768px)").matches || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+2) When overlay opens:
+
+DESKTOP (isMobile === false):
+- Keep the current robust lock:
+  - store scrollY
+  - body { position: fixed; top: -scrollY; left:0; right:0; width:100%; overflow:hidden; }
+  - add scrollbar paddingRight compensation
+- Restore on close and window.scrollTo(0, scrollY)
+
+MOBILE (isMobile === true):
+- Do NOT use body position:fixed + top:-scrollY (it breaks iOS)
+- Instead:
+  - store scrollY
+  - set body and html:
+    - document.documentElement.style.overflow = "hidden";
+    - document.body.style.overflow = "hidden";
+    - document.body.style.height = "100%";
+  - prevent background touch scrolling by adding a non-passive touchmove listener that blocks when the touch is outside the overlay scroll container.
+    Example:
+      const onTouchMove = (e) => {
+        if (!overlayScrollRef.current) return;
+        if (!overlayScrollRef.current.contains(e.target)) e.preventDefault();
+      };
+      document.addEventListener("touchmove", onTouchMove, { passive: false });
+
+- On close:
+  - remove the touchmove listener
+  - restore html/body overflow/height styles
+  - window.scrollTo(0, storedScrollY)
+
+3) Ensure the overlay itself is built correctly (both desktop and mobile):
+- Overlay root: position: fixed; inset: 0; z-index high
+- Inside it, have a single scrolling container (the panel):
+  - height: 100dvh (or 100vh fallback) on mobile
+  - overflow-y: auto
+  - -webkit-overflow-scrolling: touch
+  - overscroll-behavior: contain
+- Do NOT nest multiple scroll containers (only one should scroll).
+
+4) Mobile safe-area:
+- Add padding-top: env(safe-area-inset-top)
+- Add padding-bottom: env(safe-area-inset-bottom) if needed
+
+5) QA:
+- iPhone-size viewport: overlay scrolls smoothly with finger
+- background does not move at all
+- no rubber-band pulling the page behind
+- opening/closing does not jump
+- desktop remains correct
+
+Make minimal changes, keep existing UI/copy, and list modified files.
+Proceed now.
