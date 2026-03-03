@@ -60,8 +60,6 @@ import { format } from "date-fns";
 import { scrollToSection } from "@/lib/scrollTo";
 import logoImage from "@assets/Logo_1771044908308.png";
 import simFrontImage from "@assets/Untitled_1772248722147.PNG";
-import simAngleImage from "@assets/Untitled-2_1772248840982.PNG";
-import simSideImage from "@assets/Untitled-3_1772248879725.PNG";
 
 const maskUp = {
   hidden: { opacity: 0, y: 60, clipPath: "inset(100% 0 0 0)" },
@@ -368,28 +366,6 @@ function AboutSection() {
                 data-testid="img-about"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/70 via-transparent to-transparent" />
-            </div>
-            <div className="grid grid-cols-2 gap-3 mt-3 lg:ml-12 lg:-mr-8">
-              <div className="relative rounded-md overflow-hidden border border-white/[0.08]">
-                <img
-                  src={simAngleImage}
-                  alt="Golf simulator angle view"
-                  className="w-full aspect-[4/3] object-cover"
-                  loading="lazy"
-                  data-testid="img-about-angle"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/50 via-transparent to-transparent" />
-              </div>
-              <div className="relative rounded-md overflow-hidden border border-white/[0.08]">
-                <img
-                  src={simSideImage}
-                  alt="Golf simulator side view"
-                  className="w-full aspect-[4/3] object-cover"
-                  loading="lazy"
-                  data-testid="img-about-side"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/50 via-transparent to-transparent" />
-              </div>
             </div>
           </motion.div>
         </motion.div>
