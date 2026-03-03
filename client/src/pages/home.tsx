@@ -485,15 +485,16 @@ function PricingSection({ onOpenBooking }: { onOpenBooking: () => void }) {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           variants={staggerContainer}
-          className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6"
+          className="max-w-[760px] mx-auto"
         >
           <motion.div variants={maskUp}>
             <div
-              className="relative pricing-card rounded-lg p-5 sm:p-8 h-full"
+              className="relative rounded-xl p-6 sm:p-10 bg-white/[0.02] border border-white/[0.06] backdrop-blur-sm"
+              style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.03)" }}
               data-testid="card-package-executive"
             >
-              <div className="space-y-4 sm:space-y-5">
-                <div className="space-y-2">
+              <div className="flex flex-col gap-6 sm:gap-8">
+                <div className="space-y-3">
                   <span className="text-[10px] font-semibold text-primary tracking-[0.25em] uppercase">
                     Executive
                   </span>
@@ -502,11 +503,11 @@ function PricingSection({ onOpenBooking }: { onOpenBooking: () => void }) {
                   </h3>
                 </div>
 
-                <div className="space-y-1.5">
+                <div className="space-y-2">
                   <div className="flex items-baseline gap-2 sm:gap-3">
-                    <span className="text-lg sm:text-2xl font-bold text-white/20 tracking-tight line-through">$250</span>
-                    <span className="text-3xl sm:text-5xl font-bold text-white tracking-tight">$225</span>
-                    <span className="text-white/30 text-xs uppercase tracking-wider">/hour</span>
+                    <span className="text-base sm:text-lg font-bold text-white/15 tracking-tight line-through">$250</span>
+                    <span className="text-4xl sm:text-6xl font-bold text-white tracking-tight">$225</span>
+                    <span className="text-white/25 text-[11px] uppercase tracking-wider">/hour</span>
                   </div>
                   <span className="text-[10px] font-semibold text-primary tracking-[0.15em] uppercase block">
                     First 5 bookings only
@@ -515,7 +516,7 @@ function PricingSection({ onOpenBooking }: { onOpenBooking: () => void }) {
 
                 <div className="w-full h-px bg-white/[0.06]" />
 
-                <ul className="space-y-2.5">
+                <ul className="space-y-3">
                   {[
                     "3-hour minimum",
                     "Choose between Home Tee Hero or GSPro Software",
@@ -530,23 +531,25 @@ function PricingSection({ onOpenBooking }: { onOpenBooking: () => void }) {
                   ))}
                 </ul>
 
-                <Button
-                  onClick={onOpenBooking}
-                  className="w-full min-h-[48px] sm:h-auto bg-primary text-primary-foreground border border-primary-border btn-glow text-base"
-                  data-testid="button-book-executive"
-                >
-                  Book Now
-                </Button>
+                <div className="pt-2">
+                  <Button
+                    onClick={onOpenBooking}
+                    className="w-full h-[52px] sm:h-[56px] bg-primary text-primary-foreground border border-primary-border btn-glow text-base hover:shadow-[0_0_30px_rgba(34,197,94,0.3)]"
+                    data-testid="button-book-executive"
+                  >
+                    Book Now
+                  </Button>
+                </div>
               </div>
             </div>
           </motion.div>
 
-          <motion.div variants={maskUp}>
+          <motion.div variants={maskUp} className="mt-4 sm:mt-6">
             <div
-              className="relative pricing-card rounded-lg p-5 sm:p-8 h-full flex flex-col justify-center"
+              className="relative rounded-xl p-6 sm:p-10 bg-white/[0.02] border border-white/[0.06] backdrop-blur-sm"
               data-testid="card-package-allday"
             >
-              <div className="space-y-4 sm:space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-8">
                 <div className="space-y-2">
                   <span className="text-[10px] font-semibold text-primary tracking-[0.25em] uppercase">
                     All Day
@@ -559,7 +562,7 @@ function PricingSection({ onOpenBooking }: { onOpenBooking: () => void }) {
                 <Button
                   onClick={onOpenBooking}
                   variant="outline"
-                  className="w-full min-h-[48px] sm:h-auto border-primary/20 text-primary bg-primary/5 text-base"
+                  className="w-full sm:w-auto h-[52px] sm:h-[56px] sm:px-10 border-primary/20 text-primary bg-primary/5 text-base"
                   data-testid="button-book-allday"
                 >
                   Get a Quote
