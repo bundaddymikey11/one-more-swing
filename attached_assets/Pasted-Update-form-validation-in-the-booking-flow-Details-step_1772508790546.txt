@@ -1,0 +1,58 @@
+Update form validation in the booking flow (Details step) so we DO NOT show native browser validation tooltips (e.g., “Please fill out this field.”).
+
+GOAL
+- Disable native HTML5 validation popups
+- Use custom validation with premium inline error messages under each field
+- Keep the current visual style (dark + green accents), no disruptive red boxes
+
+REQUIREMENTS
+
+1) Disable native tooltips
+- Add `noValidate` on the <form> element.
+- Remove any `required` attributes that trigger native messages OR keep them but ensure noValidate prevents tooltips.
+- Ensure submit handler does validation and prevents advancing if invalid.
+
+2) Implement custom validation + touched state
+- Track:
+  - `touched[field]` (set true on blur)
+  - `submitted` (set true once Next/Submit clicked)
+- Show an error under a field if:
+  - touched[field] OR submitted
+  AND field is invalid
+
+3) Validation rules (required fields)
+- firstName: non-empty
+- lastName: non-empty
+- email: valid email format
+- phone: non-empty; accept common formats; store raw digits or formatted
+- eventType: must be selected
+- eventLength: must be selected
+- enclosureLocation: non-empty
+
+Optional:
+- upload file: accept images (jpg/png/webp/heic) + pdf
+- description: max length reasonable (e.g., 500–1000 chars) if needed
+
+4) Premium inline error styling (not harsh)
+- Error text: small (12–13px), subtle red (low saturation), spacing tight
+- Example: text color rgba(239,68,68,0.85) or equivalent
+- Field border only changes slightly on error (not neon red):
+  - border: rgba(239,68,68,0.35)
+- Focus state still uses green accent; error state should not overpower focus.
+
+5) Button behavior
+- When “Next Step” is clicked:
+  - validate all required fields
+  - if any invalid: prevent navigation, set submitted=true, scroll first invalid field into view smoothly
+  - if valid: proceed to next step
+
+6) UX polish
+- Add helper function: `scrollToFirstError()`
+- Inputs should not jump layout when error appears (reserve space or use consistent margins)
+- Ensure mobile looks clean
+
+Deliverable:
+- Details form uses custom validation only
+- No native browser tooltips appear
+- Inline errors look premium and consistent
+Proceed with minimal scoped changes and list the files modified.

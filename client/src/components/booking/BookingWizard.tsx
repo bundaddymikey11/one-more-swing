@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -52,6 +52,9 @@ interface BookingWizardProps {
   onClose?: () => void;
 }
 
+const errorBorder = "border-red-500/35 focus:border-primary";
+const normalBorder = "";
+
 export function BookingWizard({ onClose }: BookingWizardProps) {
   const [step, setStep] = useState(1);
   const { toast } = useToast();
@@ -59,6 +62,7 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
   const form = useForm<InsertBooking>({
     resolver: zodResolver(insertBookingSchema),
     defaultValues: { name: "", email: "", eventDate: "", eventType: "", startTime: "", location: "", message: "" },
+    mode: "onTouched",
   });
 
   const mutation = useMutation({
@@ -87,7 +91,7 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
     } else if (step === 2) {
       isValid = await form.trigger(["eventDate", "startTime", "eventType"]);
     } else if (step === 3) {
-      isValid = await form.trigger(["name", "email", "location"]);
+      isValid = await form.trigger(["name", "email", "location", "message"]);
     }
     if (isValid) setStep((s) => s + 1);
   };
@@ -126,7 +130,7 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
         <div className="w-full">
           <Card className="glass-panel p-4 sm:p-6 md:p-8 flex flex-col justify-center border-none shadow-none bg-transparent">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit((d) => mutation.mutate(d))} className="space-y-5">
+              <form noValidate onSubmit={form.handleSubmit((d) => mutation.mutate(d))} className="space-y-5">
                 <AnimatePresence mode="wait">
                   {step === 1 && (
                     <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} className="space-y-4 sm:space-y-6">
@@ -247,7 +251,7 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
                                 <FormControl>
                                   <Button
                                     variant="outline"
-                                    className={`w-full pl-4 h-12 text-left font-normal glass-input ${!field.value && "text-muted-foreground"}`}
+                                    className={`w-full pl-4 h-12 text-left font-normal glass-input ${!field.value && "text-muted-foreground"} ${form.formState.errors.eventDate ? errorBorder : ""}`}
                                     data-testid="input-date"
                                   >
                                     {field.value ? format(new Date(field.value), "PPP") : <span>Pick a date</span>}
@@ -276,14 +280,14 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel className="text-white/80 text-sm mb-1.5">Preferred starting time</FormLabel>
-                            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1.5 sm:gap-2" data-testid="time-slot-grid">
+                            <div className={`grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1.5 sm:gap-2 rounded-lg p-1 ${form.formState.errors.startTime ? "ring-1 ring-red-500/35" : ""}`} data-testid="time-slot-grid">
                               {TIME_SLOTS.map((slot) => {
                                 const isSelected = field.value === slot.value;
                                 return (
                                   <button
                                     key={slot.value}
                                     type="button"
-                                    onClick={() => field.onChange(slot.value)}
+                                    onClick={() => { field.onChange(slot.value); form.clearErrors("startTime"); }}
                                     className={`h-9 sm:h-10 rounded-md text-xs sm:text-sm font-medium transition-all duration-200 border ${
                                       isSelected
                                         ? "border-primary bg-primary/10 text-white shadow-[0_0_12px_rgba(34,197,94,0.2)]"
@@ -308,7 +312,7 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
                             <FormLabel className="text-white/80 text-sm mb-1.5">Event Type</FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
-                                <SelectTrigger className="glass-input h-12 pl-4" data-testid="select-event-type">
+                                <SelectTrigger className={`glass-input h-12 pl-4 ${form.formState.errors.eventType ? errorBorder : ""}`} data-testid="select-event-type">
                                   <SelectValue placeholder="Select type" />
                                 </SelectTrigger>
                               </FormControl>
@@ -338,7 +342,7 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
                             <FormItem>
                               <FormLabel className="text-white/80 text-sm mb-1.5">Name</FormLabel>
                               <FormControl>
-                                <Input placeholder="John Doe" {...field} className="glass-input h-12 px-4" data-testid="input-name" />
+                                <Input placeholder="John Doe" {...field} className={`glass-input h-12 px-4 ${form.formState.errors.name ? errorBorder : ""}`} data-testid="input-name" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -351,7 +355,7 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
                             <FormItem>
                               <FormLabel className="text-white/80 text-sm mb-1.5">Email</FormLabel>
                               <FormControl>
-                                <Input placeholder="john@example.com" {...field} className="glass-input h-12 px-4" data-testid="input-email" />
+                                <Input placeholder="john@example.com" {...field} className={`glass-input h-12 px-4 ${form.formState.errors.email ? errorBorder : ""}`} data-testid="input-email" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -365,7 +369,7 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
                           <FormItem>
                             <FormLabel className="text-white/80 text-sm mb-1.5">Location</FormLabel>
                             <FormControl>
-                              <Input placeholder="City, Zip, or Venue" {...field} className="glass-input h-12 px-4" data-testid="input-location" />
+                              <Input placeholder="City, Zip, or Venue" {...field} className={`glass-input h-12 px-4 ${form.formState.errors.location ? errorBorder : ""}`} data-testid="input-location" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -378,7 +382,7 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
                           <FormItem>
                             <FormLabel className="text-white/80 text-sm mb-1.5">Requests</FormLabel>
                             <FormControl>
-                              <Textarea placeholder="Any specifics?" className="glass-input resize-none p-4 min-h-[80px]" {...field} data-testid="input-message" />
+                              <Textarea placeholder="Any specifics?" className={`glass-input resize-none p-4 min-h-[80px] ${form.formState.errors.message ? errorBorder : ""}`} {...field} data-testid="input-message" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>

@@ -21,8 +21,9 @@ export const insertBookingSchema = createInsertSchema(bookings).omit({
   email: z.string().email("Please enter a valid email"),
   eventDate: z.string().min(1, "Please select an event date"),
   eventType: z.string().min(1, "Please select an event type"),
-  startTime: z.string().optional(),
-  location: z.string().optional(),
+  startTime: z.string().min(1, "Please select a start time"),
+  location: z.string().min(1, "Please enter a location"),
+  message: z.string().max(1000).optional().or(z.literal("")),
 });
 
 export type InsertBooking = z.infer<typeof insertBookingSchema>;
