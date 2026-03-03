@@ -109,7 +109,7 @@ function AnnouncementBar() {
       initial={{ clipPath: "inset(100% 0 0 0)" }}
       animate={{ clipPath: "inset(0% 0 0 0)" }}
       transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-      className="w-full bg-primary/90 backdrop-blur-sm py-3 sm:py-2.5 text-center cursor-pointer min-h-[44px] flex items-center justify-center"
+      className="w-screen bg-primary/90 backdrop-blur-sm py-3 sm:py-2.5 text-center cursor-pointer min-h-[44px] flex items-center justify-center"
       data-testid="banner-scarcity"
       onClick={() => scrollToSection("packages")}
       role="button"
@@ -138,7 +138,7 @@ function Header({ onOpenBooking }: { onOpenBooking: () => void }) {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className={`fixed top-0 left-0 w-full z-[999] transition-all duration-500 ${
+      className={`fixed top-0 left-0 w-screen overflow-x-hidden z-[999] transition-all duration-500 ${
         scrolled ? "bg-[#000000]/95 backdrop-blur-md border-b border-white/5" : "bg-transparent"
       }`}
     >
