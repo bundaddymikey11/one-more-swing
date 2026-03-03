@@ -361,7 +361,7 @@ function AboutSection() {
               <img
                 src={simFrontImage}
                 alt="One More Swing mobile golf simulator setup"
-                className="w-full aspect-[16/10] object-cover"
+                className="w-full aspect-[4/3] object-cover"
                 loading="lazy"
                 data-testid="img-about"
               />
