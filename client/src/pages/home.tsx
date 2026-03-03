@@ -34,12 +34,7 @@ import {
 } from "@/components/ui/accordion";
 import { BookingWizard } from "@/components/booking/BookingWizard";
 import { MobileNav } from "@/components/layout/MobileNav";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { createPortal } from "react-dom";
 import {
   Target,
   Monitor,
@@ -53,9 +48,10 @@ import {
   Instagram,
   CalendarIcon,
   Clock,
+  X,
 } from "lucide-react";
 import { Link } from "wouter";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { format } from "date-fns";
 import { scrollToSection } from "@/lib/scrollTo";
 import { getLenis } from "@/App";
@@ -749,8 +745,68 @@ function Footer({ onOpenBooking }: { onOpenBooking: () => void }) {
   );
 }
 
+function BookingOverlay({ onClose }: { onClose: () => void }) {
+  const overlayRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    overlayRef.current?.focus();
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
+  return createPortal(
+    <div
+      ref={overlayRef}
+      className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden"
+      style={{ width: "100vw", height: "100dvh" }}
+      data-testid="modal-booking"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Book Your Event"
+      tabIndex={-1}
+    >
+      <div
+        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        onClick={onClose}
+        data-testid="overlay-backdrop"
+      />
+      <div
+        className="relative w-[92%] max-w-[700px] bg-[#0a0a0a] border border-white/[0.08] rounded-xl shadow-2xl overflow-hidden p-5 sm:p-8"
+        style={{
+          maxHeight: "calc(100dvh - 40px)",
+          paddingTop: "env(safe-area-inset-top)",
+          paddingBottom: "env(safe-area-inset-bottom)",
+        }}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-colors"
+          aria-label="Close"
+          data-testid="button-close-booking"
+        >
+          <X className="w-4 h-4" />
+        </button>
+        <div className="text-center mb-4 sm:mb-6 space-y-2">
+          <span className="text-primary font-semibold text-xs tracking-[0.3em] uppercase block">
+            Reserve Your Date
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white tracking-tight">
+            Bring the course to <span className="text-gradient">your doorstep.</span>
+          </h2>
+        </div>
+        <BookingWizard onClose={onClose} />
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 export default function Home() {
   const [bookingOpen, setBookingOpen] = useState(false);
+  const savedScrollY = useRef(0);
   const openBooking = () => setBookingOpen(true);
 
   useEffect(() => {
@@ -761,13 +817,25 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    if (!bookingOpen) return;
     const lenis = getLenis();
-    if (bookingOpen) {
-      lenis?.stop();
-    } else {
-      lenis?.start();
-    }
-    return () => { lenis?.start(); };
+    lenis?.stop();
+    savedScrollY.current = window.scrollY;
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    document.body.style.height = "100%";
+    document.body.style.touchAction = "none";
+    return () => {
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+      document.body.style.height = "";
+      document.body.style.touchAction = "";
+      const y = savedScrollY.current;
+      requestAnimationFrame(() => {
+        window.scrollTo(0, y);
+        lenis?.start();
+      });
+    };
   }, [bookingOpen]);
 
   return (
@@ -781,23 +849,7 @@ export default function Home() {
       <FAQSection />
       <Footer onOpenBooking={openBooking} />
 
-      <Dialog open={bookingOpen} onOpenChange={setBookingOpen}>
-        <DialogContent className="max-w-4xl h-[90dvh] flex flex-col bg-[#0a0a0a] border-white/[0.08] p-0" data-testid="modal-booking" aria-describedby="booking-description">
-          <DialogTitle className="sr-only">Book Your Event</DialogTitle>
-          <DialogDescription id="booking-description" className="sr-only">Fill out the form to reserve your mobile golf simulator event.</DialogDescription>
-          <div className="flex-1 overflow-y-auto overscroll-contain p-6 sm:p-10" style={{ WebkitOverflowScrolling: "touch" }}>
-            <div className="text-center mb-8 space-y-3">
-              <span className="text-primary font-semibold text-xs tracking-[0.3em] uppercase block">
-                Reserve Your Date
-              </span>
-              <h2 className="text-3xl md:text-4xl font-serif font-bold text-white tracking-tight">
-                Bring the course to <span className="text-gradient">your doorstep.</span>
-              </h2>
-            </div>
-            <BookingWizard />
-          </div>
-        </DialogContent>
-      </Dialog>
+      {bookingOpen && <BookingOverlay onClose={() => setBookingOpen(false)} />}
     </div>
   );
 }

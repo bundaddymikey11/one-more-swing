@@ -1,0 +1,76 @@
+Refactor the booking flow to be a fixed, non-scrollable overlay card using a React Portal.
+
+Goal:
+- No background scroll.
+- No overlay scroll.
+- No internal scroll container.
+- The booking experience should feel like a fixed, premium modal card.
+- The entire viewport is locked while open.
+
+Requirements:
+
+1) Use a React Portal:
+- Mount overlay at document.body (outside any parent containers).
+- Create a reusable Portal component if one does not exist.
+- Ensure proper cleanup on unmount.
+
+2) Overlay structure:
+
+Overlay root:
+- position: fixed
+- inset: 0
+- width: 100vw
+- height: 100dvh (fallback 100vh)
+- z-index: very high (above header)
+- background: rgba(0,0,0,0.65)
+- backdrop-blur-sm (subtle)
+- display: flex
+- align-items: center
+- justify-content: center
+- overflow: hidden
+
+Booking card:
+- max-width: 500px (mobile) / 700px (desktop)
+- width: 92%
+- max-height: none (no scrolling allowed)
+- padding generous
+- rounded-xl
+- shadow-xl
+- no overflow-y auto
+- no nested scroll containers
+
+3) REMOVE ALL SCROLLING:
+- Remove overflow-y:auto from any booking container.
+- Remove overscroll behavior.
+- No internal scroll region.
+- Entire experience must fit within viewport.
+- If content exceeds viewport height, adjust spacing/layout so it fits without scroll.
+
+4) Lock background fully:
+On open:
+- document.documentElement.style.overflow = "hidden"
+- document.body.style.overflow = "hidden"
+- document.body.style.height = "100%"
+- document.body.style.touchAction = "none"
+
+On close:
+- restore all of the above styles to ""
+
+Do NOT use position: fixed top:-scrollY scroll preservation.
+We do not need background scroll restoration since no scrolling should occur.
+
+5) Layout adjustments to ensure no scroll:
+- Reduce vertical spacing inside booking card.
+- Use tighter spacing scale.
+- Ensure calendar + time + form fields fit within viewport.
+- If needed, use step-based navigation so only one section is visible at a time.
+
+6) QA:
+- Mobile: tap Book Now → fixed centered card appears.
+- No scrolling possible anywhere.
+- Background does not move.
+- No rubber band effect.
+- No white gap.
+- Close returns to original screen cleanly.
+
+Keep all

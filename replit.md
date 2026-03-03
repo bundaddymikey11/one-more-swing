@@ -131,6 +131,7 @@ attached_assets/  → Reference materials and design specs
 - **CSS Utilities**: pricing-card hover elevation with box-shadow, glass-input focus rings, luxury-button disabled states
 - **Accordion**: Smoother animation timing (0.35s cubic-bezier easing)
 - **Nav**: 44px min tap targets, hover text color transitions, consistent spacing
+- **Booking Overlay**: Refactored from Radix Dialog to React Portal (z-[9999]). Fixed card centered on viewport, no internal scroll container. Background locked via overflow:hidden on html+body, touchAction:none, and Lenis stopped. Escape key closes, backdrop click closes, focus set on mount. Calendar/select popovers use z-[10000] to render above overlay. Compact layout fits viewport without scrolling on both mobile and desktop.
 - **Booking Wizard**: ARIA roles (progressbar, radio), keyboard accessibility on package cards, active step scale indicator, formatted form layout, data-testid attributes on all form inputs
 - **MobileNav**: Escape key close, ARIA dialog/modal roles, consistent tap targets, data-testid attributes
 - **Footer**: CSS variable for green heading, 44px min link targets, centered layout
