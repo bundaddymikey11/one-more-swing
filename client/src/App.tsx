@@ -9,6 +9,9 @@ import Home from "@/pages/home";
 import Contact from "@/pages/contact";
 import NotFound from "@/pages/not-found";
 
+let lenisInstance: Lenis | null = null;
+export function getLenis() { return lenisInstance; }
+
 function Router() {
   return (
     <Switch>
@@ -28,6 +31,7 @@ function App() {
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       touchMultiplier: 2,
     });
+    lenisInstance = lenis;
 
     function raf(time: number) {
       lenis.raf(time);
@@ -71,6 +75,7 @@ function App() {
       document.removeEventListener("focusin", handleFocusIn);
       document.removeEventListener("focusout", handleFocusOut);
       lenis.destroy();
+      lenisInstance = null;
     };
   }, []);
 

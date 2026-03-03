@@ -58,6 +58,7 @@ import { Link } from "wouter";
 import { useRef, useState, useEffect } from "react";
 import { format } from "date-fns";
 import { scrollToSection } from "@/lib/scrollTo";
+import { getLenis } from "@/App";
 import logoImage from "@assets/Logo_1771044908308.png";
 import simFrontImage from "@assets/Untitled_1772248722147.PNG";
 
@@ -760,14 +761,13 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    const lenis = getLenis();
     if (bookingOpen) {
-      document.body.style.overflow = "hidden";
+      lenis?.stop();
     } else {
-      document.body.style.overflow = "";
+      lenis?.start();
     }
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => { lenis?.start(); };
   }, [bookingOpen]);
 
   return (
@@ -785,7 +785,7 @@ export default function Home() {
         <DialogContent className="max-w-4xl h-[90dvh] flex flex-col bg-[#0a0a0a] border-white/[0.08] p-0" data-testid="modal-booking" aria-describedby="booking-description">
           <DialogTitle className="sr-only">Book Your Event</DialogTitle>
           <DialogDescription id="booking-description" className="sr-only">Fill out the form to reserve your mobile golf simulator event.</DialogDescription>
-          <div className="flex-1 overflow-y-auto overscroll-contain p-6 sm:p-10">
+          <div className="flex-1 overflow-y-auto overscroll-contain p-6 sm:p-10" style={{ WebkitOverflowScrolling: "touch" }}>
             <div className="text-center mb-8 space-y-3">
               <span className="text-primary font-semibold text-xs tracking-[0.3em] uppercase block">
                 Reserve Your Date

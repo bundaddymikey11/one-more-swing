@@ -1,0 +1,68 @@
+Fix desktop scroll behavior for the booking flow overlay/page.
+
+Current behavior:
+- Mobile is fixed.
+- Desktop still allows the HOME page (background) to scroll instead of the booking flow container.
+
+Requirements:
+1) When booking flow is active (open), the background page MUST NOT scroll on desktop or mobile.
+2) Only the booking flow content area should scroll.
+3) No layout shift when locking scroll (avoid scrollbar jump).
+4) No horizontal scrolling introduced.
+
+Implementation (must do):
+
+A) Ensure overlay uses FIXED positioning
+- The booking overlay root must be `position: fixed` with `inset: 0` (full viewport).
+- It must be above everything via z-index.
+
+B) Lock body scroll robustly (desktop + mobile)
+When overlay opens:
+- Save current scrollY: `const y = window.scrollY`
+- Apply to body:
+  - `position: fixed`
+  - `top: -${y}px`
+  - `left: 0`
+  - `right: 0`
+  - `width: 100%`
+  - `overflow: hidden`
+- Add padding-right compensation to prevent layout shift from disappearing scrollbar:
+  - `const sbw = window.innerWidth - document.documentElement.clientWidth`
+  - `document.body.style.paddingRight = sbw > 0 ? sbw + "px" : "0px"`
+
+When overlay closes:
+- Restore body styles and scroll position:
+  - read y from stored value
+  - `document.body.style.position = ""`
+  - `document.body.style.top = ""`
+  - `document.body.style.left = ""`
+  - `document.body.style.right = ""`
+  - `document.body.style.width = ""`
+  - `document.body.style.overflow = ""`
+  - `document.body.style.paddingRight = ""`
+  - `window.scrollTo(0, y)`
+
+C) Make overlay scroll container correct
+- The overlay wrapper should NOT scroll.
+- Inside overlay, create a panel container with:
+  - `max-height: calc(100vh - headerOffset)` (or `h-[100dvh]` if appropriate)
+  - `overflow-y: auto`
+  - `-webkit-overflow-scrolling: touch`
+  - `overscroll-behavior: contain`
+- Ensure the scroll happens INSIDE the booking panel.
+
+D) Desktop sizing:
+- On desktop, center the panel and constrain width:
+  - `max-width: 900px` (or existing design)
+  - `margin: 0 auto`
+- Still keep `max-height` and internal scrolling so it never scrolls the background.
+
+E) QA checklist:
+- Desktop: mousewheel/trackpad scroll affects only overlay panel.
+- Background page does not move at all while overlay open.
+- No “page jump” when opening/closing overlay.
+- No horizontal scrollbars.
+- Mobile behavior remains correct.
+
+Make minimal changes and show which files were modified.
+Proceed.
