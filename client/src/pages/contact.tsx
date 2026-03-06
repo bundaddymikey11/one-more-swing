@@ -80,9 +80,8 @@ function ContactHeader() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className={`fixed top-0 left-0 right-0 z-[999] transition-all duration-500 ${
-        scrolled ? "bg-[#000000]/95 backdrop-blur-md border-b border-white/5" : "bg-transparent"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-[999] transition-all duration-500 ${scrolled ? "bg-[#000000]/95 backdrop-blur-md border-b border-white/5" : "bg-transparent"
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4 h-14 sm:h-20">
@@ -127,12 +126,16 @@ export default function Contact() {
   const form = useForm<InsertBooking>({
     resolver: zodResolver(insertBookingSchema),
     defaultValues: {
-      name: "",
+      firstName: "",
+      lastName: "N/A", // Simple contact form doesn't split names currently, but we'll adapt.
       email: "",
+      phone: "",
+      package: "general_inquiry",
       eventDate: "",
-      eventType: "other",
       startTime: "",
-      location: "",
+      eventType: "other",
+      eventLength: "N/A",
+      location: "N/A",
       message: "",
     },
   });
@@ -254,7 +257,7 @@ export default function Contact() {
                       <div className="grid sm:grid-cols-2 gap-5">
                         <FormField
                           control={form.control}
-                          name="name"
+                          name="firstName"
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Name</FormLabel>
@@ -294,7 +297,7 @@ export default function Contact() {
 
                       <FormField
                         control={form.control}
-                        name="location"
+                        name="phone"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel className="text-white/60 text-xs uppercase tracking-[0.1em]">Phone Number</FormLabel>
@@ -324,9 +327,8 @@ export default function Contact() {
                                     <Button
                                       type="button"
                                       variant="outline"
-                                      className={`w-full justify-start text-left font-normal bg-white/[0.03] border-white/[0.08] hover:bg-white/[0.05] h-9 ${
-                                        !field.value ? "text-white/20" : "text-white"
-                                      }`}
+                                      className={`w-full justify-start text-left font-normal bg-white/[0.03] border-white/[0.08] hover:bg-white/[0.05] h-9 ${!field.value ? "text-white/20" : "text-white"
+                                        }`}
                                       data-testid="input-contact-date"
                                     >
                                       <CalendarIcon className="mr-2 h-4 w-4 text-white/40" />

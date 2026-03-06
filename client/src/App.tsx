@@ -4,18 +4,22 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useEffect } from "react";
+import { syncScrollOffset, scrollToSection, registerLenis } from "@/lib/scrollTo";
 import Lenis from "lenis";
 import Home from "@/pages/home";
+import Book from "@/pages/book";
 import Contact from "@/pages/contact";
 import NotFound from "@/pages/not-found";
 
 let lenisInstance: Lenis | null = null;
 export function getLenis() { return lenisInstance; }
 
+
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/book" component={Book} />
       <Route path="/contact" component={Contact} />
       <Route component={NotFound} />
     </Switch>
@@ -32,6 +36,7 @@ function App() {
       touchMultiplier: 2,
     });
     lenisInstance = lenis;
+    registerLenis(lenis);
 
     function raf(time: number) {
       lenis.raf(time);
@@ -76,6 +81,46 @@ function App() {
       document.removeEventListener("focusout", handleFocusOut);
       lenis.destroy();
       lenisInstance = null;
+      registerLenis(null);
+    };
+  }, []);
+
+  // ── Global hash / anchor scroll handler ──
+  useEffect(() => {
+    syncScrollOffset();
+    window.addEventListener("resize", syncScrollOffset, { passive: true });
+
+    // Handle initial hash on page load
+    const initialHash = window.location.hash.replace("#", "");
+    if (initialHash) {
+      setTimeout(() => scrollToSection(initialHash), 50);
+    }
+
+    // Event delegation: intercept all a[href^="#"] clicks
+    const handleAnchorClick = (e: MouseEvent) => {
+      const anchor = (e.target as HTMLElement).closest<HTMLAnchorElement>(
+        'a[href^="#"]',
+      );
+      if (!anchor) return;
+      const id = anchor.getAttribute("href")?.replace("#", "");
+      if (!id) return;
+      e.preventDefault();
+      history.pushState(null, "", `#${id}`);
+      scrollToSection(id);
+    };
+    document.addEventListener("click", handleAnchorClick);
+
+    // Handle back/forward with hash
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace("#", "");
+      if (hash) scrollToSection(hash);
+    };
+    window.addEventListener("hashchange", handleHashChange);
+
+    return () => {
+      window.removeEventListener("resize", syncScrollOffset);
+      document.removeEventListener("click", handleAnchorClick);
+      window.removeEventListener("hashchange", handleHashChange);
     };
   }, []);
 

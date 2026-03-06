@@ -17,4 +17,25 @@ export class DatabaseStorage implements IStorage {
   }
 }
 
-export const storage = new DatabaseStorage();
+export class MemStorage implements IStorage {
+  private bookings: Booking[] = [];
+  private currentId = 1;
+
+  async createBooking(booking: InsertBooking): Promise<Booking> {
+    const id = String(this.currentId++);
+    const newBooking: Booking = {
+      ...booking,
+      id,
+      message: booking.message ?? null,
+      attachmentUrl: booking.attachmentUrl ?? null,
+    };
+    this.bookings.push(newBooking);
+    return newBooking;
+  }
+
+  async getBookings(): Promise<Booking[]> {
+    return this.bookings;
+  }
+}
+
+export const storage = process.env.DATABASE_URL ? new DatabaseStorage() : new MemStorage();

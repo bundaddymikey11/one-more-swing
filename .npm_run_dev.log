@@ -1,0 +1,78 @@
+
+> rest-express@1.0.0 dev
+> NODE_ENV=development tsx server/index.ts
+
+[dotenv@17.3.1] injecting env (5) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+4:32:09 PM [express] serving on port 5001
+[Email] Transporter initialized successfully. Ready to send emails.
+[Email] Booking notification sent for Mike Matteis
+4:33:15 PM [express] POST /api/bookings 201 in 1711ms :: {"firstName":"Mike","lastName":"Matteis","email":"bundaddymikey@gmail.com","phone":"4244254245","package":"executive","eventDate":"2026-03-06T08:00:00.000Z","startTime":"09:00","eventType":"corporate","eventLength":"4_hours","location":"huntington beach","message":"","attachmentUrl":"","id":"1"}
+[Email] Booking notification sent for Michael Matteis
+4:38:17 PM [express] POST /api/bookings 201 in 1807ms :: {"firstName":"Michael","lastName":"Matteis","email":"bundaddymikey@gmail.com","phone":"4244254245","package":"executive","eventDate":"2026-03-06T08:00:00.000Z","startTime":"10:00","eventType":"community","eventLength":"full_day","location":"Meow","message":"","attachmentUrl":"","id":"2"}
+4:41:30 PM [vite] (client) hmr update /src/components/booking/BookingWizard.tsx, /src/index.css
+4:43:18 PM [vite] (client) hmr update /src/pages/home.tsx, /src/index.css
+4:43:20 PM [vite] (client) hmr update /src/components/booking/BookingWizard.tsx, /src/index.css
+[Email] Booking notification sent for Michael Matteis
+4:44:44 PM [express] POST /api/bookings 201 in 1896ms :: {"firstName":"Michael","lastName":"Matteis","email":"bundaddymikey@gmail.com","phone":"4244254245","package":"executive","eventDate":"2026-03-13T07:00:00.000Z","startTime":"15:00","eventType":"wedding","eventLength":"4_hours","location":"Meow","message":"","attachmentUrl":"","id":"3"}
+4:47:49 PM [vite] (client) hmr update /src/pages/home.tsx, /src/components/booking/BookingWizard.tsx, /src/index.css
+4:48:22 PM [vite] (client) hmr update /src/pages/home.tsx, /src/index.css
+4:48:24 PM [vite] (client) hmr update /src/components/booking/BookingWizard.tsx, /src/index.css
+5:05:36 PM [vite] (client) hmr update /src/components/booking/BookingWizard.tsx, /src/index.css
+5:12:36 PM [vite] (client) hmr update /src/components/booking/BookingWizard.tsx, /src/index.css
+5:36:04 PM [vite] (client) hmr update /src/components/booking/BookingWizard.tsx, /src/index.css
+5:42:36 PM [vite] (client) hmr update /src/components/booking/BookingWizard.tsx, /src/index.css
+5:42:56 PM [vite] (client) hmr update /src/components/booking/BookingWizard.tsx, /src/index.css
+[Email] Booking notification sent for Michael Matteis
+6:49:27 PM [express] POST /api/bookings 201 in 1997ms :: {"firstName":"Michael","lastName":"Matteis","email":"mikey112592@gmail.com","phone":"4244254245","package":"executive","eventDate":"2026-03-06T08:00:00.000Z","startTime":"09:00","eventType":"birthday","eventLength":"4_hours","location":"Huntington Beach, California","message":"","attachmentUrl":"","id":"4"}
+[Email] Booking notification sent for Michael Matteis
+6:50:44 PM [express] POST /api/bookings 201 in 1736ms :: {"firstName":"Michael","lastName":"Matteis","email":"mikey112592@gmail.com","phone":"4244254245","package":"executive","eventDate":"2026-03-10T07:00:00.000Z","startTime":"10:00","eventType":"community","eventLength":"4_hours","location":"Huntington Beach, California","message":"i make love to you","attachmentUrl":"C:\\fakepath\\logo-red.jpeg","id":"5"}
+7:07:18 PM [vite] (client) hmr update /src/components/booking/BookingWizard.tsx, /src/index.css
+7:11:39 PM [express] POST /api/bookings 400 in 3ms :: {"message":"Validation error: Required"}
+7:12:07 PM [express] POST /api/bookings 400 in 1ms :: {"message":"Validation error: Required"}
+7:15:47 PM [vite] (client) hmr update /src/components/booking/BookingWizard.tsx, /src/index.css
+7:16:05 PM [vite] (client) hmr update /src/components/booking/BookingWizard.tsx, /src/index.css
+[Email] Booking notification sent for Michael Matteis
+7:16:50 PM [express] POST /api/bookings 201 in 1838ms :: {"firstName":"Michael","lastName":"Matteis","email":"mikey112592@gmail.com","phone":"4244254245","package":"executive","eventDate":"2026-03-11T07:00:00.000Z","startTime":"10:00","eventType":"other","eventLength":"6_hours","location":"Huntington Beach, California","message":"","id":"6","attachmentUrl":null}
+7:19:25 PM [vite] (client) hmr update /src/components/layout/MobileNav.tsx, /src/index.css
+7:19:45 PM [vite] (client) hmr update /src/App.tsx, /src/pages/home.tsx, /src/components/layout/MobileNav.tsx, /src/index.css
+7:19:45 PM [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("getLenis" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+7:19:45 PM [vite] (client) page reload src/App.tsx
+7:19:45 PM [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("getLenis" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+7:19:45 PM [vite] (client) page reload src/App.tsx
+7:19:45 PM [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("getLenis" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+7:19:45 PM [vite] (client) page reload src/App.tsx
+7:23:50 PM [vite] (client) hmr update /src/components/layout/MobileNav.tsx, /src/index.css
+7:53:54 PM [vite] (client) hmr update /src/pages/home.tsx, /src/index.css
+7:54:10 PM [vite] (client) hmr update /src/pages/home.tsx, /src/index.css
+8:38:04 PM [vite] (client) hmr update /src/pages/home.tsx, /src/index.css
+8:38:20 PM [vite] (client) hmr update /src/pages/home.tsx, /src/index.css
+9:02:32 PM [vite] (client) hmr update /src/App.tsx, /src/pages/home.tsx, /src/components/layout/MobileNav.tsx, /src/index.css
+9:02:32 PM [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("getLenis" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:02:32 PM [vite] (client) page reload src/App.tsx
+9:02:32 PM [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("getLenis" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:02:32 PM [vite] (client) page reload src/App.tsx
+9:02:49 PM [vite] (client) hmr update /src/components/layout/MobileNav.tsx, /src/index.css
+9:03:10 PM [vite] (client) hmr update /src/pages/home.tsx, /src/index.css
+9:03:19 PM [vite] (client) hmr update /src/index.css
+9:03:19 PM [vite] Internal server error: [postcss] /Users/mikematteis/Desktop/asdf/project/One-More-Swing/client/src/index.css:136:5: The `hover:shadow-[0_0_30px_rgba(34,` class does not exist. If `hover:shadow-[0_0_30px_rgba(34,` is a custom class, make sure it is defined within a `@layer` directive.
+  Plugin: vite:css
+  File: /Users/mikematteis/Desktop/asdf/project/One-More-Swing/client/src/index.css:136:4
+  134 |  
+  135 |    .luxury-button {
+  136 |      @apply relative overflow-hidden bg-primary text-primary-foreground font-medium tracking-wide transition-all durat...
+      |      ^
+  137 |    }
+  138 |  
+      at Input.error (/Users/mikematteis/Desktop/asdf/project/One-More-Swing/node_modules/postcss/lib/input.js:135:16)
+      at AtRule.error (/Users/mikematteis/Desktop/asdf/project/One-More-Swing/node_modules/postcss/lib/node.js:146:32)
+      at processApply (/Users/mikematteis/Desktop/asdf/project/One-More-Swing/node_modules/tailwindcss/lib/lib/expandApplyAtRules.js:380:29)
+      at /Users/mikematteis/Desktop/asdf/project/One-More-Swing/node_modules/tailwindcss/lib/lib/expandApplyAtRules.js:551:9
+      at /Users/mikematteis/Desktop/asdf/project/One-More-Swing/node_modules/tailwindcss/lib/processTailwindFeatures.js:55:50
+      at async plugins (/Users/mikematteis/Desktop/asdf/project/One-More-Swing/node_modules/tailwindcss/lib/plugin.js:38:17)
+      at async LazyResult.runAsync (/Users/mikematteis/Desktop/asdf/project/One-More-Swing/node_modules/postcss/lib/lazy-result.js:293:11)
+      at async runPostCSS (/Users/mikematteis/Desktop/asdf/project/One-More-Swing/node_modules/vite/dist/node/chunks/config.js:30145:19)
+      at async compilePostCSS (/Users/mikematteis/Desktop/asdf/project/One-More-Swing/node_modules/vite/dist/node/chunks/config.js:30129:6)
+      at async compileCSS (/Users/mikematteis/Desktop/asdf/project/One-More-Swing/node_modules/vite/dist/node/chunks/config.js:30059:26)
+      at async TransformPluginContext.handler (/Users/mikematteis/Desktop/asdf/project/One-More-Swing/node_modules/vite/dist/node/chunks/config.js:29592:54)
+      at async EnvironmentPluginContainer.transform (/Users/mikematteis/Desktop/asdf/project/One-More-Swing/node_modules/vite/dist/node/chunks/config.js:28797:14)
+      at async loadAndTransform (/Users/mikematteis/Desktop/asdf/project/One-More-Swing/node_modules/vite/dist/node/chunks/config.js:22670:26)

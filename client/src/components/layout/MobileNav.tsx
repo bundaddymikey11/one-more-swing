@@ -1,7 +1,9 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Instagram, Mail, Phone } from "lucide-react";
-import { useEffect } from "react";
+import { X } from "lucide-react";
+import { useEffect, useCallback, useRef } from "react";
+import { createPortal } from "react-dom";
 import { scrollToSection } from "@/lib/scrollTo";
+import { getLenis } from "@/App";
 import logoImage from "@assets/Logo_1771044908308.png";
 
 interface MobileNavProps {
@@ -11,24 +13,36 @@ interface MobileNavProps {
 }
 
 const menuItems = [
-  { label: "About", id: "about" },
-  { label: "Experience", id: "tech" },
-  { label: "Packages", id: "packages" },
-  { label: "FAQ", id: "faq" },
+  { label: "About", id: "about-section" },
+  { label: "Experience", id: "services-section" },
+  { label: "Packages", id: "booking-section" },
+  { label: "FAQ", id: "faq-section" },
 ];
 
 export function MobileNav({ isOpen, onClose, onOpenBooking }: MobileNavProps) {
+  const drawerRef = useRef<HTMLDivElement>(null);
+
+  // Lock body scroll & pause Lenis while menu is open
   useEffect(() => {
+    const lenis = getLenis();
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      lenis?.stop();
+      // Reset drawer scroll position every time it opens
+      requestAnimationFrame(() => {
+        drawerRef.current?.scrollTo({ top: 0, behavior: "auto" });
+      });
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
+      lenis?.start();
     }
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
+      lenis?.start();
     };
   }, [isOpen]);
 
+  // Escape key handler
   useEffect(() => {
     if (!isOpen) return;
     const handleEscape = (e: KeyboardEvent) => {
@@ -38,44 +52,56 @@ export function MobileNav({ isOpen, onClose, onOpenBooking }: MobileNavProps) {
     return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen, onClose]);
 
-  const handleScrollTo = (id: string) => {
+  const handleScrollTo = useCallback((id: string) => {
     onClose();
+    // Wait for close animation to fully complete before scrolling
     setTimeout(() => {
       scrollToSection(id);
-    }, 300);
-  };
+    }, 400);
+  }, [onClose]);
 
-  const handleBookClick = () => {
+  const handleBookClick = useCallback(() => {
     onClose();
     setTimeout(() => {
-      onOpenBooking();
-    }, 300);
-  };
+      scrollToSection('booking-section');
+    }, 400);
+  }, [onClose]);
 
-  return (
+  // Render via portal so the drawer is NOT inside <motion.header>'s
+  // transform context — this is what caused `position: fixed` to break
+  // and made the drawer appear half-visible / anchored to scroll position.
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <>
+          {/* Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={onClose}
-            className="fixed inset-0 z-[1000] bg-black/80 backdrop-blur-md"
+            className="fixed inset-0 z-[9998] bg-black/80 backdrop-blur-md"
             aria-hidden="true"
           />
+          {/* Drawer */}
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed inset-y-0 right-0 z-[1001] w-full sm:w-[450px] bg-[#050505] border-l border-white/10 shadow-2xl flex flex-col"
+            className="fixed top-0 right-0 bottom-0 z-[9999] w-full sm:w-[450px] bg-[#050505] border-l border-white/10 shadow-2xl flex flex-col"
+            style={{
+              height: "100dvh",
+              paddingTop: "env(safe-area-inset-top)",
+              paddingBottom: "env(safe-area-inset-bottom)",
+            }}
             role="dialog"
             aria-modal="true"
             aria-label="Navigation menu"
           >
-            <div className="flex items-center justify-between p-6 sm:p-8 border-b border-white/5">
+            {/* Header bar */}
+            <div className="flex items-center justify-between p-6 sm:p-8 border-b border-white/5 shrink-0">
               <img src={logoImage} alt="One More Swing" className="h-10 w-auto opacity-80" />
               <button
                 onClick={onClose}
@@ -85,7 +111,11 @@ export function MobileNav({ isOpen, onClose, onOpenBooking }: MobileNavProps) {
                 <X className="w-7 h-7" />
               </button>
             </div>
-            <div className="flex-1 min-h-0 overflow-y-auto py-8 px-8 sm:px-10 flex flex-col">
+            {/* Scrollable content */}
+            <div
+              ref={drawerRef}
+              className="flex-1 min-h-0 overflow-y-auto py-8 px-8 sm:px-10 flex flex-col"
+            >
               <nav className="flex flex-col gap-4" aria-label="Main navigation">
                 {menuItems.map((item, i) => (
                   <motion.button
@@ -105,37 +135,18 @@ export function MobileNav({ isOpen, onClose, onOpenBooking }: MobileNavProps) {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3 }}
                   onClick={handleBookClick}
-                  className="text-3xl sm:text-4xl font-serif font-bold text-primary hover:text-white text-left transition-colors duration-300 py-2 min-h-[48px] flex items-center"
+                  className="text-3xl sm:text-4xl font-serif font-bold text-white/80 hover:text-primary text-left transition-colors duration-300 py-2 min-h-[48px] flex items-center"
                   data-testid="link-mobile-booking"
                 >
                   Book Event
                 </motion.button>
               </nav>
-              <div className="mt-auto pt-8 space-y-6 pb-6">
-                <div className="h-px w-full bg-white/10" />
-                <div className="grid grid-cols-2 gap-3">
-                  <a
-                    href="mailto:info@onemoreswing.golf"
-                    className="flex flex-col gap-2 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors min-h-[64px]"
-                    data-testid="link-mobile-email"
-                  >
-                    <Mail className="w-5 h-5 text-primary" />
-                    <span className="text-xs font-medium text-white/60 tracking-wide uppercase">Email Us</span>
-                  </a>
-                  <a
-                    href="tel:+17602169598"
-                    className="flex flex-col gap-2 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors min-h-[64px]"
-                    data-testid="link-mobile-phone"
-                  >
-                    <Phone className="w-5 h-5 text-primary" />
-                    <span className="text-xs font-medium text-white/60 tracking-wide uppercase">Call Us</span>
-                  </a>
-                </div>
-              </div>
+              <div className="mt-auto pt-8 pb-6" />
             </div>
           </motion.div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }
