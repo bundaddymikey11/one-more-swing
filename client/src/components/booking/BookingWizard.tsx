@@ -59,6 +59,7 @@ const eventLengths = [
   { value: "6_hours", label: "6 Hours" },
   { value: "7_hours", label: "7 Hours" },
   { value: "full_day", label: "Full Day (8 Hours)" },
+  { value: "call_for_quote", label: "8+ Hours — Call for Quote (Starting at $2,000)" },
 ];
 
 interface BookingWizardProps {
@@ -70,6 +71,7 @@ const normalBorder = "";
 
 export function BookingWizard({ onClose }: BookingWizardProps) {
   const [step, setStep] = useState(1);
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const { toast } = useToast();
 
   const form = useForm<InsertBooking>({
@@ -103,11 +105,13 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
       case "6_hours": return 6;
       case "7_hours": return 7;
       case "full_day": return 8;
+      case "call_for_quote": return null;
       default: return pkg.minimumHours;
     }
   };
 
-  const selectedHours = lengthToHours(selectedEventLength);
+  const isCallForQuote = selectedEventLength === "call_for_quote";
+  const selectedHours = isCallForQuote ? pkg.minimumHours : (lengthToHours(selectedEventLength) ?? pkg.minimumHours);
   const baseHours = pkg.minimumHours;
   const baseRate = pkg.hourlyRate;
   const extraRate = 200;
@@ -273,13 +277,22 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
                               </SelectContent>
                             </Select>
 
-                            <div className="mt-3 premium-card p-4 flex items-center justify-between">
-                              <div className="text-white/60 text-sm">
-                                Estimated total <span className="text-white/40">(based on hours)</span>
+                            <div className="mt-3 premium-card p-4 flex flex-col gap-1">
+                              <div className="flex items-center justify-between">
+                                <div className="text-white/60 text-sm">
+                                  {isCallForQuote ? "Price Summary" : <>Estimated total <span className="text-white/40">(based on hours)</span></>}
+                                </div>
+                                <div className="text-white font-semibold text-lg">
+                                  {isCallForQuote ? (
+                                    <span className="text-primary font-bold">Starting at $2,000</span>
+                                  ) : (
+                                    `$${estimatedTotal.toLocaleString()}`
+                                  )}
+                                </div>
                               </div>
-                              <div className="text-white font-semibold text-lg">
-                                ${estimatedTotal.toLocaleString()}
-                              </div>
+                              {isCallForQuote && (
+                                <p className="text-white/30 text-[11px] text-right">Final quote may vary based on event details.</p>
+                              )}
                             </div>
 
                             <FormMessage />
@@ -300,7 +313,7 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
                         render={({ field }) => (
                           <FormItem className="flex flex-col">
                             <FormLabel className="text-white/80 text-sm mb-1.5">Date</FormLabel>
-                            <Popover>
+                            <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
                               <PopoverTrigger asChild>
                                 <FormControl>
                                   <Button
@@ -317,7 +330,10 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
                                 <Calendar
                                   mode="single"
                                   selected={field.value ? new Date(field.value) : undefined}
-                                  onSelect={(date) => field.onChange(date?.toISOString())}
+                                  onSelect={(date) => {
+                                    field.onChange(date?.toISOString());
+                                    setCalendarOpen(false);
+                                  }}
                                   disabled={(date) => date < new Date() || date < new Date("1900-01-01")}
                                   initialFocus
                                   className="p-4"
@@ -368,20 +384,37 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
                       </div>
 
                       <div className="premium-card p-4 sm:p-5 space-y-2 border border-white/10">
-                        <div className="flex justify-between text-white/70 text-sm">
-                          <span>{baseHours} hrs × ${baseRate}</span>
-                          <span>${baseCost.toLocaleString()}</span>
-                        </div>
-                        {extraHours > 0 && (
-                          <div className="flex justify-between text-white/70 text-sm">
-                            <span>{extraHours} hrs × ${extraRate}</span>
-                            <span>${extraCost.toLocaleString()}</span>
-                          </div>
+                        {isCallForQuote ? (
+                          <>
+                            <div className="flex justify-between text-white/70 text-sm">
+                              <span>Extended Event (8+ Hours)</span>
+                              <span className="text-primary font-semibold">Starting at $2,000+</span>
+                            </div>
+                            <div className="flex justify-between text-white font-semibold text-lg border-t border-white/10 pt-2">
+                              <span>Total</span>
+                              <span className="text-primary">Custom Quote Required</span>
+                            </div>
+                            <p className="text-white/30 text-[11px] text-right pt-1">Final quote may vary based on event details.</p>
+                          </>
+                        ) : (
+                          <>
+                            <div className="flex justify-between text-white/70 text-sm">
+                              <span>{baseHours} hrs × ${baseRate}</span>
+                              <span>${baseCost.toLocaleString()}</span>
+                            </div>
+                            {extraHours > 0 && (
+                              <div className="flex justify-between text-white/70 text-sm">
+                                <span>{extraHours} hrs × ${extraRate}</span>
+                                <span>${extraCost.toLocaleString()}</span>
+                              </div>
+                            )}
+                            <div className="flex justify-between text-white font-semibold text-lg border-t border-white/10 pt-2">
+                              <span>Total</span>
+                              <span>${estimatedTotal.toLocaleString()}</span>
+                            </div>
+                          </>
                         )}
-                        <div className="flex justify-between text-white font-semibold text-lg border-t border-white/10 pt-2">
-                          <span>Total</span>
-                          <span>${estimatedTotal.toLocaleString()}</span>
-                        </div>
+
                       </div>
                       <div className="grid md:grid-cols-2 gap-4 md:gap-6">
                         <FormField
@@ -507,7 +540,9 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
                         </div>
                         <div className="flex justify-between items-center border-b border-white/10 py-4">
                           <span className="text-white/60 text-sm">Event Length</span>
-                          <span className="font-semibold text-right text-sm">{selectedHours} hours</span>
+                          <span className="font-semibold text-right text-sm">
+                            {isCallForQuote ? <span className="text-primary">8+ Hours — Call for Quote</span> : `${selectedHours} hours`}
+                          </span>
                         </div>
                         <div className="flex justify-between items-center border-b border-white/10 py-4">
                           <span className="text-white/60 text-sm">Date &amp; Time</span>
@@ -533,9 +568,16 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
                             <span className="font-semibold text-right text-sm">${extraCost.toLocaleString()}</span>
                           </div>
                         )}
-                        <div className="flex justify-between items-center py-4">
-                          <span className="text-white/60 text-sm">Estimated Total</span>
-                          <span className="font-bold text-right text-lg text-primary">${estimatedTotal.toLocaleString()}</span>
+                        <div className="flex flex-col border-b border-white/10 py-4 gap-1">
+                          <div className="flex justify-between items-center">
+                            <span className="text-white/60 text-sm">Price Summary</span>
+                            <span className="font-bold text-right text-lg text-primary">
+                              {isCallForQuote ? "Starting at $2,000" : `$${estimatedTotal.toLocaleString()}`}
+                            </span>
+                          </div>
+                          {isCallForQuote && (
+                            <p className="text-white/30 text-[11px] text-right">Final quote may vary based on event details.</p>
+                          )}
                         </div>
                       </div>
                     </motion.div>

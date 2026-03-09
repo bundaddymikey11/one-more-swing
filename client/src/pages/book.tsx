@@ -12,11 +12,12 @@ export default function Book() {
         <div className="min-h-screen bg-[#050505] text-white flex flex-col items-center pt-8 pb-16 px-4 w-full relative">
             <Link href="/">
                 <button
-                    className="absolute top-6 left-6 text-white/50 hover:text-white transition-colors flex items-center gap-2 z-50 group hover-elevate"
+                    className="absolute top-6 left-4 sm:left-6 text-white/50 hover:text-white transition-colors flex items-center gap-2 z-50 group hover-elevate min-h-[44px] min-w-[44px]"
                     aria-label="Back to Home"
+                    style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
                 >
-                    <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                    <span className="text-[11px] font-medium tracking-[0.2em] uppercase hidden sm:inline">Back</span>
+                    <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform shrink-0" />
+                    <span className="text-[11px] font-medium tracking-[0.2em] uppercase">Back</span>
                 </button>
             </Link>
 
@@ -35,7 +36,10 @@ export default function Book() {
                     <span className="text-primary font-semibold text-[10px] sm:text-xs tracking-[0.3em] uppercase block mb-3 text-center">
                         Reserve Your Date
                     </span>
-                    <h1 className="text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight text-center">
+                    <h1
+                        className="text-3xl sm:text-4xl font-serif font-bold text-white text-center"
+                        style={{ letterSpacing: "-0.03em", lineHeight: 1.07 }}
+                    >
                         Bring the course to <span className="text-gradient">your doorstep.</span>
                     </h1>
                 </motion.div>

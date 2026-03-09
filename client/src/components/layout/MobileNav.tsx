@@ -14,6 +14,7 @@ interface MobileNavProps {
 
 const menuItems = [
   { label: "About", id: "about-section" },
+  { label: "Contact", id: "contact-section" },
   { label: "Experience", id: "services-section" },
   { label: "Packages", id: "booking-section" },
   { label: "FAQ", id: "faq-section" },

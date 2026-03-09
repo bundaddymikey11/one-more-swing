@@ -44,6 +44,11 @@ export function Magnetic({
                 mass: springConfig.mass
             }}
             className={`inline-block ${className}`}
+            style={{
+                cursor: "pointer",
+                touchAction: "manipulation",
+                WebkitTapHighlightColor: "transparent",
+            }}
         >
             {children}
         </motion.div>

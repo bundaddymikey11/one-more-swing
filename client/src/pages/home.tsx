@@ -114,15 +114,19 @@ function AnnouncementBar() {
       initial={{ clipPath: "inset(100% -20% 0 -20%)" }}
       animate={{ clipPath: "inset(-20% -20% -20% -20%)" }}
       transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-      className="w-full bg-primary/90 backdrop-blur-sm pt-[max(env(safe-area-inset-top),0.5rem)] pb-2 sm:py-2.5 text-center cursor-pointer min-h-[36px] sm:min-h-[44px] flex items-center justify-center pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]"
+      className="w-full bg-primary/90 backdrop-blur-sm text-center cursor-pointer flex items-center justify-center"
+      style={{ paddingTop: "max(env(safe-area-inset-top), 6px)", paddingBottom: "6px" }}
       data-testid="banner-scarcity"
       onClick={() => scrollToSection("booking-section")}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === "Enter") scrollToSection("booking-section"); }}
     >
-      <p className="text-white text-[10px] sm:text-[11px] font-semibold tracking-[0.15em] sm:tracking-[0.2em] uppercase px-5 sm:px-4 leading-relaxed">
-        Be Among the First to Host One More Swing at Your Next Event
+      <p
+        className="text-white/95 font-medium whitespace-nowrap uppercase px-4"
+        style={{ fontSize: "clamp(10.5px, 3vw, 13px)", letterSpacing: "0.08em", lineHeight: 1, fontFamily: "'Montserrat', sans-serif" }}
+      >
+        Be Among the First to Host One More Swing
       </p>
     </motion.div>
   );
@@ -255,18 +259,24 @@ function HeroSection({ onOpenBooking }: { onOpenBooking: (pkg?: string) => void 
 
           <motion.p
             variants={maskUp}
-            className="text-white/80 max-w-[340px] sm:max-w-2xl mx-auto text-[15px] sm:text-lg font-light relative z-10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] px-4"
+            className="mx-auto font-light relative z-10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] text-center"
             style={{
-              lineHeight: 1.7,
-              letterSpacing: "0.01em",
+              fontSize: "clamp(12px, 3.6vw, 17px)",
+              lineHeight: 1.5,
+              letterSpacing: 0,
+              width: "min(90vw, 480px)",
+              color: "rgba(255,255,255,0.72)",
+              textWrap: "initial",
             }}
           >
-            Most event entertainment is a distraction.
-            <br className="hidden sm:block" />
-            One More Swing is a <span className="text-primary font-bold">destination</span>.
+            <span className="block whitespace-nowrap">Most event entertainment is a distraction.</span>
+            <span className="block whitespace-nowrap mt-[-1px]">
+              One More Swing is a{" "}
+              <span className="text-primary font-semibold">destination</span>.
+            </span>
           </motion.p>
 
-          <motion.div variants={fadeUp} className="flex flex-col items-center gap-4 mt-8 w-full max-w-[280px] sm:max-w-[320px] mx-auto px-2">
+          <motion.div variants={fadeUp} className="flex flex-col items-center gap-4 mt-6 w-full max-w-[280px] sm:max-w-[320px] mx-auto px-2">
             <Magnetic>
               <Button
                 size="lg"
@@ -548,16 +558,16 @@ function PricingSection({ onOpenBooking, onOpenQuote }: { onOpenBooking: (pkg?: 
                   </h3>
                 </div>
 
-                <Magnetic>
-                  <Button
-                    onClick={() => onOpenQuote()}
-                    variant="outline"
-                    className="btn-press w-full sm:w-auto h-[52px] sm:h-[56px] sm:px-10 border border-white/10 text-white/70 bg-white/[0.03] text-[14px] font-medium rounded-2xl hover:bg-white/[0.07] hover:text-white hover:border-white/20"
-                    data-testid="button-book-allday"
-                  >
-                    Get a Quote
-                  </Button>
-                </Magnetic>
+                <Button
+                  onClick={() => onOpenQuote()}
+                  onTouchEnd={(e) => { e.preventDefault(); onOpenQuote(); }}
+                  variant="outline"
+                  className="btn-press w-full sm:w-auto h-[52px] sm:h-[56px] sm:px-10 border border-white/10 text-white/70 bg-white/[0.03] text-[14px] font-medium rounded-2xl hover:bg-white/[0.07] hover:text-white hover:border-white/20"
+                  data-testid="button-book-allday"
+                  style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
+                >
+                  Get a Quote
+                </Button>
               </div>
             </MouseGlowCard>
           </motion.div>
@@ -579,7 +589,7 @@ const faqItems = [
   },
   {
     question: "How much space is required for setup?",
-    answer: "Our simulator setup typically requires about 10–12 feet of width, 15–18 feet of depth, and around 10 feet of ceiling height. If you're unsure whether your space will work, we're happy to review it with you beforehand.",
+    answer: "Minimum of 18x18x12 ft space, a flat surface, and access to a standard power source.",
   },
   {
     question: "Can the simulator be set up indoors or outdoors?",
@@ -654,7 +664,8 @@ function FAQItem({ item, index, isOpen, onToggle }: { item: typeof faqItems[0]; 
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 4, opacity: 0 }}
               transition={{ duration: 0.25, delay: 0.1 }}
-              className="text-white/40 text-[14px] sm:text-[15px] leading-relaxed pb-5"
+              className="text-[14px] sm:text-[15px] pb-5"
+              style={{ lineHeight: 1.7, color: "rgba(255,255,255,0.55)" }}
             >
               {item.answer}
             </motion.p>
@@ -716,7 +727,7 @@ function FAQSection() {
             </p>
             <button
               onClick={() => scrollToSection("contact-section")}
-              className="btn-press inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white/[0.05] border border-white/[0.08] hover:bg-white/[0.09] hover:border-white/[0.16] text-white/80 text-[12px] sm:text-[13px] font-semibold tracking-[0.1em] uppercase min-h-[48px]"
+              className="btn-press inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white/[0.05] border border-white/[0.08] hover:bg-white/[0.09] hover:border-white/[0.16] text-white/80 text-[12px] sm:text-[13px] font-semibold tracking-[0.1em] uppercase min-h-[52px]"
               data-testid="faq-contact-cta"
             >
               Contact Us
@@ -745,7 +756,7 @@ function Footer({ onOpenBooking }: { onOpenBooking: (pkg?: string) => void }) {
                 data-testid="footer-contact-email"
               >
                 <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/10 flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-105">
-                  <Mail className="w-4.5 h-4.5 text-primary" />
+                  <Mail className="w-[18px] h-[18px] text-primary" />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-[10px] text-white/25 uppercase tracking-[0.15em] font-semibold">Email Us</span>
