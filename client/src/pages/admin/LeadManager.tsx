@@ -19,6 +19,7 @@ import {
 import { useState, useMemo } from "react";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
+import FileUpload, { AttachmentPreview } from "@/components/admin/FileUpload";
 
 type SortKey = "createdAt" | "firstName" | "package" | "status";
 type SortDir = "asc" | "desc";
@@ -260,10 +261,11 @@ export default function LeadManager() {
 function LeadModal({ lead, onSave, isLoading }: { lead: Booking; onSave: (u: Partial<Booking>) => void; isLoading: boolean }) {
     const [status, setStatus] = useState(lead.status);
     const [notes, setNotes] = useState(lead.internalNotes || "");
+    const [attachments, setAttachments] = useState<{ url: string; name: string; type: "image" | "pdf" }[]>([]);
     return (
         <>
             <DialogHeader>
-                <DialogTitle className="text-xl font-bold">
+                <DialogTitle className="text-xl font-bold bg-gradient-to-r from-violet-400 to-yellow-400 bg-clip-text text-transparent">
                     {lead.firstName} {lead.lastName}
                 </DialogTitle>
             </DialogHeader>
@@ -295,8 +297,16 @@ function LeadModal({ lead, onSave, isLoading }: { lead: Booking; onSave: (u: Par
                     placeholder="Internal notes..."
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    className="bg-zinc-800 border-zinc-700 text-white h-28"
+                    className="bg-zinc-800 border-zinc-700 text-white h-24"
                 />
+                {/* Attachments */}
+                <div className="space-y-2">
+                    <p className="text-xs text-zinc-500 uppercase tracking-wider">Attachments</p>
+                    {attachments.map((a, i) => (
+                        <AttachmentPreview key={i} {...a} onRemove={() => setAttachments(prev => prev.filter((_, j) => j !== i))} />
+                    ))}
+                    <FileUpload label="Attach photo or PDF" onUploaded={(f) => setAttachments(prev => [...prev, f])} />
+                </div>
                 <Button
                     className="w-full bg-gradient-to-r from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 text-white font-bold shadow-lg shadow-violet-600/20"
                     onClick={() => onSave({ status, internalNotes: notes })}

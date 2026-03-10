@@ -194,6 +194,18 @@ export async function registerRoutes(
     }
   });
 
+  // ── File Upload ───────────────────────────────────────────
+  app.post("/api/admin/upload", requireAuth, upload.single("file"), async (req: any, res) => {
+    try {
+      if (!req.file) return res.status(400).json({ message: "No file provided" });
+      const base64 = req.file.buffer.toString("base64");
+      const dataUrl = `data:${req.file.mimetype};base64,${base64}`;
+      res.json({ url: dataUrl, name: req.file.originalname, mimeType: req.file.mimetype, size: req.file.size });
+    } catch {
+      res.status(500).json({ message: "Upload failed" });
+    }
+  });
+
   app.get("/api/bookings", requireAuth, async (_req, res) => {
     try {
       const bookings = await storage.getBookings();

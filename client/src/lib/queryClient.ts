@@ -27,15 +27,18 @@ export async function adminApiRequest(
   method: string,
   url: string,
   data?: unknown | undefined,
+  isFormData?: boolean,
 ): Promise<Response> {
   const adminPass = localStorage.getItem("admin_pass");
   const res = await fetch(url, {
     method,
-    headers: {
-      "Content-Type": "application/json",
-      "x-admin-password": adminPass || "",
-    },
-    body: data ? JSON.stringify(data) : undefined,
+    headers: isFormData
+      ? { "x-admin-password": adminPass || "" }
+      : {
+        "Content-Type": "application/json",
+        "x-admin-password": adminPass || "",
+      },
+    body: isFormData ? (data as FormData) : data ? JSON.stringify(data) : undefined,
     credentials: "include",
   });
 

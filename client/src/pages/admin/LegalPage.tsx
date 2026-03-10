@@ -12,6 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Plus, Trash2, FileText, ShieldCheck, Clock, AlertTriangle, Edit2, Loader2 } from "lucide-react";
 import { format, differenceInDays, isPast } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
+import FileUpload, { AttachmentPreview } from "@/components/admin/FileUpload";
 
 type LegalStatus = "active" | "pending" | "expired" | "draft";
 
@@ -44,6 +45,7 @@ export default function LegalPage() {
     const [deleteTarget, setDeleteTarget] = useState<LegalDoc | null>(null);
     const [form, setForm] = useState(EMPTY_FORM);
     const [statusFilter, setStatusFilter] = useState("all");
+    const [attachments, setAttachments] = useState<{ url: string; name: string; type: "image" | "pdf" }[]>([]);
     const { toast } = useToast();
 
     const { data: docs = [], isLoading } = useQuery<LegalDoc[]>({
@@ -138,6 +140,14 @@ export default function LegalPage() {
                             </div>
                             <div className="space-y-1"><label className="text-xs text-zinc-400">Notes</label>
                                 <Input placeholder="Any important notes…" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} className="bg-zinc-800 border-zinc-700 text-white" /></div>
+                            {/* File attachment */}
+                            <div className="space-y-2">
+                                <label className="text-xs text-zinc-400 uppercase tracking-wider">Attach Document / Photo</label>
+                                {attachments.map((a, i) => (
+                                    <AttachmentPreview key={i} {...a} onRemove={() => setAttachments(prev => prev.filter((_, j) => j !== i))} />
+                                ))}
+                                <FileUpload label="Take photo or upload PDF" onUploaded={(f) => setAttachments(prev => [...prev, f])} />
+                            </div>
                             <Button
                                 className="w-full bg-gradient-to-r from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 text-white font-bold mt-2"
                                 onClick={() => editTarget ? updateMutation.mutate(editTarget.id) : createMutation.mutate()}
