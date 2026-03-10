@@ -30,13 +30,13 @@ interface Expense {
 
 const CATEGORIES: ExpenseCategory[] = ["Equipment", "Marketing", "Travel", "Maintenance", "Staff", "Supplies", "Other"];
 const CATEGORY_COLORS: Record<ExpenseCategory, string> = {
-    Equipment: "#7c3aed", Marketing: "#3b82f6", Travel: "#f59e0b",
+    Equipment: "#552583", Marketing: "#3b82f6", Travel: "#f59e0b",
     Maintenance: "#8b5cf6", Staff: "#ec4899", Supplies: "#06b6d4", Other: "#71717a",
 };
 
 const STATUS_STYLES: Record<ExpenseStatus, { label: string; class: string; icon: any }> = {
     paid: { label: "Paid", class: "bg-green-500/10 text-green-400 border-green-500/20", icon: CheckCircle },
-    pending: { label: "Pending", class: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20", icon: Clock },
+    pending: { label: "Pending", class: "bg-[#FDB927]/10 text-[#FDB927] border-yellow-500/20", icon: Clock },
     cancelled: { label: "Cancelled", class: "bg-zinc-500/10 text-zinc-500 border-zinc-700", icon: XCircle },
 };
 
@@ -119,11 +119,11 @@ export default function ExpensesPage() {
                 </div>
                 <Dialog open={open} onOpenChange={o => { if (!o) { setOpen(false); setEditTarget(null); setForm(EMPTY_FORM); } else setOpen(true); }}>
                     <DialogTrigger asChild>
-                        <Button className="bg-gradient-to-r from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 text-white gap-2 font-bold">
+                        <Button className="bg-gradient-to-r from-[#552583] to-[#3d1a63] hover:from-[#6b2fa0] hover:to-[#552583] text-white gap-2 font-bold">
                             <Plus className="w-4 h-4" /> Add Expense
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="bg-zinc-900 border-violet-500/20 text-white sm:max-w-[440px]">
+                    <DialogContent className="bg-zinc-900 border-[#552583]/30 text-white sm:max-w-[440px]">
                         <DialogHeader>
                             <DialogTitle>{editTarget ? "Edit Expense" : "Add Expense"}</DialogTitle>
                         </DialogHeader>
@@ -155,7 +155,7 @@ export default function ExpensesPage() {
                             <div className="space-y-1"><label className="text-xs text-zinc-400">Notes (optional)</label>
                                 <Input placeholder="Any additional notes…" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} className="bg-zinc-800 border-zinc-700 text-white" /></div>
                             <Button
-                                className="w-full bg-gradient-to-r from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 text-white font-bold mt-2"
+                                className="w-full bg-gradient-to-r from-[#552583] to-[#3d1a63] hover:from-[#6b2fa0] hover:to-[#552583] text-white font-bold mt-2"
                                 onClick={() => editTarget ? updateMutation.mutate(editTarget.id) : createMutation.mutate()}
                                 disabled={!form.description || !form.amount || createMutation.isPending || updateMutation.isPending}
                             >
@@ -172,7 +172,7 @@ export default function ExpensesPage() {
                 {[
                     { label: "Total Spent", value: `$${totalAll.toLocaleString()}`, icon: DollarSign, color: "text-red-400", bg: "bg-red-500/10" },
                     { label: "Paid", value: `$${totalPaid.toLocaleString()}`, icon: CheckCircle, color: "text-green-500", bg: "bg-green-500/10" },
-                    { label: "Pending", value: `$${totalPending.toLocaleString()}`, icon: Clock, color: "text-yellow-500", bg: "bg-yellow-500/10" },
+                    { label: "Pending", value: `$${totalPending.toLocaleString()}`, icon: Clock, color: "text-[#FDB927]", bg: "bg-[#FDB927]/10" },
                 ].map(kpi => (
                     <Card key={kpi.label} className="bg-zinc-900 border-zinc-800">
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -211,7 +211,7 @@ export default function ExpensesPage() {
                                     <XAxis dataKey="month" stroke="#71717a" fontSize={11} tickLine={false} axisLine={false} />
                                     <YAxis stroke="#71717a" fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => `$${v}`} />
                                     <Tooltip formatter={(v: number) => [`$${v.toLocaleString()}`, "Spent"]} contentStyle={{ background: "#18181b", border: "1px solid #27272a", borderRadius: 8, color: "#fff" }} />
-                                    <Bar dataKey="total" fill="#eab308" radius={[4, 4, 0, 0]} />
+                                    <Bar dataKey="total" fill="#FDB927" radius={[4, 4, 0, 0]} />
                                 </BarChart>
                             </ResponsiveContainer>
                         </div>
@@ -224,7 +224,7 @@ export default function ExpensesPage() {
                 <div className="flex items-center gap-3">
                     {["all", "pending", "paid", "cancelled"].map(s => (
                         <button key={s} onClick={() => setStatusFilter(s)}
-                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${statusFilter === s ? "bg-violet-600 text-white" : "bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800"}`}>
+                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${statusFilter === s ? "bg-[#552583] text-white" : "bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800"}`}>
                             {s.charAt(0).toUpperCase() + s.slice(1)}
                         </button>
                     ))}

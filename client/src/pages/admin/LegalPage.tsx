@@ -32,7 +32,7 @@ const DOC_TYPES = ["Client Contract", "Liability Waiver", "NDA", "Service Agreem
 
 const STATUS_STYLES: Record<LegalStatus, { label: string; class: string; icon: any }> = {
     active: { label: "Active", class: "bg-green-500/10 text-green-400 border-green-500/20", icon: ShieldCheck },
-    pending: { label: "Pending", class: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20", icon: Clock },
+    pending: { label: "Pending", class: "bg-[#FDB927]/10 text-[#FDB927] border-yellow-500/20", icon: Clock },
     expired: { label: "Expired", class: "bg-red-500/10 text-red-400 border-red-500/20", icon: AlertTriangle },
     draft: { label: "Draft", class: "bg-zinc-500/10 text-zinc-400 border-zinc-700", icon: FileText },
 };
@@ -103,11 +103,11 @@ export default function LegalPage() {
                 </div>
                 <Dialog open={open} onOpenChange={o => { if (!o) { setOpen(false); setEditTarget(null); setForm(EMPTY_FORM); } else setOpen(true); }}>
                     <DialogTrigger asChild>
-                        <Button className="bg-gradient-to-r from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 text-white gap-2 font-bold">
+                        <Button className="bg-gradient-to-r from-[#552583] to-[#3d1a63] hover:from-[#6b2fa0] hover:to-[#552583] text-white gap-2 font-bold">
                             <Plus className="w-4 h-4" /> Add Document
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="bg-zinc-900 border-violet-500/20 text-white sm:max-w-[480px]">
+                    <DialogContent className="bg-zinc-900 border-[#552583]/30 text-white sm:max-w-[480px]">
                         <DialogHeader>
                             <DialogTitle>{editTarget ? "Edit Document" : "Add Legal Document"}</DialogTitle>
                         </DialogHeader>
@@ -149,7 +149,7 @@ export default function LegalPage() {
                                 <FileUpload label="Take photo or upload PDF" onUploaded={(f) => setAttachments(prev => [...prev, f])} />
                             </div>
                             <Button
-                                className="w-full bg-gradient-to-r from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 text-white font-bold mt-2"
+                                className="w-full bg-gradient-to-r from-[#552583] to-[#3d1a63] hover:from-[#6b2fa0] hover:to-[#552583] text-white font-bold mt-2"
                                 onClick={() => editTarget ? updateMutation.mutate(editTarget.id) : createMutation.mutate()}
                                 disabled={!form.title || createMutation.isPending || updateMutation.isPending}
                             >
@@ -163,7 +163,7 @@ export default function LegalPage() {
 
             {/* Status summary cards */}
             <div className="grid grid-cols-4 gap-4">
-                {([["active", "Active", "text-green-500", "bg-green-500/10", ShieldCheck], ["pending", "Pending Review", "text-yellow-500", "bg-yellow-500/10", Clock], ["expired", "Expired", "text-red-400", "bg-red-500/10", AlertTriangle], ["draft", "Drafts", "text-zinc-400", "bg-zinc-800", FileText]] as const).map(([key, label, color, bg, Icon]) => (
+                {([["active", "Active", "text-green-500", "bg-green-500/10", ShieldCheck], ["pending", "Pending Review", "text-[#FDB927]", "bg-[#FDB927]/10", Clock], ["expired", "Expired", "text-red-400", "bg-red-500/10", AlertTriangle], ["draft", "Drafts", "text-zinc-400", "bg-zinc-800", FileText]] as const).map(([key, label, color, bg, Icon]) => (
                     <Card key={key} onClick={() => setStatusFilter(statusFilter === key ? "all" : key)} className={`bg-zinc-900 border-zinc-800 cursor-pointer transition-all ${statusFilter === key ? "border-green-500/30" : "hover:border-zinc-700"}`}>
                         <CardContent className="pt-5 flex items-center gap-3">
                             <div className={`w-9 h-9 rounded-lg ${bg} flex items-center justify-center flex-shrink-0`}><Icon className={`w-4 h-4 ${color}`} /></div>
@@ -193,9 +193,9 @@ export default function LegalPage() {
             {/* Documents table */}
             <div className="space-y-3">
                 <div className="flex items-center gap-3">
-                    <button onClick={() => setStatusFilter("all")} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${statusFilter === "all" ? "bg-violet-600 text-white" : "bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800"}`}>All</button>
+                    <button onClick={() => setStatusFilter("all")} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${statusFilter === "all" ? "bg-[#552583] text-white" : "bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800"}`}>All</button>
                     {(Object.keys(STATUS_STYLES) as LegalStatus[]).map(s => (
-                        <button key={s} onClick={() => setStatusFilter(s)} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${statusFilter === s ? "bg-violet-600 text-white" : "bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800"}`}>{STATUS_STYLES[s].label}</button>
+                        <button key={s} onClick={() => setStatusFilter(s)} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${statusFilter === s ? "bg-[#552583] text-white" : "bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800"}`}>{STATUS_STYLES[s].label}</button>
                     ))}
                     <span className="ml-auto text-sm text-zinc-500">{filtered.length} document{filtered.length !== 1 ? "s" : ""}</span>
                 </div>

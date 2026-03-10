@@ -29,7 +29,7 @@ interface User {
 }
 
 const ROLE_STYLES = {
-    admin: "bg-violet-500/10 text-violet-400 border-violet-500/20",
+    admin: "bg-[#552583]/10 text-[#FDB927] border-[#552583]/30",
     viewer: "bg-blue-500/10 text-blue-400 border-blue-500/20",
 };
 
@@ -82,11 +82,11 @@ export default function UsersPage() {
                 </div>
                 <Dialog open={open} onOpenChange={setOpen}>
                     <DialogTrigger asChild>
-                        <Button className="bg-gradient-to-r from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 text-white gap-2 font-bold">
+                        <Button className="bg-gradient-to-r from-[#552583] to-[#3d1a63] hover:from-[#6b2fa0] hover:to-[#552583] text-white gap-2 font-bold">
                             <UserPlus className="w-4 h-4" /> Add Team Member
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="bg-zinc-900 border-violet-500/20 text-white sm:max-w-[440px]">
+                    <DialogContent className="bg-zinc-900 border-[#552583]/30 text-white sm:max-w-[440px]">
                         <DialogHeader>
                             <DialogTitle className="text-xl font-bold">Add Team Member</DialogTitle>
                         </DialogHeader>
@@ -150,14 +150,14 @@ export default function UsersPage() {
                             </div>
 
                             {/* Role explanation */}
-                            <div className={`p-3 rounded-lg border text-xs ${form.role === 'admin' ? 'bg-violet-500/5 border-violet-500/20 text-violet-400' : 'bg-blue-500/5 border-blue-500/20 text-blue-400'}`}>
+                            <div className={`p-3 rounded-lg border text-xs ${form.role === 'admin' ? 'bg-[#552583]/5 border-[#552583]/30 text-[#FDB927]' : 'bg-blue-500/5 border-blue-500/20 text-blue-400'}`}>
                                 {form.role === 'admin'
                                     ? '✅ Can view all tabs, edit leads, manage users, and access all data.'
                                     : '👁️ Can view Overview and Leads (read-only). Cannot edit statuses or access Sales, Marketing, or Users.'}
                             </div>
 
                             <Button
-                                className="w-full bg-gradient-to-r from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 text-white font-bold mt-2"
+                                className="w-full bg-gradient-to-r from-[#552583] to-[#3d1a63] hover:from-[#6b2fa0] hover:to-[#552583] text-white font-bold mt-2"
                                 onClick={() => createMutation.mutate()}
                                 disabled={!form.name || !form.email || !form.password || createMutation.isPending}
                             >
@@ -173,7 +173,7 @@ export default function UsersPage() {
             <div className="grid grid-cols-2 gap-4">
                 <Card className="bg-zinc-900 border-zinc-800">
                     <CardContent className="pt-6 flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-lg bg-[#552583]/10 flex items-center justify-center">
                             <Shield className="w-5 h-5 text-green-500" />
                         </div>
                         <div>

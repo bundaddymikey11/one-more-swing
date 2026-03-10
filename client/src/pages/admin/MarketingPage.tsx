@@ -17,11 +17,11 @@ interface Stats {
 const FUNNEL_STAGES = [
     { key: "new", label: "New Leads", color: "#3b82f6" },
     { key: "contacted", label: "Contacted", color: "#f59e0b" },
-    { key: "confirmed", label: "Confirmed", color: "#7c3aed" },
-    { key: "completed", label: "Completed", color: "#a855f7" },
+    { key: "confirmed", label: "Confirmed", color: "#552583" },
+    { key: "completed", label: "Completed", color: "#552583" },
 ];
 
-const PACKAGE_COLORS = ["#7c3aed", "#3b82f6", "#a855f7"];
+const PACKAGE_COLORS = ["#552583", "#3b82f6", "#552583"];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (!active || !payload?.length) return null;
@@ -103,8 +103,8 @@ export default function MarketingPage() {
                     </CardHeader>
                     <CardContent>
                         <div className="flex items-end gap-3">
-                            <p className="text-4xl font-bold text-yellow-500">{bestDay || "—"}</p>
-                            <Megaphone className="w-6 h-6 text-yellow-500 mb-1" />
+                            <p className="text-4xl font-bold text-[#FDB927]">{bestDay || "—"}</p>
+                            <Megaphone className="w-6 h-6 text-[#FDB927] mb-1" />
                         </div>
                         <p className="text-xs text-zinc-500 mt-1">Most leads received this day</p>
                     </CardContent>
@@ -161,7 +161,7 @@ export default function MarketingPage() {
                                 <Tooltip content={<CustomTooltip />} />
                                 <Bar dataKey="count" name="Leads" radius={[4, 4, 0, 0]}>
                                     {(stats?.dayOfWeek || []).map((entry, i) => (
-                                        <Cell key={i} fill={entry.day === bestDay ? "#7c3aed" : "#27272a"} />
+                                        <Cell key={i} fill={entry.day === bestDay ? "#552583" : "#27272a"} />
                                     ))}
                                 </Bar>
                             </BarChart>

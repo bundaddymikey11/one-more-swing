@@ -25,8 +25,8 @@ type SortKey = "createdAt" | "firstName" | "package" | "status";
 type SortDir = "asc" | "desc";
 
 const STATUS_COLORS: Record<string, string> = {
-    new: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
-    contacted: "bg-violet-500/10 text-violet-400 border-violet-500/20",
+    new: "bg-[#FDB927]/10 text-[#FDB927] border-yellow-500/20",
+    contacted: "bg-[#552583]/10 text-[#FDB927] border-[#552583]/30",
     confirmed: "bg-green-500/10 text-green-400 border-green-500/20",
     completed: "bg-zinc-500/10 text-zinc-400 border-zinc-500/20",
     cancelled: "bg-red-500/10 text-red-400 border-red-500/20",
@@ -179,7 +179,7 @@ export default function LeadManager() {
                                     onClick={() => toggleSort(key as SortKey)}>
                                     <div className="flex items-center gap-1">
                                         {label}
-                                        <ArrowUpDown className={`w-3 h-3 ${sortKey === key ? "text-yellow-500" : "text-zinc-600"}`} />
+                                        <ArrowUpDown className={`w-3 h-3 ${sortKey === key ? "text-[#FDB927]" : "text-zinc-600"}`} />
                                     </div>
                                 </TableHead>
                             ))}
@@ -229,7 +229,7 @@ export default function LeadManager() {
                                                 <MoreHorizontal className="w-5 h-5" />
                                             </Button>
                                         </DialogTrigger>
-                                        <DialogContent className="bg-zinc-900 border-violet-500/20 text-white sm:max-w-[520px] shadow-2xl shadow-violet-950/50">
+                                        <DialogContent className="bg-zinc-900 border-[#552583]/30 text-white sm:max-w-[520px] shadow-2xl shadow-black/50">
                                             <LeadModal lead={lead} onSave={(u) => mutation.mutate({ id: lead.id, updates: u })} isLoading={mutation.isPending} />
                                         </DialogContent>
                                     </Dialog>
@@ -308,7 +308,7 @@ function LeadModal({ lead, onSave, isLoading }: { lead: Booking; onSave: (u: Par
                     <FileUpload label="Attach photo or PDF" onUploaded={(f) => setAttachments(prev => [...prev, f])} />
                 </div>
                 <Button
-                    className="w-full bg-gradient-to-r from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 text-white font-bold shadow-lg shadow-violet-600/20"
+                    className="w-full bg-gradient-to-r from-[#552583] to-[#3d1a63] hover:from-[#6b2fa0] hover:to-[#552583] text-white font-bold shadow-lg shadow-[#552583]/20"
                     onClick={() => onSave({ status, internalNotes: notes })}
                     disabled={isLoading}
                 >

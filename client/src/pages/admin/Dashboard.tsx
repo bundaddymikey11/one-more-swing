@@ -22,8 +22,8 @@ interface Stats {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-    new: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
-    contacted: "bg-violet-500/10 text-violet-400 border-violet-500/20",
+    new: "bg-[#FDB927]/10 text-[#FDB927] border-yellow-500/20",
+    contacted: "bg-[#552583]/10 text-[#FDB927] border-[#552583]/30",
     confirmed: "bg-green-500/10 text-green-400 border-green-500/20",
     completed: "bg-zinc-500/10 text-zinc-400 border-zinc-700",
 };
@@ -31,9 +31,9 @@ const STATUS_COLORS: Record<string, string> = {
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (!active || !payload?.length) return null;
     return (
-        <div className="bg-zinc-900 border border-violet-500/20 rounded-xl p-3 text-sm shadow-xl shadow-violet-950/50">
+        <div className="bg-zinc-900 border border-[#552583]/30 rounded-xl p-3 text-sm shadow-xl shadow-black/50">
             <p className="text-zinc-400 mb-1">{label}</p>
-            <p className="text-yellow-400 font-bold text-lg">{payload[0]?.value} leads</p>
+            <p className="text-[#FDB927] font-bold text-lg">{payload[0]?.value} leads</p>
         </div>
     );
 };
@@ -56,7 +56,7 @@ export default function Dashboard() {
         <div className="flex items-center justify-center h-full min-h-[400px]">
             <div className="flex flex-col items-center gap-3">
                 <Loader2 className="w-8 h-8 text-violet-500 animate-spin" />
-                <p className="text-violet-400/60 text-sm animate-pulse">Loading Command Center...</p>
+                <p className="text-[#FDB927]/60 text-sm animate-pulse">Loading Command Center...</p>
             </div>
         </div>
     );
@@ -66,7 +66,7 @@ export default function Dashboard() {
             label: "Total Leads",
             value: stats?.totalLeads || 0,
             icon: Users,
-            gradient: "from-violet-600 to-violet-800",
+            gradient: "from-[#552583] to-[#3d1a63]",
             iconColor: "text-violet-200",
             onClick: () => navigate("/admin/leads"),
         },
@@ -74,7 +74,7 @@ export default function Dashboard() {
             label: "Uncontacted",
             value: stats?.newLeads || 0,
             icon: Zap,
-            gradient: "from-yellow-400 to-yellow-500",
+            gradient: "from-[#FDB927] to-[#e0a520]",
             iconColor: "text-yellow-100",
             onClick: () => navigate("/admin/leads"),
         },
@@ -82,7 +82,7 @@ export default function Dashboard() {
             label: "Confirmed Revenue",
             value: `$${(stats?.confirmedRevenue || 0).toLocaleString()}`,
             icon: DollarSign,
-            gradient: "from-violet-500 to-purple-700",
+            gradient: "from-[#552583] to-[#6b2fa0]",
             iconColor: "text-violet-100",
             onClick: () => navigate("/admin/sales"),
         },
@@ -90,7 +90,7 @@ export default function Dashboard() {
             label: "Avg. Deal Size",
             value: `$${(stats?.avgDealSize || 0).toLocaleString()}`,
             icon: TrendingUp,
-            gradient: "from-yellow-400 to-yellow-500",
+            gradient: "from-[#FDB927] to-[#e0a520]",
             iconColor: "text-yellow-100",
             onClick: () => navigate("/admin/sales"),
         },
@@ -111,12 +111,12 @@ export default function Dashboard() {
             <div className="flex items-center justify-between">
                 <div>
                     <h2 className="text-3xl font-bold bg-gradient-to-r from-violet-400 via-purple-300 to-yellow-400 bg-clip-text text-transparent flex items-center gap-3">
-                        <Crown className="w-8 h-8 text-yellow-500" />
+                        <Crown className="w-8 h-8 text-[#FDB927]" />
                         Command Center
                     </h2>
                     <p className="text-zinc-500 mt-1">Live overview of your business performance</p>
                 </div>
-                <div className="text-sm text-violet-400/50">{format(new Date(), "EEEE, MMMM d, yyyy")}</div>
+                <div className="text-sm text-[#FDB927]/50">{format(new Date(), "EEEE, MMMM d, yyyy")}</div>
             </div>
 
             {/* KPI Cards — gradient cards */}
@@ -144,16 +144,16 @@ export default function Dashboard() {
             </div>
 
             {/* Lead Trend Chart */}
-            <Card className="bg-zinc-900/80 border-violet-500/10 p-6 shadow-lg shadow-violet-950/20">
+            <Card className="bg-zinc-900/80 border-[#552583]/20 p-6 shadow-lg shadow-black/20">
                 <CardHeader className="px-0 pt-0">
                     <div className="flex items-center justify-between">
                         <div>
                             <CardTitle className="text-white text-lg">Lead Volume — Last 30 Days</CardTitle>
                             <p className="text-sm text-zinc-500 mt-1">Daily incoming booking requests</p>
                         </div>
-                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20">
+                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#552583]/10 border border-[#552583]/30">
                             <div className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse" />
-                            <span className="text-xs text-violet-300 font-medium">Live</span>
+                            <span className="text-xs text-[#FDB927]/80 font-medium">Live</span>
                         </div>
                     </div>
                 </CardHeader>
@@ -162,9 +162,9 @@ export default function Dashboard() {
                         <AreaChart data={chartData}>
                             <defs>
                                 <linearGradient id="lakersGradient" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#7c3aed" stopOpacity={0.4} />
-                                    <stop offset="50%" stopColor="#eab308" stopOpacity={0.1} />
-                                    <stop offset="95%" stopColor="#7c3aed" stopOpacity={0} />
+                                    <stop offset="5%" stopColor="#552583" stopOpacity={0.4} />
+                                    <stop offset="50%" stopColor="#FDB927" stopOpacity={0.1} />
+                                    <stop offset="95%" stopColor="#552583" stopOpacity={0} />
                                 </linearGradient>
                             </defs>
                             <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
@@ -178,11 +178,11 @@ export default function Dashboard() {
                             <Area
                                 type="monotone"
                                 dataKey="count"
-                                stroke="#eab308"
+                                stroke="#FDB927"
                                 strokeWidth={2.5}
                                 fill="url(#lakersGradient)"
                                 dot={false}
-                                activeDot={{ r: 5, fill: "#eab308", stroke: "#7c3aed", strokeWidth: 2 }}
+                                activeDot={{ r: 5, fill: "#FDB927", stroke: "#552583", strokeWidth: 2 }}
                             />
                         </AreaChart>
                     </ResponsiveContainer>
@@ -190,16 +190,16 @@ export default function Dashboard() {
             </Card>
 
             {/* Priority Leads Panel */}
-            <Card className="bg-zinc-900/80 border-violet-500/10 shadow-lg shadow-violet-950/20">
+            <Card className="bg-zinc-900/80 border-[#552583]/20 shadow-lg shadow-black/20">
                 <CardHeader>
                     <div className="flex items-center justify-between">
                         <div>
                             <CardTitle className="text-white flex items-center gap-2">
-                                <Zap className="w-5 h-5 text-yellow-500" /> Priority Leads
+                                <Zap className="w-5 h-5 text-[#FDB927]" /> Priority Leads
                             </CardTitle>
                             <p className="text-sm text-zinc-500 mt-1">Click any lead to view full details</p>
                         </div>
-                        <button onClick={() => navigate("/admin/leads")} className="text-xs text-violet-400 hover:text-yellow-400 flex items-center gap-1 transition-colors">
+                        <button onClick={() => navigate("/admin/leads")} className="text-xs text-[#FDB927] hover:text-[#FDB927] flex items-center gap-1 transition-colors">
                             View All <ArrowRight className="w-3 h-3" />
                         </button>
                     </div>
@@ -207,21 +207,21 @@ export default function Dashboard() {
                 <CardContent className="space-y-2">
                     {priorityLeads.length === 0 ? (
                         <div className="text-center py-8">
-                            <Crown className="w-8 h-8 text-yellow-500/30 mx-auto mb-2" />
+                            <Crown className="w-8 h-8 text-[#FDB927]/30 mx-auto mb-2" />
                             <p className="text-zinc-500 text-sm">🎉 All leads have been contacted!</p>
                         </div>
                     ) : priorityLeads.map((lead) => (
                         <button
                             key={lead.id}
                             onClick={() => setSelectedLead(lead)}
-                            className="w-full flex items-center justify-between p-4 rounded-xl bg-zinc-800/50 hover:bg-violet-500/5 hover:border-violet-500/20 border border-transparent transition-all text-left group"
+                            className="w-full flex items-center justify-between p-4 rounded-xl bg-zinc-800/50 hover:bg-[#552583]/5 hover:border-[#552583]/30 border border-transparent transition-all text-left group"
                         >
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-600 to-yellow-500 flex items-center justify-center text-sm font-bold text-white flex-shrink-0 shadow-md">
                                     {lead.firstName[0]}{lead.lastName[0]}
                                 </div>
                                 <div>
-                                    <p className="text-white text-sm font-semibold group-hover:text-yellow-400 transition-colors">{lead.firstName} {lead.lastName}</p>
+                                    <p className="text-white text-sm font-semibold group-hover:text-[#FDB927] transition-colors">{lead.firstName} {lead.lastName}</p>
                                     <p className="text-zinc-500 text-xs">{lead.email}</p>
                                 </div>
                             </div>
@@ -240,7 +240,7 @@ export default function Dashboard() {
 
             {/* Lead Detail Modal */}
             <Dialog open={!!selectedLead} onOpenChange={o => !o && setSelectedLead(null)}>
-                <DialogContent className="bg-zinc-900 border-violet-500/20 text-white sm:max-w-[500px] shadow-2xl shadow-violet-950/50">
+                <DialogContent className="bg-zinc-900 border-[#552583]/30 text-white sm:max-w-[500px] shadow-2xl shadow-black/50">
                     <DialogHeader>
                         <DialogTitle className="text-xl font-bold bg-gradient-to-r from-violet-400 to-yellow-400 bg-clip-text text-transparent">
                             {selectedLead?.firstName} {selectedLead?.lastName}
@@ -250,23 +250,23 @@ export default function Dashboard() {
                         <div className="space-y-4 py-2">
                             <div className="grid grid-cols-2 gap-4 text-sm">
                                 <div className="space-y-3">
-                                    <p className="flex items-center gap-2 text-zinc-300"><Mail className="w-4 h-4 text-violet-400" />{selectedLead.email}</p>
-                                    <p className="flex items-center gap-2 text-zinc-300"><Phone className="w-4 h-4 text-violet-400" />{selectedLead.phone}</p>
-                                    <p className="flex items-center gap-2 text-zinc-300"><Calendar className="w-4 h-4 text-violet-400" />{selectedLead.eventDate}</p>
+                                    <p className="flex items-center gap-2 text-zinc-300"><Mail className="w-4 h-4 text-[#FDB927]" />{selectedLead.email}</p>
+                                    <p className="flex items-center gap-2 text-zinc-300"><Phone className="w-4 h-4 text-[#FDB927]" />{selectedLead.phone}</p>
+                                    <p className="flex items-center gap-2 text-zinc-300"><Calendar className="w-4 h-4 text-[#FDB927]" />{selectedLead.eventDate}</p>
                                 </div>
                                 <div className="space-y-1 text-sm">
                                     <p className="text-zinc-500">Package</p>
-                                    <p className="text-yellow-400 font-medium">{selectedLead.package}</p>
+                                    <p className="text-[#FDB927] font-medium">{selectedLead.package}</p>
                                     <p className="text-zinc-500 mt-2">Event Type</p>
                                     <p className="text-white">{selectedLead.eventType}</p>
                                 </div>
                             </div>
                             {selectedLead.message && (
-                                <p className="text-zinc-400 text-sm italic border-t border-violet-500/10 pt-3">"{selectedLead.message}"</p>
+                                <p className="text-zinc-400 text-sm italic border-t border-[#552583]/20 pt-3">"{selectedLead.message}"</p>
                             )}
                             <button
                                 onClick={() => { navigate("/admin/leads"); setSelectedLead(null); }}
-                                className="w-full py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 text-white font-bold text-sm transition-all shadow-lg shadow-violet-600/20"
+                                className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#552583] to-[#3d1a63] hover:from-[#6b2fa0] hover:to-[#552583] text-white font-bold text-sm transition-all shadow-lg shadow-[#552583]/20"
                             >
                                 Open Full Record →
                             </button>
