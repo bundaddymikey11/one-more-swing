@@ -151,8 +151,7 @@ export default function Dashboard() {
         [leads]
     );
 
-    // Revenue goal (configurable — set to $50k as default target)
-    const REVENUE_GOAL = 50000;
+    const REVENUE_GOAL = parseInt(localStorage.getItem("oms_revenue_goal") || "50000", 10);
     const revenueProgress = Math.min(100, Math.round(((stats?.confirmedRevenue || 0) / REVENUE_GOAL) * 100));
 
     if (statsLoading || leadsLoading) return (
