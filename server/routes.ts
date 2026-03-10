@@ -162,6 +162,62 @@ export async function registerRoutes(
     }
   });
 
+  app.post("/api/admin/seed", requireAdmin, async (_req, res) => {
+    const demoLeads = [
+      {
+        firstName: "James", lastName: "Harrison", email: "james.harrison@gmail.com", phone: "6025551234",
+        package: "Executive Package", eventDate: "2026-04-12", startTime: "10:00 AM",
+        eventType: "Corporate Outing", eventLength: "4 Hours", location: "Scottsdale, AZ",
+        message: "Need setup for a team of 20. Can we add a putting contest?",
+        status: "confirmed", internalNotes: "Deposit received. Contract signed.",
+        createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+      },
+      {
+        firstName: "Sofia", lastName: "Martinez", email: "sofia.m@outlook.com", phone: "4805559876",
+        package: "All Day Package", eventDate: "2026-05-03", startTime: "9:00 AM",
+        eventType: "Private Event", eventLength: "8+ Hours", location: "Paradise Valley, AZ",
+        message: "Birthday celebration for my husband. He loves golf!",
+        status: "contacted", internalNotes: "Called on 3/8. Sent invoice. Awaiting deposit.",
+        createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+      },
+      {
+        firstName: "Derek", lastName: "Patel", email: "d.patel@company.co", phone: "6025558888",
+        package: "Practice Package", eventDate: "2026-04-20", startTime: "2:00 PM",
+        eventType: "Private Lesson", eventLength: "2 Hours", location: "Tempe, AZ",
+        message: "First time golfer, want to learn the basics.",
+        status: "new", internalNotes: "",
+        createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+      },
+      {
+        firstName: "Amanda", lastName: "Chen", email: "a.chen@startup.io", phone: "4805552222",
+        package: "Executive Package", eventDate: "2026-04-27", startTime: "11:00 AM",
+        eventType: "Bachelor Party", eventLength: "4 Hours", location: "Chandler, AZ",
+        message: "Groom is a huge golf fan. Want to make it memorable.",
+        status: "completed", internalNotes: "Event was a huge success! Left 5-star review.",
+        createdAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+      },
+      {
+        firstName: "Tyler", lastName: "Brooks", email: "tyler.brooks@gmail.com", phone: "6025557777",
+        package: "All Day Package", eventDate: "2026-06-15", startTime: "8:00 AM",
+        eventType: "Corporate Outing", eventLength: "8+ Hours", location: "Peoria, AZ",
+        message: "We have a group of 30 execs. Need catering too.",
+        status: "new", internalNotes: "",
+        createdAt: new Date().toISOString(),
+      },
+    ];
+
+    try {
+      for (const lead of demoLeads) {
+        const { status, internalNotes, createdAt, ...bookingData } = lead;
+        const created = await storage.createBooking({ ...bookingData, message: bookingData.message || undefined, attachmentUrl: undefined });
+        await storage.updateBooking(created.id, { status, internalNotes, createdAt });
+      }
+      res.json({ success: true, message: `${demoLeads.length} demo leads seeded!` });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to seed demo data", error: String(error) });
+    }
+  });
+
   app.get("/api/admin/stats", requireAdmin, async (_req, res) => {
     try {
       const allBookings = await storage.getBookings();
