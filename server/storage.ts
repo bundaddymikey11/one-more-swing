@@ -54,6 +54,7 @@ export interface IStorage {
   createUser(user: CreateUser): Promise<User>;
   deleteUser(id: string): Promise<void>;
   findUserByPassword(password: string): Promise<User | null>;
+  updateUserPassword(userId: string, newPassword: string): Promise<void>;
   // Expenses
   getExpenses(): Promise<Expense[]>;
   createExpense(expense: CreateExpense): Promise<Expense>;
@@ -113,6 +114,12 @@ export class DatabaseStorage implements IStorage {
 
   async findUserByPassword(password: string): Promise<User | null> {
     return this.users.find(u => u.password === password) || null;
+  }
+
+  async updateUserPassword(userId: string, newPassword: string): Promise<void> {
+    const user = this.users.find(u => u.id === userId);
+    if (!user) throw new Error("User not found");
+    user.password = newPassword;
   }
 
   // Expenses and Legal — stored in memory for DB mode too
@@ -201,6 +208,12 @@ export class MemStorage implements IStorage {
 
   async findUserByPassword(password: string): Promise<User | null> {
     return this.users.find(u => u.password === password) || null;
+  }
+
+  async updateUserPassword(userId: string, newPassword: string): Promise<void> {
+    const user = this.users.find(u => u.id === userId);
+    if (!user) throw new Error("User not found");
+    user.password = newPassword;
   }
 
   private expenses: Expense[] = [];

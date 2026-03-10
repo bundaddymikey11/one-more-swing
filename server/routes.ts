@@ -166,6 +166,21 @@ export async function registerRoutes(
     }
   });
 
+  // Change password — verifies current, then updates in memory
+  app.post("/api/admin/change-password", requireAuth, async (req: any, res) => {
+    try {
+      const { currentPassword, newPassword } = req.body;
+      if (!currentPassword || !newPassword) return res.status(400).json({ message: "Both fields required" });
+      if (newPassword.length < 6) return res.status(400).json({ message: "New password must be at least 6 characters" });
+      const user = await storage.findUserByPassword(currentPassword);
+      if (!user) return res.status(401).json({ message: "Current password is incorrect" });
+      await storage.updateUserPassword(user.id, newPassword);
+      res.json({ success: true, message: "Password updated successfully" });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message || "Failed to change password" });
+    }
+  });
+
   // User management (admin only)
   app.get("/api/admin/users", requireAdminRole, async (_req, res) => {
     try { res.json(await storage.getUsers()); }

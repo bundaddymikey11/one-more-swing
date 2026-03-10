@@ -127,31 +127,25 @@ export default function SettingsPage() {
         if (newPass !== confirmPass) {
             toast({ variant: "destructive", title: "New passwords don't match" }); return;
         }
-        if (newPass.length < 8) {
-            toast({ variant: "destructive", title: "Password must be at least 8 characters" }); return;
+        if (newPass.length < 6) {
+            toast({ variant: "destructive", title: "Password must be at least 6 characters" }); return;
         }
         setPassLoading(true);
         try {
-            // Verify current password via login endpoint
-            const verifyRes = await fetch("/api/auth/login", {
-                method: "POST", headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ password: currentPass }),
+            const res = await adminApiRequest("POST", "/api/admin/change-password", {
+                currentPassword: currentPass,
+                newPassword: newPass,
             });
-            if (!verifyRes.ok) {
-                toast({ variant: "destructive", title: "Current password is incorrect" });
-                return;
-            }
-            // The actual password is stored in ADMIN_PASSWORD env var on server.
-            // Show instructions since env var change requires Render update.
-            toast({
-                title: "Password verified ✓",
-                description: "Update ADMIN_PASSWORD in your Render environment variables to apply the new password.",
-            });
-            // Update localStorage with new password for this session
+            const data = await res.json();
+            // Update the stored password so the session keeps working
             localStorage.setItem("admin_pass", newPass);
+            toast({ title: "✓ Password changed successfully!", description: "You're still logged in with your new password." });
             setCurrentPass(""); setNewPass(""); setConfirmPass("");
-        } catch {
-            toast({ variant: "destructive", title: "Something went wrong. Please try again." });
+        } catch (err: any) {
+            const msg = err?.message?.includes("401") ? "Current password is incorrect"
+                : err?.message?.includes("400") ? "Invalid input — check your entries"
+                    : "Something went wrong. Please try again.";
+            toast({ variant: "destructive", title: msg });
         } finally {
             setPassLoading(false);
         }
@@ -294,10 +288,6 @@ export default function SettingsPage() {
                     <Input type={showPass ? "text" : "password"} value={confirmPass} onChange={e => setConfirmPass(e.target.value)}
                         className="bg-zinc-800 border-zinc-700 text-white" placeholder="Repeat new password" />
                 </Field>
-                <div className="flex items-start gap-3 p-3 rounded-xl bg-[#FDB927]/5 border border-[#FDB927]/20">
-                    <AlertTriangle className="w-4 h-4 text-[#FDB927] flex-shrink-0 mt-0.5" />
-                    <p className="text-xs text-zinc-400">Password changes apply to your Render environment. After saving here, update <code className="text-[#FDB927]">ADMIN_PASSWORD</code> in Render → Environment to take effect on the live site.</p>
-                </div>
                 <div className="flex justify-end">
                     <Button onClick={changePassword} disabled={passLoading}
                         className="bg-gradient-to-r from-[#552583] to-[#3d1a63] hover:from-[#6b2fa0] hover:to-[#552583] text-white font-bold shadow-lg shadow-[#552583]/20 gap-2">
