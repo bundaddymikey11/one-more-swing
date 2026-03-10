@@ -18,6 +18,7 @@ import MarketingPage from "@/pages/admin/MarketingPage";
 import UsersPage from "@/pages/admin/UsersPage";
 import ExpensesPage from "@/pages/admin/ExpensesPage";
 import LegalPage from "@/pages/admin/LegalPage";
+import SettingsPage from "@/pages/admin/SettingsPage";
 
 let lenisInstance: Lenis | null = null;
 export function getLenis() { return lenisInstance; }
@@ -53,9 +54,7 @@ function Router() {
         <AdminLayout><LegalPage /></AdminLayout>
       </Route>
       <Route path="/admin/settings">
-        <AdminLayout>
-          <div className="text-white text-lg">Settings coming soon...</div>
-        </AdminLayout>
+        <AdminLayout><SettingsPage /></AdminLayout>
       </Route>
 
       <Route component={NotFound} />
