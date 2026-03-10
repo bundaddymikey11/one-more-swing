@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { bookings, type Booking, type InsertBooking } from "@shared/schema";
+import { bookings, adminSettings, type Booking, type InsertBooking } from "@shared/schema";
 import { db } from "./db";
 
 // ── User types ────────────────────────────────────────────
@@ -120,6 +120,18 @@ export class DatabaseStorage implements IStorage {
     const user = this.users.find(u => u.id === userId);
     if (!user) throw new Error("User not found");
     user.password = newPassword;
+    // Persist master password to DB so it survives restarts
+    if (userId === "master") {
+      try {
+        await db.execute(sql`
+          INSERT INTO admin_settings (key, value, updated_at)
+          VALUES ('master_password', ${newPassword}, ${new Date().toISOString()})
+          ON CONFLICT (key) DO UPDATE SET value = ${newPassword}, updated_at = ${new Date().toISOString()}
+        `);
+      } catch (e) {
+        console.error("[Password] Failed to persist to DB:", e);
+      }
+    }
   }
 
   // Expenses and Legal — stored in memory for DB mode too

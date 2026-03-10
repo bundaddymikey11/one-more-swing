@@ -254,7 +254,7 @@ export default function Dashboard() {
                             <p className="text-zinc-500 text-xs mt-0.5">Incoming booking requests per day</p>
                         </div>
                     </div>
-                    <div className="h-[220px]">
+                    <div className="h-[160px] md:h-[160px] md:h-[220px]">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={chartData}>
                                 <defs>

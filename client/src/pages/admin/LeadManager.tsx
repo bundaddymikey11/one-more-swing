@@ -165,6 +165,7 @@ export default function LeadManager() {
 
             {/* Table */}
             <div className="bg-zinc-950 border border-zinc-900 rounded-xl overflow-hidden">
+                <div className="overflow-x-auto">
                 <Table>
                     <TableHeader className="bg-zinc-900/50">
                         <TableRow className="border-zinc-800 hover:bg-transparent">
@@ -238,6 +239,7 @@ export default function LeadManager() {
                         ))}
                     </TableBody>
                 </Table>
+                </div>
             </div>
 
             {/* Pagination */}
