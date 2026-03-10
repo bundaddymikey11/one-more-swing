@@ -30,7 +30,7 @@ interface Expense {
 
 const CATEGORIES: ExpenseCategory[] = ["Equipment", "Marketing", "Travel", "Maintenance", "Staff", "Supplies", "Other"];
 const CATEGORY_COLORS: Record<ExpenseCategory, string> = {
-    Equipment: "#22c55e", Marketing: "#3b82f6", Travel: "#f59e0b",
+    Equipment: "#7c3aed", Marketing: "#3b82f6", Travel: "#f59e0b",
     Maintenance: "#8b5cf6", Staff: "#ec4899", Supplies: "#06b6d4", Other: "#71717a",
 };
 
@@ -108,7 +108,7 @@ export default function ExpensesPage() {
     });
     const monthlyData = Object.entries(monthlyMap).map(([month, total]) => ({ month, total }));
 
-    if (isLoading) return <div className="flex items-center justify-center h-full"><Loader2 className="w-8 h-8 text-green-500 animate-spin" /></div>;
+    if (isLoading) return <div className="flex items-center justify-center h-full"><Loader2 className="w-8 h-8 text-violet-500 animate-spin" /></div>;
 
     return (
         <div className="space-y-8">
@@ -119,11 +119,11 @@ export default function ExpensesPage() {
                 </div>
                 <Dialog open={open} onOpenChange={o => { if (!o) { setOpen(false); setEditTarget(null); setForm(EMPTY_FORM); } else setOpen(true); }}>
                     <DialogTrigger asChild>
-                        <Button className="bg-green-600 hover:bg-green-700 text-white gap-2 font-bold">
+                        <Button className="bg-gradient-to-r from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 text-white gap-2 font-bold">
                             <Plus className="w-4 h-4" /> Add Expense
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="bg-zinc-900 border-zinc-800 text-white sm:max-w-[440px]">
+                    <DialogContent className="bg-zinc-900 border-violet-500/20 text-white sm:max-w-[440px]">
                         <DialogHeader>
                             <DialogTitle>{editTarget ? "Edit Expense" : "Add Expense"}</DialogTitle>
                         </DialogHeader>
@@ -155,7 +155,7 @@ export default function ExpensesPage() {
                             <div className="space-y-1"><label className="text-xs text-zinc-400">Notes (optional)</label>
                                 <Input placeholder="Any additional notes…" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} className="bg-zinc-800 border-zinc-700 text-white" /></div>
                             <Button
-                                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold mt-2"
+                                className="w-full bg-gradient-to-r from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 text-white font-bold mt-2"
                                 onClick={() => editTarget ? updateMutation.mutate(editTarget.id) : createMutation.mutate()}
                                 disabled={!form.description || !form.amount || createMutation.isPending || updateMutation.isPending}
                             >
@@ -211,7 +211,7 @@ export default function ExpensesPage() {
                                     <XAxis dataKey="month" stroke="#71717a" fontSize={11} tickLine={false} axisLine={false} />
                                     <YAxis stroke="#71717a" fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => `$${v}`} />
                                     <Tooltip formatter={(v: number) => [`$${v.toLocaleString()}`, "Spent"]} contentStyle={{ background: "#18181b", border: "1px solid #27272a", borderRadius: 8, color: "#fff" }} />
-                                    <Bar dataKey="total" fill="#ef4444" radius={[4, 4, 0, 0]} />
+                                    <Bar dataKey="total" fill="#eab308" radius={[4, 4, 0, 0]} />
                                 </BarChart>
                             </ResponsiveContainer>
                         </div>
@@ -224,7 +224,7 @@ export default function ExpensesPage() {
                 <div className="flex items-center gap-3">
                     {["all", "pending", "paid", "cancelled"].map(s => (
                         <button key={s} onClick={() => setStatusFilter(s)}
-                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${statusFilter === s ? "bg-green-600 text-white" : "bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800"}`}>
+                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${statusFilter === s ? "bg-violet-600 text-white" : "bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800"}`}>
                             {s.charAt(0).toUpperCase() + s.slice(1)}
                         </button>
                     ))}

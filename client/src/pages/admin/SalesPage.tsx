@@ -45,7 +45,7 @@ export default function SalesPage() {
 
     if (isLoading) return (
         <div className="flex items-center justify-center h-full">
-            <Loader2 className="w-8 h-8 text-green-500 animate-spin" />
+            <Loader2 className="w-8 h-8 text-violet-500 animate-spin" />
         </div>
     );
 
@@ -54,7 +54,7 @@ export default function SalesPage() {
             label: "Confirmed Revenue",
             value: `$${(stats?.confirmedRevenue || 0).toLocaleString()}`,
             icon: DollarSign,
-            color: "text-green-500",
+            color: "text-violet-400",
             bg: "bg-green-500/10",
             sub: "From confirmed + completed bookings",
         },
@@ -133,9 +133,9 @@ export default function SalesPage() {
                             <Line
                                 type="monotone"
                                 dataKey="actual"
-                                stroke="#22c55e"
+                                stroke="#7c3aed"
                                 strokeWidth={2.5}
-                                dot={{ fill: "#22c55e", r: 4 }}
+                                dot={{ fill: "#7c3aed", r: 4 }}
                                 activeDot={{ r: 6 }}
                                 name="Actual Revenue"
                                 connectNulls={false}
@@ -170,7 +170,7 @@ export default function SalesPage() {
                                 <YAxis stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(v) => `$${v}`} />
                                 <Tooltip content={<CustomTooltip />} />
                                 <Legend wrapperStyle={{ color: "#a1a1aa", fontSize: "12px" }} />
-                                <Bar dataKey="confirmed" name="Confirmed" stackId="a" fill="#22c55e" radius={[0, 0, 0, 0]} />
+                                <Bar dataKey="confirmed" name="Confirmed" stackId="a" fill="#7c3aed" radius={[0, 0, 0, 0]} />
                                 <Bar dataKey="pipeline" name="Pipeline" stackId="a" fill="#3b82f6" radius={[4, 4, 0, 0]} />
                             </BarChart>
                         </ResponsiveContainer>
@@ -191,7 +191,7 @@ export default function SalesPage() {
                                 <Tooltip content={<CustomTooltip />} />
                                 <Bar dataKey="revenue" name="Revenue" radius={[0, 4, 4, 0]}>
                                     {packageRevenue.map((_, i) => (
-                                        <Cell key={i} fill={["#22c55e", "#a855f7", "#f59e0b"][i % 3]} />
+                                        <Cell key={i} fill={["#7c3aed", "#a855f7", "#f59e0b"][i % 3]} />
                                     ))}
                                 </Bar>
                             </BarChart>

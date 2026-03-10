@@ -90,7 +90,7 @@ export default function LegalPage() {
     // Expiring soon: active docs expiring within 30 days
     const expiringSoon = docs.filter(d => d.status === "active" && d.expiryDate && differenceInDays(new Date(d.expiryDate), new Date()) <= 30 && !isPast(new Date(d.expiryDate)));
 
-    if (isLoading) return <div className="flex items-center justify-center h-full"><Loader2 className="w-8 h-8 text-green-500 animate-spin" /></div>;
+    if (isLoading) return <div className="flex items-center justify-center h-full"><Loader2 className="w-8 h-8 text-violet-500 animate-spin" /></div>;
 
     return (
         <div className="space-y-8">
@@ -101,11 +101,11 @@ export default function LegalPage() {
                 </div>
                 <Dialog open={open} onOpenChange={o => { if (!o) { setOpen(false); setEditTarget(null); setForm(EMPTY_FORM); } else setOpen(true); }}>
                     <DialogTrigger asChild>
-                        <Button className="bg-green-600 hover:bg-green-700 text-white gap-2 font-bold">
+                        <Button className="bg-gradient-to-r from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 text-white gap-2 font-bold">
                             <Plus className="w-4 h-4" /> Add Document
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="bg-zinc-900 border-zinc-800 text-white sm:max-w-[480px]">
+                    <DialogContent className="bg-zinc-900 border-violet-500/20 text-white sm:max-w-[480px]">
                         <DialogHeader>
                             <DialogTitle>{editTarget ? "Edit Document" : "Add Legal Document"}</DialogTitle>
                         </DialogHeader>
@@ -139,7 +139,7 @@ export default function LegalPage() {
                             <div className="space-y-1"><label className="text-xs text-zinc-400">Notes</label>
                                 <Input placeholder="Any important notes…" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} className="bg-zinc-800 border-zinc-700 text-white" /></div>
                             <Button
-                                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold mt-2"
+                                className="w-full bg-gradient-to-r from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 text-white font-bold mt-2"
                                 onClick={() => editTarget ? updateMutation.mutate(editTarget.id) : createMutation.mutate()}
                                 disabled={!form.title || createMutation.isPending || updateMutation.isPending}
                             >
@@ -183,9 +183,9 @@ export default function LegalPage() {
             {/* Documents table */}
             <div className="space-y-3">
                 <div className="flex items-center gap-3">
-                    <button onClick={() => setStatusFilter("all")} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${statusFilter === "all" ? "bg-green-600 text-white" : "bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800"}`}>All</button>
+                    <button onClick={() => setStatusFilter("all")} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${statusFilter === "all" ? "bg-violet-600 text-white" : "bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800"}`}>All</button>
                     {(Object.keys(STATUS_STYLES) as LegalStatus[]).map(s => (
-                        <button key={s} onClick={() => setStatusFilter(s)} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${statusFilter === s ? "bg-green-600 text-white" : "bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800"}`}>{STATUS_STYLES[s].label}</button>
+                        <button key={s} onClick={() => setStatusFilter(s)} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${statusFilter === s ? "bg-violet-600 text-white" : "bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800"}`}>{STATUS_STYLES[s].label}</button>
                     ))}
                     <span className="ml-auto text-sm text-zinc-500">{filtered.length} document{filtered.length !== 1 ? "s" : ""}</span>
                 </div>

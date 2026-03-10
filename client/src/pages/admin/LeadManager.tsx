@@ -24,8 +24,8 @@ type SortKey = "createdAt" | "firstName" | "package" | "status";
 type SortDir = "asc" | "desc";
 
 const STATUS_COLORS: Record<string, string> = {
-    new: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-    contacted: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+    new: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+    contacted: "bg-violet-500/10 text-violet-400 border-violet-500/20",
     confirmed: "bg-green-500/10 text-green-400 border-green-500/20",
     completed: "bg-zinc-500/10 text-zinc-400 border-zinc-500/20",
     cancelled: "bg-red-500/10 text-red-400 border-red-500/20",
@@ -102,7 +102,7 @@ export default function LeadManager() {
 
     if (isLoading) return (
         <div className="flex items-center justify-center h-full">
-            <Loader2 className="w-8 h-8 text-green-500 animate-spin" />
+            <Loader2 className="w-8 h-8 text-violet-500 animate-spin" />
         </div>
     );
 
@@ -178,7 +178,7 @@ export default function LeadManager() {
                                     onClick={() => toggleSort(key as SortKey)}>
                                     <div className="flex items-center gap-1">
                                         {label}
-                                        <ArrowUpDown className={`w-3 h-3 ${sortKey === key ? "text-green-500" : "text-zinc-600"}`} />
+                                        <ArrowUpDown className={`w-3 h-3 ${sortKey === key ? "text-yellow-500" : "text-zinc-600"}`} />
                                     </div>
                                 </TableHead>
                             ))}
@@ -228,7 +228,7 @@ export default function LeadManager() {
                                                 <MoreHorizontal className="w-5 h-5" />
                                             </Button>
                                         </DialogTrigger>
-                                        <DialogContent className="bg-zinc-900 border-zinc-800 text-white sm:max-w-[520px]">
+                                        <DialogContent className="bg-zinc-900 border-violet-500/20 text-white sm:max-w-[520px] shadow-2xl shadow-violet-950/50">
                                             <LeadModal lead={lead} onSave={(u) => mutation.mutate({ id: lead.id, updates: u })} isLoading={mutation.isPending} />
                                         </DialogContent>
                                     </Dialog>
@@ -298,7 +298,7 @@ function LeadModal({ lead, onSave, isLoading }: { lead: Booking; onSave: (u: Par
                     className="bg-zinc-800 border-zinc-700 text-white h-28"
                 />
                 <Button
-                    className="w-full bg-green-600 hover:bg-green-700 text-white"
+                    className="w-full bg-gradient-to-r from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 text-white font-bold shadow-lg shadow-violet-600/20"
                     onClick={() => onSave({ status, internalNotes: notes })}
                     disabled={isLoading}
                 >

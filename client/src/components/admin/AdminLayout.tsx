@@ -80,13 +80,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     if (!authed) {
         return (
             <div className="min-h-screen bg-black flex items-center justify-center p-4">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-green-950/20 via-black to-black" />
-                <Card className="relative w-full max-w-md bg-zinc-900/80 border-zinc-800 shadow-2xl backdrop-blur">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet-950/30 via-black to-black" />
+                {/* Decorative gold ring */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-yellow-500/10 animate-pulse" />
+                <Card className="relative w-full max-w-md bg-zinc-900/90 border-violet-500/20 shadow-2xl shadow-violet-950/50 backdrop-blur">
                     <CardHeader className="text-center pb-2 pt-8">
-                        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-green-500/10 border border-green-500/20 mx-auto mb-4">
-                            <Lock className="w-6 h-6 text-green-500" />
+                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-600 to-yellow-500 mx-auto mb-4 shadow-lg shadow-violet-500/20">
+                            <Lock className="w-7 h-7 text-white" />
                         </div>
-                        <CardTitle className="text-2xl font-bold text-white">Command Center</CardTitle>
+                        <CardTitle className="text-2xl font-bold bg-gradient-to-r from-violet-400 to-yellow-400 bg-clip-text text-transparent">Command Center</CardTitle>
                         <p className="text-sm text-zinc-500 mt-1">One More Swing — Internal Admin</p>
                     </CardHeader>
                     <CardContent className="px-8 pb-8 space-y-4 mt-4">
@@ -98,7 +100,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 value={password}
                                 onChange={e => { setPassword(e.target.value); setError(""); }}
                                 onKeyDown={e => e.key === "Enter" && handleLogin()}
-                                className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-600 h-11"
+                                className="bg-zinc-800 border-violet-500/20 text-white placeholder:text-zinc-600 h-11 focus:border-yellow-500/50 focus:ring-yellow-500/20"
                                 autoFocus
                             />
                         </div>
@@ -108,10 +110,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         <Button
                             onClick={handleLogin}
                             disabled={!password || loading}
-                            className="w-full h-11 bg-green-600 hover:bg-green-700 text-white font-bold"
+                            className="w-full h-11 bg-gradient-to-r from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 text-white font-bold shadow-lg shadow-violet-600/20"
                         >
                             {loading ? (
-                                <div className="flex items-center gap-2"><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Signing in...</div>
+                                <div className="flex items-center gap-2"><div className="w-4 h-4 border-2 border-white/30 border-t-yellow-400 rounded-full animate-spin" /> Signing in...</div>
                             ) : (
                                 <div className="flex items-center gap-2">Sign In <ChevronRight className="w-4 h-4" /></div>
                             )}
@@ -133,28 +135,35 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return (
         <div className="min-h-screen bg-zinc-950 flex">
             {/* Sidebar */}
-            <aside className="w-64 bg-black border-r border-zinc-900 flex flex-col flex-shrink-0 sticky top-0 h-screen">
+            <aside className="w-64 bg-gradient-to-b from-zinc-950 via-violet-950/20 to-zinc-950 border-r border-violet-500/10 flex flex-col flex-shrink-0 sticky top-0 h-screen">
                 {/* Logo */}
-                <div className="p-6 border-b border-zinc-900">
-                    <p className="text-white font-bold text-lg tracking-tight">One More Swing</p>
-                    <p className="text-zinc-500 text-xs mt-0.5">Command Center</p>
+                <div className="p-6 border-b border-violet-500/10">
+                    <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-600 to-yellow-500 flex items-center justify-center shadow-lg shadow-violet-500/20">
+                            <span className="text-white font-black text-sm">OMS</span>
+                        </div>
+                        <div>
+                            <p className="text-white font-bold text-sm tracking-tight">One More Swing</p>
+                            <p className="text-violet-400/60 text-xs">Command Center</p>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Nav */}
-                <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+                <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
                     {navItems.map(item => {
                         const active = isActive(item.href);
                         return (
                             <Link key={item.href} href={item.href}>
                                 <a className={cn(
-                                    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 group",
+                                    "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group",
                                     active
-                                        ? "bg-green-500/10 text-green-400 border border-green-500/20"
-                                        : "text-zinc-400 hover:text-white hover:bg-zinc-900"
+                                        ? "bg-gradient-to-r from-violet-600/20 to-yellow-500/10 text-yellow-400 border border-violet-500/20 shadow-inner"
+                                        : "text-zinc-400 hover:text-white hover:bg-violet-500/5"
                                 )}>
-                                    <item.icon className={cn("w-4 h-4 flex-shrink-0", active ? "text-green-500" : "text-zinc-500 group-hover:text-white")} />
+                                    <item.icon className={cn("w-4 h-4 flex-shrink-0", active ? "text-yellow-500" : "text-zinc-600 group-hover:text-violet-400")} />
                                     {item.label}
-                                    {active && <ChevronRight className="w-3 h-3 ml-auto text-green-500" />}
+                                    {active && <ChevronRight className="w-3 h-3 ml-auto text-yellow-500" />}
                                 </a>
                             </Link>
                         );
@@ -162,17 +171,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </nav>
 
                 {/* User footer */}
-                <div className="p-4 border-t border-zinc-900">
-                    <div className="flex items-center gap-3 px-3 py-3 rounded-lg bg-zinc-900/50 mb-3">
-                        <div className="w-8 h-8 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-xs font-bold flex-shrink-0">
+                <div className="p-4 border-t border-violet-500/10">
+                    <div className="flex items-center gap-3 px-3 py-3 rounded-xl bg-violet-500/5 border border-violet-500/10 mb-3">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-yellow-500 text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
                             {adminUser?.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
                         </div>
                         <div className="min-w-0 flex-1">
                             <p className="text-white text-sm font-medium truncate">{adminUser?.name}</p>
                             <div className="flex items-center gap-1 mt-0.5">
                                 {role === "admin"
-                                    ? <><Shield className="w-3 h-3 text-green-500" /><span className="text-xs text-green-500">Admin</span></>
-                                    : <><Eye className="w-3 h-3 text-blue-400" /><span className="text-xs text-blue-400">Viewer</span></>}
+                                    ? <><Shield className="w-3 h-3 text-yellow-500" /><span className="text-xs text-yellow-500">Admin</span></>
+                                    : <><Eye className="w-3 h-3 text-violet-400" /><span className="text-xs text-violet-400">Viewer</span></>}
                             </div>
                         </div>
                     </div>

@@ -17,11 +17,11 @@ interface Stats {
 const FUNNEL_STAGES = [
     { key: "new", label: "New Leads", color: "#3b82f6" },
     { key: "contacted", label: "Contacted", color: "#f59e0b" },
-    { key: "confirmed", label: "Confirmed", color: "#22c55e" },
+    { key: "confirmed", label: "Confirmed", color: "#7c3aed" },
     { key: "completed", label: "Completed", color: "#a855f7" },
 ];
 
-const PACKAGE_COLORS = ["#22c55e", "#3b82f6", "#a855f7"];
+const PACKAGE_COLORS = ["#7c3aed", "#3b82f6", "#a855f7"];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (!active || !payload?.length) return null;
@@ -45,7 +45,7 @@ export default function MarketingPage() {
 
     if (isLoading) return (
         <div className="flex items-center justify-center h-full">
-            <Loader2 className="w-8 h-8 text-green-500 animate-spin" />
+            <Loader2 className="w-8 h-8 text-violet-500 animate-spin" />
         </div>
     );
 
@@ -161,7 +161,7 @@ export default function MarketingPage() {
                                 <Tooltip content={<CustomTooltip />} />
                                 <Bar dataKey="count" name="Leads" radius={[4, 4, 0, 0]}>
                                     {(stats?.dayOfWeek || []).map((entry, i) => (
-                                        <Cell key={i} fill={entry.day === bestDay ? "#22c55e" : "#27272a"} />
+                                        <Cell key={i} fill={entry.day === bestDay ? "#7c3aed" : "#27272a"} />
                                     ))}
                                 </Bar>
                             </BarChart>
