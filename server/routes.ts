@@ -166,23 +166,114 @@ export async function registerRoutes(
     try {
       const allBookings = await storage.getBookings();
 
-      const stats = {
-        totalLeads: allBookings.length,
-        newLeads: allBookings.filter(b => b.status === 'new').length,
-        byPackage: {
-          'Practice': allBookings.filter(b => b.package.includes('Practice')).length,
-          'Executive': allBookings.filter(b => b.package.includes('Executive')).length,
-          'All Day': allBookings.filter(b => b.package.includes('All Day')).length,
-        },
-        revenuePotential: allBookings.reduce((acc, b) => {
-          if (b.package.includes('Practice')) return acc + 250;
-          if (b.package.includes('Executive')) return acc + 450;
-          if (b.package.includes('All Day')) return acc + 800;
-          return acc;
-        }, 0)
+      // -- Package price map
+      const packagePrice = (pkg: string) => {
+        if (pkg.includes("Practice")) return 250;
+        if (pkg.includes("Executive")) return 450;
+        if (pkg.includes("All Day")) return 800;
+        return 0;
       };
 
-      res.json(stats);
+      // -- Daily lead counts for the last 30 days
+      const today = new Date();
+      const dailyCounts: Record<string, number> = {};
+      for (let i = 29; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(today.getDate() - i);
+        const key = d.toISOString().split("T")[0];
+        dailyCounts[key] = 0;
+      }
+      for (const b of allBookings) {
+        const key = b.createdAt.split("T")[0].split(" ")[0]; // handle both ISO and space-separated
+        if (dailyCounts[key] !== undefined) dailyCounts[key]++;
+      }
+      const dailyLeads = Object.entries(dailyCounts).map(([date, count]) => ({ date, count }));
+
+      // -- Day of week breakdown
+      const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const dayOfWeekCounts = dayNames.map(name => ({ day: name, count: 0 }));
+      for (const b of allBookings) {
+        const day = new Date(b.createdAt).getDay();
+        dayOfWeekCounts[day].count++;
+      }
+
+      // -- Monthly revenue for the last 6 months
+      const monthlyRevenue: Record<string, { confirmed: number; pipeline: number }> = {};
+      for (let i = 5; i >= 0; i--) {
+        const d = new Date(today);
+        d.setMonth(today.getMonth() - i);
+        const key = d.toISOString().slice(0, 7); // "YYYY-MM"
+        monthlyRevenue[key] = { confirmed: 0, pipeline: 0 };
+      }
+      for (const b of allBookings) {
+        const key = b.createdAt.slice(0, 7);
+        if (monthlyRevenue[key]) {
+          const val = packagePrice(b.package);
+          if (b.status === "confirmed" || b.status === "completed") {
+            monthlyRevenue[key].confirmed += val;
+          } else if (b.status !== "cancelled") {
+            monthlyRevenue[key].pipeline += val;
+          }
+        }
+      }
+      const monthlyRevArr = Object.entries(monthlyRevenue).map(([month, data]) => ({
+        month: new Date(month + "-01").toLocaleString("default", { month: "short" }),
+        confirmed: data.confirmed,
+        pipeline: data.pipeline,
+        total: data.confirmed + data.pipeline,
+      }));
+
+      // -- Conversion funnel
+      const funnel = {
+        new: allBookings.filter(b => b.status === "new").length,
+        contacted: allBookings.filter(b => b.status === "contacted").length,
+        confirmed: allBookings.filter(b => b.status === "confirmed").length,
+        completed: allBookings.filter(b => b.status === "completed").length,
+        cancelled: allBookings.filter(b => b.status === "cancelled").length,
+      };
+
+      // -- Package breakdown
+      const byPackage = {
+        Practice: allBookings.filter(b => b.package.includes("Practice")).length,
+        Executive: allBookings.filter(b => b.package.includes("Executive")).length,
+        "All Day": allBookings.filter(b => b.package.includes("All Day")).length,
+      };
+
+      // -- Revenue summaries
+      const confirmedRevenue = allBookings
+        .filter(b => b.status === "confirmed" || b.status === "completed")
+        .reduce((acc, b) => acc + packagePrice(b.package), 0);
+      const pipelineRevenue = allBookings
+        .filter(b => b.status === "new" || b.status === "contacted")
+        .reduce((acc, b) => acc + packagePrice(b.package), 0);
+
+      // -- Simple 3-month forecast (avg monthly confirmed * 3)
+      const avgMonthly = confirmedRevenue / Math.max(1, monthlyRevArr.filter(m => m.confirmed > 0).length);
+      const forecast = [1, 2, 3].map(i => {
+        const d = new Date(today);
+        d.setMonth(today.getMonth() + i);
+        const growth = 1 + (0.1 * i); // 10% growth assumption
+        return {
+          month: d.toLocaleString("default", { month: "short" }),
+          projected: Math.round(avgMonthly * growth),
+        };
+      });
+
+      res.json({
+        totalLeads: allBookings.length,
+        newLeads: funnel.new,
+        confirmedRevenue,
+        pipelineRevenue,
+        avgDealSize: allBookings.length > 0
+          ? Math.round(allBookings.reduce((acc, b) => acc + packagePrice(b.package), 0) / allBookings.length)
+          : 0,
+        dailyLeads,
+        dayOfWeek: dayOfWeekCounts,
+        monthlyRevenue: monthlyRevArr,
+        forecast,
+        funnel,
+        byPackage,
+      });
     } catch (error) {
       res.status(500).json({ message: "Failed to calculate stats" });
     }

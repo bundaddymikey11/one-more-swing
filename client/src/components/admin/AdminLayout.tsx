@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { LayoutDashboard, Users, Settings, LogOut, Lock } from "lucide-react";
+import { LayoutDashboard, Users, Settings, LogOut, Lock, DollarSign, Megaphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -66,8 +66,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
 
     const navItems = [
-        { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+        { href: "/admin", label: "Overview", icon: LayoutDashboard },
         { href: "/admin/leads", label: "Leads", icon: Users },
+        { href: "/admin/sales", label: "Sales", icon: DollarSign },
+        { href: "/admin/marketing", label: "Marketing", icon: Megaphone },
         { href: "/admin/settings", label: "Settings", icon: Settings },
     ];
 

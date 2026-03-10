@@ -13,6 +13,8 @@ import NotFound from "@/pages/not-found";
 import AdminLayout from "@/components/admin/AdminLayout";
 import AdminDashboard from "@/pages/admin/Dashboard";
 import LeadManager from "@/pages/admin/LeadManager";
+import SalesPage from "@/pages/admin/SalesPage";
+import MarketingPage from "@/pages/admin/MarketingPage";
 
 let lenisInstance: Lenis | null = null;
 export function getLenis() { return lenisInstance; }
@@ -32,9 +34,15 @@ function Router() {
       <Route path="/admin/leads">
         <AdminLayout><LeadManager /></AdminLayout>
       </Route>
+      <Route path="/admin/sales">
+        <AdminLayout><SalesPage /></AdminLayout>
+      </Route>
+      <Route path="/admin/marketing">
+        <AdminLayout><MarketingPage /></AdminLayout>
+      </Route>
       <Route path="/admin/settings">
         <AdminLayout>
-          <div className="text-white">Settings coming soon...</div>
+          <div className="text-white text-lg">Settings coming soon...</div>
         </AdminLayout>
       </Route>
 
