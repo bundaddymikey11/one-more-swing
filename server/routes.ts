@@ -386,5 +386,41 @@ export async function registerRoutes(
     }
   });
 
+  // ── Expenses ──────────────────────────────────────────────
+  app.get("/api/admin/expenses", requireAdminRole, async (_req, res) => {
+    try { res.json(await storage.getExpenses()); }
+    catch { res.status(500).json({ message: "Failed to fetch expenses" }); }
+  });
+  app.post("/api/admin/expenses", requireAdminRole, async (req, res) => {
+    try { res.status(201).json(await storage.createExpense(req.body)); }
+    catch { res.status(500).json({ message: "Failed to create expense" }); }
+  });
+  app.patch("/api/admin/expenses/:id", requireAdminRole, async (req, res) => {
+    try { res.json(await storage.updateExpense(req.params.id, req.body)); }
+    catch { res.status(500).json({ message: "Failed to update expense" }); }
+  });
+  app.delete("/api/admin/expenses/:id", requireAdminRole, async (req, res) => {
+    try { await storage.deleteExpense(req.params.id); res.json({ success: true }); }
+    catch { res.status(500).json({ message: "Failed to delete expense" }); }
+  });
+
+  // ── Legal Docs ────────────────────────────────────────────
+  app.get("/api/admin/legal", requireAdminRole, async (_req, res) => {
+    try { res.json(await storage.getLegalDocs()); }
+    catch { res.status(500).json({ message: "Failed to fetch legal docs" }); }
+  });
+  app.post("/api/admin/legal", requireAdminRole, async (req, res) => {
+    try { res.status(201).json(await storage.createLegalDoc(req.body)); }
+    catch { res.status(500).json({ message: "Failed to create legal doc" }); }
+  });
+  app.patch("/api/admin/legal/:id", requireAdminRole, async (req, res) => {
+    try { res.json(await storage.updateLegalDoc(req.params.id, req.body)); }
+    catch { res.status(500).json({ message: "Failed to update legal doc" }); }
+  });
+  app.delete("/api/admin/legal/:id", requireAdminRole, async (req, res) => {
+    try { await storage.deleteLegalDoc(req.params.id); res.json({ success: true }); }
+    catch { res.status(500).json({ message: "Failed to delete legal doc" }); }
+  });
+
   return httpServer;
 }

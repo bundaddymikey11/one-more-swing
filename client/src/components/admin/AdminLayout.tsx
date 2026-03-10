@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, useLocation } from "wouter";
-import { LayoutDashboard, Users, Settings, LogOut, Lock, DollarSign, Megaphone, Shield, Eye, ChevronRight } from "lucide-react";
+import { LayoutDashboard, Users, Settings, LogOut, Lock, DollarSign, Megaphone, Shield, Eye, ChevronRight, Receipt, Scale } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,6 +17,8 @@ const ALL_NAV_ITEMS = [
     { href: "/admin/leads", label: "Leads", icon: Users, roles: ["admin", "viewer"] },
     { href: "/admin/sales", label: "Sales", icon: DollarSign, roles: ["admin"] },
     { href: "/admin/marketing", label: "Marketing", icon: Megaphone, roles: ["admin"] },
+    { href: "/admin/expenses", label: "Expenses", icon: Receipt, roles: ["admin"] },
+    { href: "/admin/legal", label: "Legal", icon: Scale, roles: ["admin"] },
     { href: "/admin/users", label: "Team", icon: Shield, roles: ["admin"] },
     { href: "/admin/settings", label: "Settings", icon: Settings, roles: ["admin", "viewer"] },
 ];

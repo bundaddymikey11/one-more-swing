@@ -14,6 +14,36 @@ export interface User {
 }
 export type CreateUser = Omit<User, "id" | "createdAt">;
 
+// ── Expense types ─────────────────────────────────────────
+export type ExpenseCategory = "Equipment" | "Marketing" | "Travel" | "Maintenance" | "Staff" | "Supplies" | "Other";
+export type ExpenseStatus = "pending" | "paid" | "cancelled";
+export interface Expense {
+  id: string;
+  date: string;
+  category: ExpenseCategory;
+  description: string;
+  amount: number;
+  status: ExpenseStatus;
+  notes: string;
+  createdAt: string;
+}
+export type CreateExpense = Omit<Expense, "id" | "createdAt">;
+
+// ── Legal document types ──────────────────────────────────
+export type LegalStatus = "active" | "pending" | "expired" | "draft";
+export interface LegalDoc {
+  id: string;
+  title: string;
+  type: string;
+  clientName: string;
+  dateCreated: string;
+  expiryDate: string;
+  status: LegalStatus;
+  notes: string;
+  createdAt: string;
+}
+export type CreateLegalDoc = Omit<LegalDoc, "id" | "createdAt">;
+
 // ── Shared interface ──────────────────────────────────────
 export interface IStorage {
   createBooking(booking: InsertBooking): Promise<Booking>;
@@ -24,6 +54,16 @@ export interface IStorage {
   createUser(user: CreateUser): Promise<User>;
   deleteUser(id: string): Promise<void>;
   findUserByPassword(password: string): Promise<User | null>;
+  // Expenses
+  getExpenses(): Promise<Expense[]>;
+  createExpense(expense: CreateExpense): Promise<Expense>;
+  updateExpense(id: string, updates: Partial<Expense>): Promise<Expense>;
+  deleteExpense(id: string): Promise<void>;
+  // Legal
+  getLegalDocs(): Promise<LegalDoc[]>;
+  createLegalDoc(doc: CreateLegalDoc): Promise<LegalDoc>;
+  updateLegalDoc(id: string, updates: Partial<LegalDoc>): Promise<LegalDoc>;
+  deleteLegalDoc(id: string): Promise<void>;
 }
 
 // ── DatabaseStorage (with postgres) ──────────────────────
@@ -74,7 +114,36 @@ export class DatabaseStorage implements IStorage {
   async findUserByPassword(password: string): Promise<User | null> {
     return this.users.find(u => u.password === password) || null;
   }
+
+  // Expenses and Legal — stored in memory for DB mode too
+  private expenses: Expense[] = [];
+  private legalDocs: LegalDoc[] = [];
+
+  async getExpenses(): Promise<Expense[]> { return this.expenses; }
+  async createExpense(expense: CreateExpense): Promise<Expense> {
+    const e: Expense = { ...expense, id: Math.random().toString(36).substring(2, 9), createdAt: new Date().toISOString() };
+    this.expenses.unshift(e); return e;
+  }
+  async updateExpense(id: string, updates: Partial<Expense>): Promise<Expense> {
+    const i = this.expenses.findIndex(e => e.id === id);
+    if (i === -1) throw new Error("Expense not found");
+    this.expenses[i] = { ...this.expenses[i], ...updates }; return this.expenses[i];
+  }
+  async deleteExpense(id: string): Promise<void> { this.expenses = this.expenses.filter(e => e.id !== id); }
+
+  async getLegalDocs(): Promise<LegalDoc[]> { return this.legalDocs; }
+  async createLegalDoc(doc: CreateLegalDoc): Promise<LegalDoc> {
+    const d: LegalDoc = { ...doc, id: Math.random().toString(36).substring(2, 9), createdAt: new Date().toISOString() };
+    this.legalDocs.unshift(d); return d;
+  }
+  async updateLegalDoc(id: string, updates: Partial<LegalDoc>): Promise<LegalDoc> {
+    const i = this.legalDocs.findIndex(d => d.id === id);
+    if (i === -1) throw new Error("Document not found");
+    this.legalDocs[i] = { ...this.legalDocs[i], ...updates }; return this.legalDocs[i];
+  }
+  async deleteLegalDoc(id: string): Promise<void> { this.legalDocs = this.legalDocs.filter(d => d.id !== id); }
 }
+
 
 // ── MemStorage (in-memory) ────────────────────────────────
 export class MemStorage implements IStorage {
@@ -133,6 +202,33 @@ export class MemStorage implements IStorage {
   async findUserByPassword(password: string): Promise<User | null> {
     return this.users.find(u => u.password === password) || null;
   }
+
+  private expenses: Expense[] = [];
+  private legalDocs: LegalDoc[] = [];
+
+  async getExpenses(): Promise<Expense[]> { return this.expenses; }
+  async createExpense(expense: CreateExpense): Promise<Expense> {
+    const e: Expense = { ...expense, id: Math.random().toString(36).substring(2, 9), createdAt: new Date().toISOString() };
+    this.expenses.unshift(e); return e;
+  }
+  async updateExpense(id: string, updates: Partial<Expense>): Promise<Expense> {
+    const i = this.expenses.findIndex(e => e.id === id);
+    if (i === -1) throw new Error("Expense not found");
+    this.expenses[i] = { ...this.expenses[i], ...updates }; return this.expenses[i];
+  }
+  async deleteExpense(id: string): Promise<void> { this.expenses = this.expenses.filter(e => e.id !== id); }
+
+  async getLegalDocs(): Promise<LegalDoc[]> { return this.legalDocs; }
+  async createLegalDoc(doc: CreateLegalDoc): Promise<LegalDoc> {
+    const d: LegalDoc = { ...doc, id: Math.random().toString(36).substring(2, 9), createdAt: new Date().toISOString() };
+    this.legalDocs.unshift(d); return d;
+  }
+  async updateLegalDoc(id: string, updates: Partial<LegalDoc>): Promise<LegalDoc> {
+    const i = this.legalDocs.findIndex(d => d.id === id);
+    if (i === -1) throw new Error("Document not found");
+    this.legalDocs[i] = { ...this.legalDocs[i], ...updates }; return this.legalDocs[i];
+  }
+  async deleteLegalDoc(id: string): Promise<void> { this.legalDocs = this.legalDocs.filter(d => d.id !== id); }
 }
 
 export const storage = process.env.DATABASE_URL ? new DatabaseStorage() : new MemStorage();
