@@ -197,7 +197,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 overflow-auto">
+            <main className="flex-1 overflow-auto bg-zinc-950">
+                {/* Top bar */}
+                <div className="sticky top-0 z-20 bg-zinc-950/90 backdrop-blur border-b border-[#552583]/10 px-8 py-3 flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-xs text-zinc-500">
+                        <span className="text-zinc-600">One More Swing</span>
+                        <span className="text-zinc-700">/</span>
+                        <span className="text-zinc-400 font-medium capitalize">{location.replace("/admin/", "").replace("/admin", "Dashboard")}</span>
+                    </div>
+                    <div className="flex items-center gap-4 text-xs text-zinc-500">
+                        <span className="text-[#FDB927] font-semibold">{adminUser?.name}</span>
+                        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#552583]/10 border border-[#552583]/20">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#FDB927] animate-pulse" />
+                            <span className="text-[#FDB927] font-medium">Admin</span>
+                        </div>
+                    </div>
+                </div>
                 <div className="p-8 mx-auto max-w-7xl">
                     {children}
                 </div>
