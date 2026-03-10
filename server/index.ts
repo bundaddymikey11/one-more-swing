@@ -24,6 +24,17 @@ app.use(
 
 app.use(express.urlencoded({ extended: false }));
 
+// ── Subdomain redirect: admin.onemoreswing.golf → /admin ──
+app.use((req, res, next) => {
+  const host = req.hostname || "";
+  const isAdminSubdomain = host.startsWith("admin.");
+  const isAlreadyAdminPath = req.path.startsWith("/admin");
+  if (isAdminSubdomain && !isAlreadyAdminPath && !req.path.startsWith("/api")) {
+    return res.redirect(301, "/admin");
+  }
+  next();
+});
+
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
     hour: "numeric",
