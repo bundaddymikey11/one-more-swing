@@ -10,6 +10,9 @@ import Home from "@/pages/home";
 import Book from "@/pages/book";
 import Contact from "@/pages/contact";
 import NotFound from "@/pages/not-found";
+import AdminLayout from "@/components/admin/AdminLayout";
+import AdminDashboard from "@/pages/admin/Dashboard";
+import LeadManager from "@/pages/admin/LeadManager";
 
 let lenisInstance: Lenis | null = null;
 export function getLenis() { return lenisInstance; }
@@ -21,6 +24,20 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/book" component={Book} />
       <Route path="/contact" component={Contact} />
+
+      {/* Admin Command Center */}
+      <Route path="/admin">
+        <AdminLayout><AdminDashboard /></AdminLayout>
+      </Route>
+      <Route path="/admin/leads">
+        <AdminLayout><LeadManager /></AdminLayout>
+      </Route>
+      <Route path="/admin/settings">
+        <AdminLayout>
+          <div className="text-white">Settings coming soon...</div>
+        </AdminLayout>
+      </Route>
+
       <Route component={NotFound} />
     </Switch>
   );

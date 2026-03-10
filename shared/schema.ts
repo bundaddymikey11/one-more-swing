@@ -17,10 +17,16 @@ export const bookings = pgTable("bookings", {
   location: text("location").notNull(),
   message: text("message"),
   attachmentUrl: text("attachment_url"),
+  status: text("status").notNull().default("new"),
+  internalNotes: text("internal_notes"),
+  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const insertBookingSchema = createInsertSchema(bookings).omit({
   id: true,
+  status: true,
+  internalNotes: true,
+  createdAt: true,
 }).extend({
   firstName: z.string().min(2, "First name is required"),
   lastName: z.string().min(2, "Last name is required"),

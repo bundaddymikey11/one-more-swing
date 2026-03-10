@@ -135,12 +135,56 @@ export async function registerRoutes(
     }
   });
 
-  app.get("/api/bookings", async (_req, res) => {
+  const requireAdmin = (req: any, res: any, next: any) => {
+    const adminPass = process.env.ADMIN_PASSWORD || "swing-admin-2024";
+    if (req.headers["x-admin-password"] !== adminPass) {
+      return res.status(401).json({ message: "Unauthorized: Admin access required" });
+    }
+    next();
+  };
+
+  app.get("/api/bookings", requireAdmin, async (_req, res) => {
     try {
       const bookings = await storage.getBookings();
       res.json(bookings);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch bookings" });
+    }
+  });
+
+  app.patch("/api/bookings/:id", requireAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updated = await storage.updateBooking(id, req.body);
+      res.json(updated);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update booking" });
+    }
+  });
+
+  app.get("/api/admin/stats", requireAdmin, async (_req, res) => {
+    try {
+      const allBookings = await storage.getBookings();
+
+      const stats = {
+        totalLeads: allBookings.length,
+        newLeads: allBookings.filter(b => b.status === 'new').length,
+        byPackage: {
+          'Practice': allBookings.filter(b => b.package.includes('Practice')).length,
+          'Executive': allBookings.filter(b => b.package.includes('Executive')).length,
+          'All Day': allBookings.filter(b => b.package.includes('All Day')).length,
+        },
+        revenuePotential: allBookings.reduce((acc, b) => {
+          if (b.package.includes('Practice')) return acc + 250;
+          if (b.package.includes('Executive')) return acc + 450;
+          if (b.package.includes('All Day')) return acc + 800;
+          return acc;
+        }, 0)
+      };
+
+      res.json(stats);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to calculate stats" });
     }
   });
 

@@ -23,23 +23,58 @@ export async function apiRequest(
   return res;
 }
 
+export async function adminApiRequest(
+  method: string,
+  url: string,
+  data?: unknown | undefined,
+): Promise<Response> {
+  const adminPass = localStorage.getItem("admin_pass");
+  const res = await fetch(url, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      "x-admin-password": adminPass || "",
+    },
+    body: data ? JSON.stringify(data) : undefined,
+    credentials: "include",
+  });
+
+  await throwIfResNotOk(res);
+  return res;
+}
+
+export const getAdminQueryFn: <T>() => QueryFunction<T> =
+  () =>
+    async ({ queryKey }) => {
+      const adminPass = localStorage.getItem("admin_pass");
+      const res = await fetch(queryKey.join("/"), {
+        headers: {
+          "x-admin-password": adminPass || "",
+        },
+        credentials: "include",
+      });
+
+      await throwIfResNotOk(res);
+      return await res.json();
+    };
+
 type UnauthorizedBehavior = "returnNull" | "throw";
 export const getQueryFn: <T>(options: {
   on401: UnauthorizedBehavior;
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
-  async ({ queryKey }) => {
-    const res = await fetch(queryKey.join("/") as string, {
-      credentials: "include",
-    });
+    async ({ queryKey }) => {
+      const res = await fetch(queryKey.join("/") as string, {
+        credentials: "include",
+      });
 
-    if (unauthorizedBehavior === "returnNull" && res.status === 401) {
-      return null;
-    }
+      if (unauthorizedBehavior === "returnNull" && res.status === 401) {
+        return null;
+      }
 
-    await throwIfResNotOk(res);
-    return await res.json();
-  };
+      await throwIfResNotOk(res);
+      return await res.json();
+    };
 
 export const queryClient = new QueryClient({
   defaultOptions: {
