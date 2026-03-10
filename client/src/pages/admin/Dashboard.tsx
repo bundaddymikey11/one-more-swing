@@ -2,12 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 import { getAdminQueryFn } from "@/lib/queryClient";
 import { type Booking } from "@shared/schema";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts";
-import { Users, TrendingUp, DollarSign, Zap, Mail, Calendar, Loader2, ArrowUp } from "lucide-react";
+import { Users, TrendingUp, DollarSign, Zap, Mail, Calendar, Loader2, ArrowUp, Phone, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
+import { useState } from "react";
+import { useLocation } from "wouter";
 
 interface Stats {
     totalLeads: number;
@@ -35,6 +38,9 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 export default function Dashboard() {
+    const [, navigate] = useLocation();
+    const [selectedLead, setSelectedLead] = useState<Booking | null>(null);
+
     const { data: stats, isLoading: statsLoading } = useQuery<Stats>({
         queryKey: ["/api/admin/stats"],
         queryFn: getAdminQueryFn(),
@@ -58,6 +64,7 @@ export default function Dashboard() {
             icon: Users,
             color: "text-blue-500",
             bg: "bg-blue-500/10",
+            onClick: () => navigate("/admin/leads"),
         },
         {
             label: "Uncontacted",
@@ -65,6 +72,7 @@ export default function Dashboard() {
             icon: Zap,
             color: "text-yellow-500",
             bg: "bg-yellow-500/10",
+            onClick: () => navigate("/admin/leads"),
         },
         {
             label: "Confirmed Revenue",
@@ -72,6 +80,7 @@ export default function Dashboard() {
             icon: DollarSign,
             color: "text-green-500",
             bg: "bg-green-500/10",
+            onClick: () => navigate("/admin/sales"),
         },
         {
             label: "Avg. Deal Size",
@@ -79,6 +88,7 @@ export default function Dashboard() {
             icon: TrendingUp,
             color: "text-purple-500",
             bg: "bg-purple-500/10",
+            onClick: () => navigate("/admin/sales"),
         },
     ];
 
@@ -106,7 +116,11 @@ export default function Dashboard() {
             {/* KPI Cards */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
                 {kpis.map((kpi) => (
-                    <Card key={kpi.label} className="bg-zinc-900 border-zinc-800 group hover:border-zinc-700 transition-colors">
+                    <Card
+                        key={kpi.label}
+                        className="bg-zinc-900 border-zinc-800 group hover:border-green-500/30 hover:bg-zinc-800/50 transition-all cursor-pointer"
+                        onClick={kpi.onClick}
+                    >
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
                             <CardTitle className="text-xs font-medium text-zinc-400 uppercase tracking-wider">{kpi.label}</CardTitle>
                             <div className={`w-8 h-8 rounded-lg ${kpi.bg} flex items-center justify-center`}>
@@ -115,6 +129,9 @@ export default function Dashboard() {
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold text-white">{kpi.value}</div>
+                            <div className="flex items-center gap-1 text-xs text-zinc-600 mt-1 group-hover:text-zinc-400 transition-colors">
+                                View details <ArrowRight className="w-3 h-3" />
+                            </div>
                         </CardContent>
                     </Card>
                 ))}
@@ -167,28 +184,37 @@ export default function Dashboard() {
             {/* Priority Leads Panel */}
             <Card className="bg-zinc-900 border-zinc-800">
                 <CardHeader>
-                    <CardTitle className="text-white flex items-center gap-2">
-                        <Zap className="w-5 h-5 text-yellow-500" /> Priority Leads
-                    </CardTitle>
-                    <p className="text-sm text-zinc-500">Newest leads awaiting your response</p>
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <CardTitle className="text-white flex items-center gap-2">
+                                <Zap className="w-5 h-5 text-yellow-500" /> Priority Leads
+                            </CardTitle>
+                            <p className="text-sm text-zinc-500 mt-1">Click any lead to view full details</p>
+                        </div>
+                        <button onClick={() => navigate("/admin/leads")} className="text-xs text-zinc-500 hover:text-green-400 flex items-center gap-1 transition-colors">
+                            View All <ArrowRight className="w-3 h-3" />
+                        </button>
+                    </div>
                 </CardHeader>
-                <CardContent className="space-y-3">
+                <CardContent className="space-y-2">
                     {priorityLeads.length === 0 ? (
                         <p className="text-zinc-500 text-sm py-4 text-center">🎉 All leads have been contacted!</p>
                     ) : priorityLeads.map((lead) => (
-                        <div key={lead.id} className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50 hover:bg-zinc-800 transition-colors">
+                        <button
+                            key={lead.id}
+                            onClick={() => setSelectedLead(lead)}
+                            className="w-full flex items-center justify-between p-3 rounded-lg bg-zinc-800/50 hover:bg-zinc-800 hover:border-green-500/20 border border-transparent transition-all text-left"
+                        >
                             <div className="flex items-center gap-3">
-                                <div className="w-9 h-9 rounded-full bg-zinc-700 flex items-center justify-center text-sm font-bold text-white">
+                                <div className="w-9 h-9 rounded-full bg-zinc-700 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
                                     {lead.firstName[0]}{lead.lastName[0]}
                                 </div>
                                 <div>
                                     <p className="text-white text-sm font-medium">{lead.firstName} {lead.lastName}</p>
-                                    <p className="text-zinc-500 text-xs flex items-center gap-1">
-                                        <Mail className="w-3 h-3" />{lead.email}
-                                    </p>
+                                    <p className="text-zinc-500 text-xs">{lead.email}</p>
                                 </div>
                             </div>
-                            <div className="text-right">
+                            <div className="text-right flex-shrink-0">
                                 <Badge className={`text-xs mb-1 border ${STATUS_COLORS[lead.status] || ""}`}>
                                     {lead.status.toUpperCase()}
                                 </Badge>
@@ -196,10 +222,47 @@ export default function Dashboard() {
                                     <Calendar className="w-3 h-3" />{lead.eventDate}
                                 </p>
                             </div>
-                        </div>
+                        </button>
                     ))}
                 </CardContent>
             </Card>
+
+            {/* Lead Detail Modal */}
+            <Dialog open={!!selectedLead} onOpenChange={o => !o && setSelectedLead(null)}>
+                <DialogContent className="bg-zinc-900 border-zinc-800 text-white sm:max-w-[500px]">
+                    <DialogHeader>
+                        <DialogTitle className="text-xl font-bold">
+                            {selectedLead?.firstName} {selectedLead?.lastName}
+                        </DialogTitle>
+                    </DialogHeader>
+                    {selectedLead && (
+                        <div className="space-y-4 py-2">
+                            <div className="grid grid-cols-2 gap-4 text-sm">
+                                <div className="space-y-2">
+                                    <p className="flex items-center gap-2 text-zinc-300"><Mail className="w-4 h-4 text-zinc-500" />{selectedLead.email}</p>
+                                    <p className="flex items-center gap-2 text-zinc-300"><Phone className="w-4 h-4 text-zinc-500" />{selectedLead.phone}</p>
+                                    <p className="flex items-center gap-2 text-zinc-300"><Calendar className="w-4 h-4 text-zinc-500" />{selectedLead.eventDate}</p>
+                                </div>
+                                <div className="space-y-1 text-sm">
+                                    <p className="text-zinc-500">Package</p>
+                                    <p className="text-white font-medium">{selectedLead.package}</p>
+                                    <p className="text-zinc-500 mt-2">Event Type</p>
+                                    <p className="text-white">{selectedLead.eventType}</p>
+                                </div>
+                            </div>
+                            {selectedLead.message && (
+                                <p className="text-zinc-400 text-sm italic border-t border-zinc-800 pt-3">"{selectedLead.message}"</p>
+                            )}
+                            <button
+                                onClick={() => { navigate("/admin/leads"); setSelectedLead(null); }}
+                                className="w-full py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white font-bold text-sm transition-colors"
+                            >
+                                Open Full Record →
+                            </button>
+                        </div>
+                    )}
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

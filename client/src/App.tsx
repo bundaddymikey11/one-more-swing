@@ -15,6 +15,7 @@ import AdminDashboard from "@/pages/admin/Dashboard";
 import LeadManager from "@/pages/admin/LeadManager";
 import SalesPage from "@/pages/admin/SalesPage";
 import MarketingPage from "@/pages/admin/MarketingPage";
+import UsersPage from "@/pages/admin/UsersPage";
 
 let lenisInstance: Lenis | null = null;
 export function getLenis() { return lenisInstance; }
@@ -39,6 +40,9 @@ function Router() {
       </Route>
       <Route path="/admin/marketing">
         <AdminLayout><MarketingPage /></AdminLayout>
+      </Route>
+      <Route path="/admin/users">
+        <AdminLayout><UsersPage /></AdminLayout>
       </Route>
       <Route path="/admin/settings">
         <AdminLayout>

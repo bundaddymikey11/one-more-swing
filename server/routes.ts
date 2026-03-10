@@ -135,15 +135,66 @@ export async function registerRoutes(
     }
   });
 
-  const requireAdmin = (req: any, res: any, next: any) => {
-    const adminPass = process.env.ADMIN_PASSWORD || "swing-admin-2024";
-    if (req.headers["x-admin-password"] !== adminPass) {
-      return res.status(401).json({ message: "Unauthorized: Admin access required" });
-    }
+  // Auth middleware — checks ALL user passwords, attaches role to req
+  const requireAuth = async (req: any, res: any, next: any) => {
+    const password = req.headers["x-admin-password"];
+    if (!password) return res.status(401).json({ message: "Unauthorized" });
+    const user = await storage.findUserByPassword(password as string);
+    if (!user) return res.status(401).json({ message: "Invalid credentials" });
+    req.adminUser = user;
     next();
   };
 
-  app.get("/api/bookings", requireAdmin, async (_req, res) => {
+  const requireAdminRole = async (req: any, res: any, next: any) => {
+    await requireAuth(req, res, () => {
+      if (req.adminUser?.role !== "admin") {
+        return res.status(403).json({ message: "Forbidden: Admin role required" });
+      }
+      next();
+    });
+  };
+
+  // Login — returns user info for frontend
+  app.post("/api/auth/login", async (req, res) => {
+    try {
+      const { password } = req.body;
+      const user = await storage.findUserByPassword(password);
+      if (!user) return res.status(401).json({ message: "Invalid password" });
+      res.json({ name: user.name, email: user.email, role: user.role });
+    } catch (error) {
+      res.status(500).json({ message: "Login failed" });
+    }
+  });
+
+  // User management (admin only)
+  app.get("/api/admin/users", requireAdminRole, async (_req, res) => {
+    try { res.json(await storage.getUsers()); }
+    catch { res.status(500).json({ message: "Failed to fetch users" }); }
+  });
+
+  app.post("/api/admin/users", requireAdminRole, async (req, res) => {
+    try {
+      const { name, email, password, role } = req.body;
+      if (!name || !email || !password || !role) {
+        return res.status(400).json({ message: "All fields required" });
+      }
+      const user = await storage.createUser({ name, email, password, role });
+      res.status(201).json(user);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to create user" });
+    }
+  });
+
+  app.delete("/api/admin/users/:id", requireAdminRole, async (req, res) => {
+    try {
+      await storage.deleteUser(req.params.id);
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(400).json({ message: error.message || "Failed to delete user" });
+    }
+  });
+
+  app.get("/api/bookings", requireAuth, async (_req, res) => {
     try {
       const bookings = await storage.getBookings();
       res.json(bookings);
@@ -152,7 +203,7 @@ export async function registerRoutes(
     }
   });
 
-  app.patch("/api/bookings/:id", requireAdmin, async (req, res) => {
+  app.patch("/api/bookings/:id", requireAdminRole, async (req, res) => {
     try {
       const { id } = req.params;
       const updated = await storage.updateBooking(id, req.body);
@@ -162,7 +213,7 @@ export async function registerRoutes(
     }
   });
 
-  app.post("/api/admin/seed", requireAdmin, async (_req, res) => {
+  app.post("/api/admin/seed", requireAdminRole, async (_req, res) => {
     const demoLeads = [
       {
         firstName: "James", lastName: "Harrison", email: "james.harrison@gmail.com", phone: "6025551234",
@@ -218,7 +269,7 @@ export async function registerRoutes(
     }
   });
 
-  app.get("/api/admin/stats", requireAdmin, async (_req, res) => {
+  app.get("/api/admin/stats", requireAdminRole, async (_req, res) => {
     try {
       const allBookings = await storage.getBookings();
 
